@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Riviera Royal Drive</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --g:#C4874A;--gl:#D4A470;--gd:#8B5230;
+  --bk:#0A0806;--card:#141210;--card2:#1A1714;
+  --border:rgba(196,135,74,.14);--border2:rgba(196,135,74,.08);
+  --gt:#F0E8DC;--gc:#A89880;--gr:#5A5248;
+  --green:#2E7D52;--red:#C0392B;--blue:#1A5276;--orange:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit','Segoe UI',sans-serif;background:var(--bk);color:var(--gt);font-size:13px;min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;background:var(--bk);display:flex;align-items:center;justify-content:center;z-index:1000}
+.login-box{background:var(--card);border:1px solid var(--border);padding:2.5rem 2rem;width:min(360px,90vw);text-align:center}
+.login-logo{font-family:Georgia,serif;font-size:1.4rem;color:var(--gt);font-weight:400;margin-bottom:.3rem}
+.login-logo em{font-style:italic;color:var(--g)}
+.login-sub{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);margin-bottom:2rem}
+.login-box input{width:100%;background:rgba(255,255,255,.04);border:none;border-bottom:1px solid var(--border);color:var(--gt);padding:.7rem 0;font-family:inherit;font-size:15px;outline:none;margin-bottom:1.2rem;transition:border-color .2s}
+.login-box input:focus{border-bottom-color:var(--g)}
+.login-btn{width:100%;background:var(--g);color:#fff;padding:.8rem;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:.2s;min-height:46px}
+.login-btn:hover{background:var(--gd)}
+.login-err{font-size:.6rem;color:var(--red);margin-top:.6rem;display:none}
+
+/* ── NAV ── */
+.nav{background:rgba(8,6,4,.98);border-bottom:1px solid var(--border);padding:.7rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.nav-brand{font-family:Georgia,serif;font-size:1.1rem;color:var(--gt);font-weight:400}
+.nav-brand em{font-style:italic;color:var(--g)}
+.nav-brand small{display:block;font-family:'Outfit',sans-serif;font-size:.45rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gc)}
+.nav-actions{display:flex;gap:.5rem;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .9rem;font-size:.55rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:.2s;min-height:36px;text-decoration:none}
+.btn-gold{background:var(--g);color:#fff}
+.btn-gold:hover{background:var(--gd);color:#fff}
+.btn-outline{background:transparent;color:var(--gc);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--g);color:var(--g)}
+.btn-danger{background:rgba(192,57,43,.15);color:var(--red);border:1px solid rgba(192,57,43,.2)}
+.btn-danger:hover{background:rgba(192,57,43,.25)}
+
+/* ── MAIN ── */
+.main{max-width:1280px;margin:0 auto;padding:1.5rem}
+
+/* ── KPI CARDS ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.8rem;margin-bottom:1.5rem}
+.kpi{background:var(--card);border:1px solid var(--border);padding:1.1rem 1.3rem}
+.kpi-val{font-family:Georgia,serif;font-size:2rem;color:var(--g);line-height:1;margin-bottom:.3rem}
+.kpi-label{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc)}
+.kpi-delta{font-size:.55rem;color:var(--green);margin-top:.2rem}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.toolbar-title{font-family:Georgia,serif;font-size:1.2rem;font-weight:400;color:var(--gt);flex:1;min-width:150px}
+.toolbar-title em{font-style:italic;color:var(--g)}
+.search-box{display:flex;align-items:center;gap:.4rem;background:var(--card);border:1px solid var(--border);padding:.35rem .7rem;flex:1;max-width:280px}
+.search-box i{color:var(--gc);font-size:.7rem}
+.search-box input{background:none;border:none;color:var(--gt);outline:none;font-family:inherit;font-size:.72rem;width:100%}
+.filter-select{background:var(--card);border:1px solid var(--border);color:var(--gc);padding:.35rem .6rem;font-family:inherit;font-size:.62rem;outline:none;cursor:pointer}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.72rem}
+thead{background:rgba(196,135,74,.08)}
+thead th{padding:.7rem .9rem;text-align:left;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+thead th:hover{color:var(--gl)}
+thead th i{margin-left:.3rem;opacity:.5;font-size:.5rem}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .15s}
+tbody tr:hover{background:rgba(196,135,74,.04)}
+td{padding:.6rem .9rem;vertical-align:top;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td.wrap{white-space:normal;max-width:200px}
+td:first-child{color:var(--gc);font-size:.6rem;font-family:monospace}
+.td-name{font-weight:600;color:var(--gt)}
+.td-email{color:var(--gc)}
+.td-tel a{color:var(--g);text-decoration:none}
+.td-tel a:hover{color:var(--gl)}
+.td-service{font-size:.62rem;color:var(--gc)}
+
+/* STATUT BADGE */
+.badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:2px;font-weight:600}
+.b-new{background:rgba(196,135,74,.12);color:var(--g);border:1px solid rgba(196,135,74,.25)}
+.b-confirmed{background:rgba(46,125,82,.12);color:var(--green);border:1px solid rgba(46,125,82,.2)}
+.b-done{background:rgba(90,82,72,.12);color:var(--gr);border:1px solid rgba(90,82,72,.2)}
+.b-cancelled{background:rgba(192,57,43,.1);color:var(--red);border:1px solid rgba(192,57,43,.18)}
+
+/* ACTIONS */
+.td-actions{display:flex;gap:.3rem;white-space:nowrap}
+.act-btn{background:none;border:1px solid var(--border);color:var(--gc);padding:.22rem .45rem;font-size:.6rem;cursor:pointer;transition:.2s}
+.act-btn:hover{border-color:var(--g);color:var(--g)}
+.act-btn.del:hover{border-color:var(--red);color:var(--red)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:3rem 1rem;color:var(--gc)}
+.empty i{font-size:2rem;color:var(--border);display:block;margin-bottom:.8rem}
+.empty p{font-size:.75rem}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);padding:2rem;width:min(520px,92vw);max-height:90vh;overflow-y:auto}
+.modal h3{font-family:Georgia,serif;font-size:1.3rem;font-weight:400;color:var(--gt);margin-bottom:1.2rem}
+.modal h3 em{font-style:italic;color:var(--g)}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.mf{margin-bottom:0}
+.mf label{display:block;font-size:.45rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gc);margin-bottom:.25rem}
+.mf input,.mf select,.mf textarea{width:100%;background:rgba(255,255,255,.04);border:none;border-bottom:1px solid var(--border);color:var(--gt);padding:.5rem 0;font-family:inherit;font-size:14px;outline:none;transition:border-color .2s}
+.mf input:focus,.mf select:focus,.mf textarea:focus{border-bottom-color:var(--g)}
+.mf select option{background:#1A1714}
+.mf textarea{border:1px solid var(--border);padding:.5rem;resize:none;height:70px;background:rgba(255,255,255,.04)}
+.mf-full{grid-column:1/-1}
+.modal-actions{display:flex;gap:.6rem;margin-top:1.4rem;justify-content:flex-end}
+
+/* SUMUP PANEL */
+.sumup-bar{background:rgba(46,125,82,.08);border:1px solid rgba(46,125,82,.2);padding:1rem 1.3rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.sumup-bar p{font-size:.68rem;color:var(--gc);flex:1}
+.sumup-bar strong{color:var(--gt)}
+.sumup-input{flex:1;min-width:200px;display:flex;gap:.4rem}
+.sumup-input input{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(46,125,82,.3);color:var(--gt);padding:.4rem .6rem;font-family:inherit;font-size:13px;outline:none}
+.sumup-input input:focus{border-color:var(--green)}
+.btn-green{background:rgba(46,125,82,.2);color:var(--green);border:1px solid rgba(46,125,82,.3)}
+.btn-green:hover{background:rgba(46,125,82,.35)}
+
+/* SETUP BANNER */
+.setup-banner{background:rgba(196,135,74,.07);border:1px solid rgba(196,135,74,.2);padding:1rem 1.3rem;margin-bottom:1.2rem;display:flex;align-items:flex-start;gap:.8rem}
+.setup-banner i{color:var(--g);font-size:1rem;flex-shrink:0;margin-top:.1rem}
+.setup-banner p{font-size:.7rem;color:var(--gc);line-height:1.85}
+.setup-banner strong{color:var(--gt)}
+.setup-banner code{background:rgba(196,135,74,.1);color:var(--gl);padding:.1rem .3rem;font-size:.65rem}
+.setup-banner .steps{margin-top:.6rem;list-style:none}
+.setup-banner .steps li{font-size:.68rem;color:var(--gc);padding:.2rem 0;display:flex;gap:.5rem}
+.setup-banner .steps li::before{content:'→';color:var(--g);flex-shrink:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--g);padding:.8rem 1.2rem;font-size:.68rem;color:var(--gt);z-index:900;transform:translateX(120%);transition:transform .3s;max-width:280px}
+.toast.show{transform:translateX(0)}
+.toast.error{border-left-color:var(--red)}
+.toast.success{border-left-color:var(--green)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .search-box{max-width:100%}
+  .modal-grid{grid-template-columns:1fr}
+  .nav-actions .btn-outline{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Riviera <em>Royal</em> Drive</div>
+    <div class="login-sub">Espace Administration</div>
+    <form id="login-form" onsubmit="return false">
+      <input type="password" id="pwd" placeholder="Mot de passe" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+      <button type="submit" class="login-btn" id="login-btn"><i class="fas fa-unlock-alt"></i> &nbsp;Accéder</button>
+    </form>
+    <p id="login-err" style="display:none;font-size:.6rem;color:#C0392B;margin-top:.6rem">Mot de passe incorrect</p>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app" style="display:none">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      Riviera <em>Royal</em> Drive
+      <small>Dashboard Administrateur</small>
+    </div>
+    <div class="nav-actions">
+      <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Site</a>
+      <button class="btn btn-outline" onclick="toggleSetup()" title="Configuration Supabase" style="font-size:.5rem"><i class="fas fa-database"></i></button>
+      <button class="btn btn-gold" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
+      <button class="btn btn-danger" onclick="logout()" style="min-width:90px"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- SETUP BANNER — masqué par défaut, dépliable -->
+    <div id="setup-banner" style="display:none">
+      <div class="setup-banner">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <p><strong>Mode local actif</strong> — Les réservations sont stockées dans ce navigateur. Pour synchroniser sur tous tes appareils, connecte Supabase :</p>
+          <ul class="steps">
+            <li>Crée un compte gratuit sur <strong>supabase.com</strong></li>
+            <li>Nouveau projet → copie l'URL et la clé <code>anon</code></li>
+            <li>Exécute le SQL ci-dessous dans l'éditeur SQL de Supabase</li>
+            <li>Colle l'URL et la clé dans <code>riviera_royal_drive_FINAL.html</code> (variables <code>SB_URL</code> et <code>SB_KEY</code>)</li>
+            <li>Fais pareil dans ce fichier admin (variables <code>SB_URL</code> et <code>SB_KEY</code>)</li>
+          </ul>
+          <p style="margin-top:.6rem;font-size:.62rem;background:rgba(0,0,0,.3);padding:.6rem;font-family:monospace;color:var(--gl);line-height:1.8">
+            CREATE TABLE reservations (<br>
+            &nbsp;&nbsp;id BIGSERIAL PRIMARY KEY,<br>
+            &nbsp;&nbsp;created_at TIMESTAMPTZ DEFAULT NOW(),<br>
+            &nbsp;&nbsp;prenom TEXT, nom TEXT, email TEXT,<br>
+            &nbsp;&nbsp;telephone TEXT, adresse TEXT,<br>
+            &nbsp;&nbsp;service TEXT, depart TEXT, arrivee TEXT,<br>
+            &nbsp;&nbsp;date_course DATE, heure_course TIME,<br>
+            &nbsp;&nbsp;message TEXT, statut TEXT DEFAULT 'nouveau'<br>
+            );
+          </p>
+          <button class="btn btn-outline" onclick="document.getElementById('setup-banner').style.display='none'" style="margin-top:.8rem;font-size:.52rem">
+            <i class="fas fa-times"></i> Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row" id="kpis">
+      <div class="kpi"><div class="kpi-val" id="k-total">0</div><div class="kpi-label">Réservations totales</div></div>
+      <div class="kpi"><div class="kpi-val" id="k-new">0</div><div class="kpi-label">Nouvelles demandes</div></div>
+      <div class="kpi"><div class="kpi-val" id="k-today">0</div><div class="kpi-label">Aujourd'hui</div></div>
+      <div class="kpi"><div class="kpi-val" id="k-clients">0</div><div class="kpi-label">Clients uniques</div></div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-title">Base de données <em>clients</em></div>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search-input" placeholder="Nom, email, téléphone..." oninput="renderTable()">
+      </div>
+      <select class="filter-select" id="filter-statut" onchange="renderTable()">
+        <option value="">Tous les statuts</option>
+        <option value="nouveau">Nouveau</option>
+        <option value="confirmé">Confirmé</option>
+        <option value="terminé">Terminé</option>
+        <option value="annulé">Annulé</option>
+      </select>
+      <button class="btn btn-outline" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Actualiser</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+      <table id="main-table">
+        <thead>
+          <tr>
+            <th onclick="sortBy('created_at')">Date <i class="fas fa-sort"></i></th>
+            <th onclick="sortBy('prenom')">Prénom <i class="fas fa-sort"></i></th>
+            <th onclick="sortBy('nom')">Nom <i class="fas fa-sort"></i></th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Service</th>
+            <th>Trajet</th>
+            <th onclick="sortBy('date_course')">Départ <i class="fas fa-sort"></i></th>
+            <th onclick="sortBy('statut')">Statut <i class="fas fa-sort"></i></th>
+            <th>SumUp / Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ══ MODAL DÉTAIL ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>Réservation <em>client</em></h3>
+    <div class="modal-grid" id="modal-body"></div>
+    <div class="modal-actions">
+      <select id="modal-statut" class="filter-select" style="min-width:130px"></select>
+      <button class="btn btn-gold" onclick="saveStatus()"><i class="fas fa-save"></i> Sauvegarder</button>
+      <button class="btn btn-outline" onclick="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════
+   CONFIG — remplace si tu utilises Supabase
+══════════════════════════════════ */
+const SB_URL = 'https://dfhlgsnmojwzxbaotrcj.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmaGxnc25tb2p3enhiYW90cmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2OTY0ODQsImV4cCI6MjA5NTI3MjQ4NH0.g7zzX52A3zBVR8Qi_Xknd-RwUxcC1ENVuxVDJ7AgCt8';
+
+/* ══ MOT DE PASSE ADMIN ══ */
+const ADMIN_PWD = 'raidermaha';  // ← Change ce mot de passe !
+
+/* ══════════════════════════════════
+   AUTH
+══════════════════════════════════ */
+
+/* ══════════════════════════════════
+   DATA
+══════════════════════════════════ */
+let DATA = [];
+let sortKey = 'created_at';
+let sortDir = -1;
+let editId = null;
+
+function getLocal(){
+  return JSON.parse(localStorage.getItem('rrd_resa')||'[]');
+}
+function saveLocal(arr){
+  localStorage.setItem('rrd_resa', JSON.stringify(arr));
+}
+
+async function fetchData(){
+  if(SB_URL === 'SUPABASE_URL'){
+    // Mode local
+    DATA = getLocal().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+      return;
+  }
+
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/reservations?order=created_at.desc',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    DATA = await res.json();
+  } catch(e){ showToast('Erreur connexion Supabase','error'); DATA=getLocal(); }
+}
+
+async function updateStatus(id, statut){
+  if(SB_URL === 'SUPABASE_URL'){
+    const arr = getLocal();
+    const item = arr.find(r=>r.id==id);
+    if(item) item.statut = statut;
+    saveLocal(arr);
+    return;
+  }
+  await fetch(SB_URL+'/rest/v1/reservations?id=eq.'+id,{
+    method:'PATCH',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({statut})
+  });
+}
+
+async function deleteRecord(id){
+  if(!confirm('Supprimer cette réservation ?')) return;
+  if(SB_URL === 'SUPABASE_URL'){
+    const arr = getLocal().filter(r=>r.id!=id);
+    saveLocal(arr);
+  } else {
+    await fetch(SB_URL+'/rest/v1/reservations?id=eq.'+id,{
+      method:'DELETE',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+  }
+  await refreshData();
+  showToast('Réservation supprimée');
+}
+
+/* ══════════════════════════════════
+   RENDER
+══════════════════════════════════ */
+const STATUT_CLASSES = {
+  'nouveau':'b-new','confirmé':'b-confirmed','terminé':'b-done','annulé':'b-cancelled'
+};
+
+function badgeHtml(s){
+  s = s||'nouveau';
+  const cl = STATUT_CLASSES[s]||'b-new';
+  return `<span class="badge ${cl}">${s}</span>`;
+}
+
+function renderTable(){
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const sf = document.getElementById('filter-statut').value;
+
+  let rows = [...DATA].filter(r=>{
+    const match = !q || [r.prenom,r.nom,r.email,r.telephone,r.service,r.depart,r.arrivee]
+      .join(' ').toLowerCase().includes(q);
+    const statut = !sf || (r.statut||'nouveau')===sf;
+    return match && statut;
+  });
+
+  rows.sort((a,b)=>{
+    const va=a[sortKey]||'', vb=b[sortKey]||'';
+    return va<vb ? -sortDir : va>vb ? sortDir : 0;
+  });
+
+  const tbody = document.getElementById('tbody');
+  if(!rows.length){
+    tbody.innerHTML=`<tr><td colspan="11"><div class="empty"><i class="fas fa-inbox"></i><p>Aucune réservation trouvée</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r=>{
+    const d = r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+    const trajet = [r.depart,r.arrivee].filter(Boolean).join(' → ')||'—';
+    const dep = r.date_course ? new Date(r.date_course).toLocaleDateString('fr-FR') : '—';
+    return `<tr>
+      <td style="font-size:.58rem;color:var(--gr);white-space:nowrap">${d}</td>
+      <td class="td-name">${r.prenom||'—'}</td>
+      <td class="td-name">${r.nom||'—'}</td>
+      <td class="td-email" style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${r.email||'—'}</td>
+      <td class="td-tel"><a href="tel:${r.telephone||''}">${r.telephone||'—'}</a></td>
+      <td style="font-size:.65rem;color:var(--gc);max-width:120px;overflow:hidden;text-overflow:ellipsis">${r.adresse||'—'}</td>
+      <td class="td-service">${r.service||'—'}</td>
+      <td style="font-size:.62rem;color:var(--gc)">${trajet}</td>
+      <td style="font-size:.62rem;white-space:nowrap">${dep}</td>
+      <td>${badgeHtml(r.statut)}</td>
+      <td class="td-actions">
+        <button class="act-btn" onclick="openSumUp(${r.id})" title="Envoyer lien SumUp"><i class="fas fa-credit-card"></i></button>
+        <button class="act-btn" onclick="openModal(${r.id})" title="Voir détail"><i class="fas fa-eye"></i></button>
+        <button class="act-btn" onclick="sendWA(${r.id})" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+        <button class="act-btn del" onclick="deleteRecord(${r.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  updateKPIs(rows);
+}
+
+function updateKPIs(rows){
+  const all = DATA;
+  const today = new Date().toDateString();
+  document.getElementById('k-total').textContent = all.length;
+  document.getElementById('k-new').textContent = all.filter(r=>!r.statut||r.statut==='nouveau').length;
+  document.getElementById('k-today').textContent = all.filter(r=>r.created_at && new Date(r.created_at).toDateString()===today).length;
+  const emails = new Set(all.map(r=>r.email).filter(Boolean));
+  document.getElementById('k-clients').textContent = emails.size;
+}
+
+function sortBy(key){
+  if(sortKey===key) sortDir*=-1;
+  else{ sortKey=key; sortDir=-1; }
+  renderTable();
+}
+
+/* ══════════════════════════════════
+   MODAL DÉTAIL
+══════════════════════════════════ */
+function openModal(id){
+  const r = DATA.find(x=>x.id==id);
+  if(!r) return;
+  editId = id;
+  const fields = [
+    ['Prénom','prenom'],['Nom','nom'],
+    ['Email','email'],['Téléphone','telephone'],
+    ['Adresse','adresse','mf-full'],
+    ['Service','service'],['Statut','statut'],
+    ['Départ','depart'],['Arrivée','arrivee'],
+    ['Date course','date_course'],['Heure','heure_course'],
+    ['Message','message','mf-full']
+  ];
+  document.getElementById('modal-body').innerHTML = fields.map(([label,key,cls])=>`
+    <div class="mf ${cls||''}">
+      <label>${label}</label>
+      <input value="${(r[key]||'').toString().replace(/"/g,'&quot;')}" id="mf-${key}" readonly style="cursor:default"/>
+    </div>`).join('');
+
+  const sel = document.getElementById('modal-statut');
+  ['nouveau','confirmé','terminé','annulé'].forEach(s=>{
+    const o = document.createElement('option');
+    o.value=s; o.textContent=s;
+    if((r.statut||'nouveau')===s) o.selected=true;
+    sel.appendChild(o);
+  });
+
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('show');
+  document.getElementById('modal-statut').innerHTML='';
+  editId=null;
+}
+
+async function saveStatus(){
+  const statut = document.getElementById('modal-statut').value;
+  await updateStatus(editId, statut);
+  await refreshData();
+  closeModal();
+  showToast('Statut mis à jour ✓','success');
+}
+
+/* ══════════════════════════════════
+   SUMUP
+══════════════════════════════════ */
+function openSumUp(id){
+  const r = DATA.find(x=>x.id==id);
+  if(!r) return;
+  const link = prompt(`Colle le lien SumUp pour ${r.prenom} ${r.nom} :`);
+  if(!link) return;
+  const msg = `Bonjour ${r.prenom},\n\nMerci pour votre réservation Riviera Royal Drive !\n\nVoici votre lien de paiement sécurisé :\n${link}\n\nÀ très bientôt,\nRiviera Royal Drive — 07 80 97 79 39`;
+  const wa = `https://wa.me/${(r.telephone||'').replace(/\D/g,'').replace(/^0/,'33')}?text=${encodeURIComponent(msg)}`;
+  window.open(wa,'_blank');
+  showToast('Lien SumUp envoyé via WhatsApp ✓','success');
+}
+
+/* ══════════════════════════════════
+   WHATSAPP
+══════════════════════════════════ */
+function sendWA(id){
+  const r = DATA.find(x=>x.id==id);
+  if(!r) return;
+  const msg =
+    `🚗 *Riviera Royal Drive*\n` +
+    `Bonjour ${r.prenom} ${r.nom},\n\n` +
+    `Votre réservation est confirmée :\n` +
+    `📍 ${r.depart||'—'} → ${r.arrivee||'—'}\n` +
+    `📅 ${r.date_course||'—'} ${r.heure_course||''}\n\n` +
+    `À bientôt !`;
+  window.open(`https://wa.me/${(r.telephone||'').replace(/\D/g,'').replace(/^0/,'33')}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* ══════════════════════════════════
+   EXPORT EXCEL
+══════════════════════════════════ */
+function exportExcel(){
+  if(!DATA.length){ showToast('Aucune donnée à exporter','error'); return; }
+
+  const rows = DATA.map(r=>({
+    'Date réservation': r.created_at ? new Date(r.created_at).toLocaleString('fr-FR') : '',
+    'Prénom': r.prenom||'',
+    'Nom': r.nom||'',
+    'Email': r.email||'',
+    'Téléphone': r.telephone||'',
+    'Adresse': r.adresse||'',
+    'Service': r.service||'',
+    'Départ': r.depart||'',
+    'Arrivée': r.arrivee||'',
+    'Date course': r.date_course||'',
+    'Heure': r.heure_course||'',
+    'Message': r.message||'',
+    'Statut': r.statut||'nouveau'
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+
+  // Largeur colonnes
+  ws['!cols'] = [
+    {wch:18},{wch:14},{wch:14},{wch:26},{wch:16},
+    {wch:28},{wch:22},{wch:22},{wch:22},{wch:12},{wch:8},{wch:32},{wch:12}
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Réservations');
+
+  // Feuille clients uniques
+  const clientMap = {};
+  DATA.forEach(r=>{
+    if(r.email && !clientMap[r.email]){
+      clientMap[r.email]={
+        'Prénom':r.prenom||'','Nom':r.nom||'',
+        'Email':r.email||'','Téléphone':r.telephone||'',
+        'Adresse':r.adresse||'',
+        'Nb réservations':DATA.filter(x=>x.email===r.email).length
+      };
+    }
+  });
+  const ws2 = XLSX.utils.json_to_sheet(Object.values(clientMap));
+  ws2['!cols']=[{wch:14},{wch:14},{wch:26},{wch:16},{wch:28},{wch:16}];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Clients uniques');
+
+  const date = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `RRD_Reservations_${date}.xlsx`);
+  showToast(`${DATA.length} réservation(s) exportée(s) ✓`,'success');
+}
+
+/* ══════════════════════════════════
+   UTILS
+══════════════════════════════════ */
+function showToast(msg, type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type?' '+type:'');
+  setTimeout(()=>t.className='toast',3500);
+}
+
+async function refreshData(){
+  await fetchData();
+  renderTable();
+}
+
+async function init(){
+  await fetchData();
+  renderTable();
+}
+
+function toggleSetup(){
+  const el = document.getElementById('setup-banner');
+  el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+// ── LOGIN ──
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('login-btn');
+  var inp = document.getElementById('pwd');
+  
+  function doLogin(){
+    var v = inp.value;
+    if(v.trim() === 'raidermaha'){
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      init();
+    } else {
+      var err = document.getElementById('login-err');
+      err.style.display = 'block';
+      inp.value = '';
+      inp.focus();
+      setTimeout(function(){ err.style.display='none'; }, 2000);
+    }
+  }
+
+  btn.addEventListener('click', doLogin);
+  inp.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); doLogin(); }
+  });
+  inp.focus();
+});
+function logout(){
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pwd').value = '';
+}
+</script>
+</body>
+</html>
