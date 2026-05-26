@@ -871,10 +871,7 @@ function isEvt(y,m,d){return EVENTS.some(e=>e.m===m&&d>=e.d1&&d<=e.d2);}
 
 
 
-document.addEventListener('click',e=>{
-  const c=document.getElementById('dpCal'),b=document.getElementById('dpBtn');
-  if(c&&!c.contains(e.target)&&e.target!==b&&!b.contains(e.target)){c.classList.remove('show');b.classList.remove('open');}
-});
+
 /* ── SEND ── */
 function send(){
   const prenom  = (document.getElementById('prenom')?.value||'').trim();
@@ -979,24 +976,7 @@ async function saveReservation(data){
 }
 
 
-      list.classList.add('show');
-    }).catch(function(){list.classList.remove('show');});
-  },400);
-}
-function acKey(e,lid){
-  var list=document.getElementById(lid),items=list.querySelectorAll('.autocomplete-item'),active=list.querySelector('.active');
-  var idx=Array.from(items).indexOf(active);
-  if(e.key==='ArrowDown'){e.preventDefault();if(active)active.classList.remove('active');var n=items[idx+1]||items[0];if(n)n.classList.add('active');}
-  else if(e.key==='ArrowUp'){e.preventDefault();if(active)active.classList.remove('active');var p=items[idx-1]||items[items.length-1];if(p)p.classList.add('active');}
-  else if(e.key==='Enter'&&active){e.preventDefault();active.click();}
-  else if(e.key==='Escape'){list.classList.remove('show');}
-}
-document.addEventListener('click',function(e){
-  ['dep-list','arr-list'].forEach(function(id){
-    var l=document.getElementById(id);
-    if(l&&e.target.id!==id.replace('-list',''))l.classList.remove('show');
-  });
-});
+
 
 /* ══ AUTOCOMPLETE — API Adresse Officielle France (data.gouv.fr) ══ */
 var acT={};
