@@ -1,0 +1,19 @@
+{
+  "name": "Riviera Royal Drive",
+  "short_name": "RRD",
+  "description": "Chauffeur Priv\u00e9 Premium \u2014 Cannes & C\u00f4te d'Azur",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D0B09",
+  "theme_color": "#C4874A",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
