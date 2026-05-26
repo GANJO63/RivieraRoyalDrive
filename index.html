@@ -513,6 +513,15 @@ h1.ht em{font-style:italic;color:var(--g)}
 .autocomplete-item span{display:block;font-size:.6rem;color:#A89880;margin-top:.15rem}
 .ac-wrap{position:relative;width:100%;display:block}
 </style>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RRD">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="theme-color" content="#C4874A">
 </head>
 <body>
 
@@ -745,6 +754,16 @@ h1.ht em{font-style:italic;color:var(--g)}
 
 <!-- FLOATING BTNS -->
 <div class="fab">
+  <!-- PWA Install -->
+  <button id="pwa-btn" onclick="pwrInstall()" aria-label="Installer l'app"
+    style="display:none;background:#1A1714;color:#fff;border:1px solid rgba(196,135,74,.4);cursor:pointer;width:48px;height:48px;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(0,0,0,.4);transition:transform .3s;flex-shrink:0"
+    title="Installer l'app" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4874A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  </button>
   <button onclick="goTo(4)" aria-label="Réserver"
     style="background:var(--g);color:#fff;border:none;cursor:pointer;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(196,135,74,.4);transition:transform .3s;flex-shrink:0"
     title="Réserver" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
@@ -1024,6 +1043,58 @@ document.addEventListener('click',function(e){
     if(l&&e.target!==inp&&!l.contains(e.target))l.classList.remove('show');
   });
 });
+</script>
+
+
+    <div style="font-size:.55rem;color:#A89880;margin-top:.1rem">Accès rapide depuis votre écran d'accueil</div>
+  </div>
+  <button id="pwa-install-btn" style="background:#C4874A;color:#fff;border:none;padding:.5rem 1rem;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:inherit;white-space:nowrap">
+    Installer
+  </button>
+  <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:none;border:none;color:#5A5248;cursor:pointer;font-size:.9rem;padding:.2rem">✕</button>
+</div>
+
+<script>
+// Service Worker
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+
+// Install prompt — Android/Chrome
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById('pwa-btn');
+  if(btn){ btn.style.display = 'flex'; }
+});
+
+window.addEventListener('appinstalled', function(){
+  var btn = document.getElementById('pwa-btn');
+  if(btn) btn.style.display = 'none';
+  deferredPrompt = null;
+});
+
+function pwrInstall(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(){
+      deferredPrompt = null;
+      var btn = document.getElementById('pwa-btn');
+      if(btn) btn.style.display = 'none';
+    });
+  } else {
+    alert('Pour installer : appuyez sur Partage puis Sur l ecran accueil');
+  }
+}
+
+// iOS — afficher le bouton aussi
+var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+var isStandalone = window.navigator.standalone;
+if(isIOS && !isStandalone){
+  var btn = document.getElementById('pwa-btn');
+  if(btn){ btn.style.display = 'flex'; }
+}
 </script>
 
 </body>
