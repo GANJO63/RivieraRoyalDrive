@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="robots" content="noindex, nofollow">
@@ -78,7 +78,7 @@ a{text-decoration:none;color:inherit}
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;height:100%}
-body{font-family:'Outfit','Segoe UI',sans-serif;background:var(--bk);color:var(--gt);font-size:13px;height:100%;overflow:hidden}
+body{font-family:'Outfit','Segoe UI',sans-serif;background:var(--bk);color:var(--gt);font-size:13px;height:100%;overflow:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 button,input,select,textarea{font-family:inherit}
 a{text-decoration:none;color:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
@@ -147,7 +147,7 @@ a{text-decoration:none;color:inherit}
 .sb-foot-btn .sb-label{font-size:.6rem}
 
 /* ══ MAIN CONTENT ══ */
-.content-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.content-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;min-height:0}
 
 /* ══ TOPBAR ══ */
 .topbar{height:var(--nav);background:rgba(9,8,6,.96);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;backdrop-filter:blur(12px);z-index:50}
@@ -166,9 +166,9 @@ a{text-decoration:none;color:inherit}
 .ham-sb:hover{border-color:var(--g);color:var(--g)}
 
 /* ══ PAGES ══ */
-.pages{flex:1;overflow:hidden;position:relative}
-.page{position:absolute;inset:0;overflow-y:auto;padding:1.4rem;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
-.page.active{opacity:1;transform:translateY(0);pointer-events:all;position:relative}
+.pages{flex:1;overflow:hidden;position:relative;min-height:0}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:1.4rem;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s ease;-webkit-overflow-scrolling:touch}
+.page.active{opacity:1;transform:translateY(0);pointer-events:all}
 
 /* ══ GRID UTILS ══ */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
@@ -267,6 +267,9 @@ td a:hover{color:var(--gl)}
 .srch input::placeholder{color:var(--gr)}
 .flt{background:var(--c2);border:1px solid var(--bd);color:var(--gc);padding:.32rem .6rem;font-size:.62rem;outline:none;cursor:pointer;transition:.2s;-webkit-appearance:none;appearance:none}
 .flt:focus{border-color:rgba(196,135,74,.35);color:var(--gt)}
+#driver-select-dropdown{transition:border-color .2s}
+#driver-select-dropdown:focus{border-color:var(--g)}
+#driver-select-dropdown option{background:var(--c2);color:var(--gt)}
 
 /* ══ FORM ══ */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
@@ -418,12 +421,64 @@ td a:hover{color:var(--gl)}
   .form-grid{grid-template-columns:1fr}
   .fg-full{grid-column:auto}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .page{padding:1rem}
+  .page{padding:.8rem}
+  .topbar{padding:0 .8rem}
+  .modal{width:95vw;padding:1.2rem}
 }
 @media(max-width:520px){
   .g2,.g3,.g4{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr 1fr}
-  .modal{padding:1.4rem}
+  .modal{padding:1rem}
+  .sec-head{flex-direction:column;align-items:flex-start}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .srch{max-width:100%!important}
+  td{font-size:.62rem}
+  .tb-btn{width:28px;height:28px}
+}
+
+/* ── MOBILE SCROLL FIX ── */
+html, body { height:100%; overflow:hidden; touch-action:manipulation; }
+#app { height:100vh; overflow:hidden; }
+.pages { height:100%; overflow:hidden; position:relative; min-height:0; }
+.page {
+  position:absolute; inset:0;
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding:1rem;
+}
+.page.active { opacity:1; transform:translateY(0); pointer-events:all; }
+
+/* ── DRIVER INTERFACE MOBILE ── */
+#app-driver {
+  display:none;
+  min-height:100vh;
+  height:100%;
+  flex-direction:column;
+  font-size:15px;
+  overflow:hidden;
+}
+#app-driver.visible { display:flex; }
+#app-driver .content {
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding:1rem;
+  padding-bottom:calc(1rem + env(safe-area-inset-bottom));
+}
+#app-driver .topbar {
+  padding-top:env(safe-area-inset-top);
+  padding-left:max(.9rem, env(safe-area-inset-left));
+  padding-right:max(.9rem, env(safe-area-inset-right));
+  flex-shrink:0;
+}
+
+/* ── SAFE AREA iPhone ── */
+@supports(padding-bottom: env(safe-area-inset-bottom)){
+  .page { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+  .topbar { padding-top: env(safe-area-inset-top); }
 }
 
 /* ══ ANIMATIONS ══ */
@@ -514,7 +569,7 @@ button,input,select{font-family:inherit}
 .sc-status-name{font-size:.9rem;font-weight:600;color:var(--gt)}
 .sc-status-time{font-size:.55rem;color:var(--gr)}
 .status-btns{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-.sb{padding:.75rem .5rem;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.4rem;position:relative;overflow:hidden}
+.sb{padding:.75rem .5rem;min-height:48px;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.4rem;position:relative;overflow:hidden}
 .sb:active{transform:scale(.97)}
 .sb.active-btn{border-width:2px}
 .sb.sb-disponible{border-color:rgba(46,125,82,.3);color:var(--grn)}
@@ -530,7 +585,7 @@ button,input,select{font-family:inherit}
 .sb-icon{width:16px;height:16px;flex-shrink:0}
 
 /* ══ ARRIVEE BTN ══ */
-.arrivee-btn{width:100%;padding:1.1rem;background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:.6rem;animation:pulse 2s ease-in-out infinite}
+.arrivee-btn{width:100%;padding:1.1rem;min-height:52px;background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:.6rem;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(93,173,226,.4)}50%{box-shadow:0 0 0 8px rgba(93,173,226,0)}}
 .arrivee-btn:active{transform:scale(.98);animation:none}
 .arrivee-btn.done{background:linear-gradient(135deg,var(--grn),#1e8449);animation:none}
@@ -554,7 +609,7 @@ button,input,select{font-family:inherit}
 .cc-trajet{font-size:.72rem;color:var(--gc);line-height:1.8;margin-bottom:.7rem}
 .cc-trajet strong{color:var(--gt)}
 .cc-row{display:flex;gap:.5rem}
-.cc-btn{flex:1;padding:.6rem .4rem;font-size:.56rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.35rem}
+.cc-btn{flex:1;padding:.6rem .4rem;min-height:44px;font-size:.56rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.35rem;-webkit-tap-highlight-color:transparent}
 .cc-btn:active{transform:scale(.97)}
 .cc-btn.call{border-color:rgba(46,125,82,.3);color:var(--grn)}
 .cc-btn.call:active{background:rgba(46,125,82,.15)}
@@ -571,7 +626,7 @@ button,input,select{font-family:inherit}
 .gps-info{flex:1}
 .gps-title{font-size:.72rem;font-weight:600;color:var(--gt)}
 .gps-sub{font-size:.58rem;color:var(--gr);margin-top:.15rem}
-.gps-toggle{background:none;border:1px solid var(--bd);color:var(--gc);padding:.42rem .8rem;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.2s;white-space:nowrap}
+.gps-toggle{background:none;border:1px solid var(--bd);color:var(--gc);padding:.42rem .8rem;min-height:40px;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.2s;white-space:nowrap}
 .gps-toggle.on{border-color:var(--grn);color:var(--grn);background:rgba(46,125,82,.1)}
 .gps-toggle:active{opacity:.75}
 
@@ -664,9 +719,7 @@ button,input,select{font-family:inherit}
       <button class="sb-item" data-page="chauffeurs" onclick="nav(this)">
         <span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M10 14l-2 8h8l-2-8"/><path d="M10 14l2 3 2-3"/></svg></span><span class="sb-label">Chauffeurs</span>
       </button>
-      <button class="sb-item" data-page="vehicules" onclick="nav(this)">
-        <span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-4h10l2 4h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg></span><span class="sb-label">Véhicules</span>
-      </button>
+      
 
       <div class="sb-section">Business</div>
       <button class="sb-item" data-page="clients" onclick="nav(this)">
@@ -697,8 +750,8 @@ button,input,select{font-family:inherit}
     </nav>
 
     <div class="sb-foot">
-      <a href="chauffeur.html" target="_blank" class="sb-foot-btn" title="Page chauffeurs">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><circle cx="12" cy="8" r="4"/><path d="M10 14l-2 8h8l-2-8"/></svg><span class="sb-label">Page chauffeur</span>
+      <a href="admin.html" target="_blank" class="sb-foot-btn" title="Ouvrir interface chauffeur">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><circle cx="12" cy="8" r="4"/><path d="M10 14l-2 8h8l-2-8"/></svg><span class="sb-label">Interface chauffeur</span>
       </a>
       <a href="index.html" class="sb-foot-btn">
         <span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="sb-label">Voir le site</span>
@@ -812,6 +865,9 @@ button,input,select{font-family:inherit}
               <div class="qa" onclick="nav(document.querySelector('[data-page=statistiques]'))">
                 <span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span><span>Stats</span>
               </div>
+              <div class="qa" onclick="openQuickAssign()" style="border-color:rgba(196,135,74,.3);background:rgba(196,135,74,.04)">
+                <span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0;color:var(--g)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M10 14l-2 8h8l-2-8"/><path d="M19 8l2 2-2 2"/><path d="M5 8l-2 2 2 2"/></svg></span><span style="color:var(--g);font-weight:600">Assigner</span>
+              </div>
             </div>
           </div>
       <div class="card">
@@ -842,6 +898,7 @@ button,input,select{font-family:inherit}
           <div><div class="sec-title">Base de données <em>Réservations</em></div><div class="sec-sub">Toutes les demandes clients</div></div>
           <div class="ml-auto flex">
             <button class="btn btn-outline btn-sm" onclick="refreshData()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span> Actualiser</button>
+            <button class="btn btn-outline btn-sm" onclick="previewEmailTemplates()" title="Aperçu emails clients"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> Emails</button>
             <button class="btn btn-gold btn-sm" onclick="exportExcel()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="10" y2="17"/><line x1="10" y1="13" x2="8" y2="17"/><line x1="12" y1="13" x2="16" y2="13"/><line x1="14" y1="13" x2="14" y2="17"/><line x1="12" y1="17" x2="16" y2="17"/></svg></span> Excel</button>
           </div>
         </div>
@@ -888,15 +945,6 @@ button,input,select{font-family:inherit}
           <div class="ml-auto"><button class="btn btn-gold btn-sm" onclick="openNewDriverModal()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Ajouter</button></div>
         </div>
         <div class="g-auto stagger" id="drivers-grid"></div>
-      </div>
-
-      <!-- ══ VÉHICULES ══ -->
-      <div class="page" id="page-vehicules">
-        <div class="sec-head">
-          <div><div class="sec-title">Flotte <em>Véhicules</em></div><div class="sec-sub">Parc automobile premium</div></div>
-          <div class="ml-auto"><button class="btn btn-gold btn-sm" onclick="openNewVehicleModal()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Ajouter</button></div>
-        </div>
-        <div class="g3 stagger" id="vehicles-grid"></div>
       </div>
 
       <!-- ══ CLIENTS ══ -->
@@ -1149,15 +1197,67 @@ button,input,select{font-family:inherit}
 
 <!-- ══ MODAL RÉSERVATION ══ -->
 <div class="modal-ov" id="modal-resa" onclick="if(event.target===this)closeModal('modal-resa')">
-  <div class="modal">
+  <div class="modal" style="max-width:580px">
     <div class="modal-head">
-      <div class="modal-title">Réservation <em>client</em></div>
-      <button class="modal-close" onclick="closeModal('modal-resa')"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></button>
+      <div class="modal-title" id="modal-resa-client-name">Réservation <em>client</em></div>
+      <button class="modal-close" onclick="closeModal('modal-resa')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div class="form-grid" id="modal-resa-body"></div>
+    <!-- ONGLETS -->
+    <div style="display:flex;border-bottom:1px solid var(--bd);margin-bottom:1rem">
+      <button id="tab-detail-btn" onclick="switchResaTab('detail')" style="flex:1;padding:.6rem;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid var(--g);color:var(--g);cursor:pointer;font-family:inherit;font-weight:600">
+        Détails
+      </button>
+      <button id="tab-assign-btn" onclick="switchResaTab('assign')" style="flex:1;padding:.6rem;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--gr);cursor:pointer;font-family:inherit">
+        🟢 Assigner un chauffeur
+      </button>
+    </div>
+    <!-- ONGLET DÉTAILS -->
+    <div id="tab-detail">
+      <div class="form-grid" id="modal-resa-body"></div>
+    </div>
+    <!-- ONGLET ASSIGNER -->
+    <div id="tab-assign" style="display:none">
+
+      <!-- Résumé de la réservation -->
+      <div id="assign-resa-summary" style="background:var(--c2);border:1px solid var(--bd);border-left:3px solid var(--g);padding:.85rem 1rem;margin-bottom:1rem;font-size:.7rem;color:var(--gc);line-height:2"></div>
+
+      <!-- Bannière assignment actuel -->
+      <div id="current-assign-banner" style="display:none;background:rgba(196,135,74,.08);border:1px solid rgba(196,135,74,.25);padding:.7rem 1rem;margin-bottom:1rem;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--grn);flex-shrink:0"></div>
+          <div style="font-size:.7rem;color:var(--gt)">
+            Actuellement assigné à <strong style="color:var(--g)" id="current-assign-name"></strong>
+          </div>
+        </div>
+        <button onclick="removeAssignFromModal()" class="btn btn-danger btn-sm">✕ Retirer</button>
+      </div>
+
+      <!-- Menu déroulant chauffeurs -->
+      <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin-bottom:.45rem">Sélectionner un chauffeur</div>
+      <div style="position:relative;margin-bottom:.8rem">
+        <select id="driver-select-dropdown"
+          onchange="onDriverDropdownChange()"
+          style="width:100%;background:var(--c2);border:1px solid var(--bd);color:var(--gt);padding:.72rem 2.2rem .72rem .9rem;font-size:.78rem;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;font-family:inherit;transition:border-color .2s">
+          <option value="">— Choisir un chauffeur —</option>
+        </select>
+        <svg style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--gc)" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </div>
+
+      <!-- Info statut du chauffeur sélectionné -->
+      <div id="driver-status-info" style="display:none;background:rgba(196,135,74,.05);border:1px solid var(--bd);padding:.6rem .9rem;margin-bottom:.9rem;font-size:.66rem;color:var(--gc);display:none;align-items:center;gap:.6rem"></div>
+
+      <!-- Bouton assigner -->
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:.75rem;font-size:.62rem" onclick="assignFromDropdown()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+        &nbsp;Confirmer l'assignation
+      </button>
+    </div>
     <div class="modal-foot">
       <select id="modal-statut-sel" class="flt" style="min-width:130px"></select>
-      <button class="btn btn-gold btn-sm" onclick="saveResaStatus()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg></span> Sauvegarder</button>
+      <button class="btn btn-gold btn-sm" onclick="saveResaStatus()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+        Sauvegarder
+      </button>
       <button class="btn btn-outline btn-sm" onclick="closeModal('modal-resa')">Fermer</button>
     </div>
   </div>
@@ -1167,14 +1267,30 @@ button,input,select{font-family:inherit}
 <div class="modal-ov" id="modal-driver" onclick="if(event.target===this)closeModal('modal-driver')">
   <div class="modal">
     <div class="modal-head">
-      <div class="modal-title"><em>Chauffeur</em></div>
-      <button class="modal-close" onclick="closeModal('modal-driver')"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></button>
+      <div class="modal-title" id="modal-driver-title">Nouveau <em>Chauffeur</em></div>
+      <button class="modal-close" onclick="closeModal('modal-driver')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
+    <div style="background:rgba(196,135,74,.06);border:1px solid var(--bd);padding:.65rem 1rem;margin-bottom:1rem;font-size:.65rem;color:var(--gc)">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      L'email et le mot de passe sont utilisés pour se connecter sur l'interface chauffeur.
+    </div>
+    <div id="d-error" style="display:none;font-size:.63rem;color:var(--red);margin-bottom:.7rem;padding:.5rem;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.18)"></div>
     <div class="form-grid">
-      <div class="fg"><label>Prénom</label><input id="d-prenom" placeholder="Prénom"></div>
-      <div class="fg"><label>Nom</label><input id="d-nom" placeholder="Nom"></div>
+      <div class="fg"><label>Prénom *</label><input id="d-prenom" placeholder="Prénom"></div>
+      <div class="fg"><label>Nom *</label><input id="d-nom" placeholder="Nom"></div>
+      <div class="fg"><label>Email (connexion) *</label><input id="d-email" type="email" placeholder="chauffeur@email.com"></div>
+      <div class="fg"><label id="d-pwd-label">Mot de passe *</label>
+        <div style="position:relative;display:flex;align-items:center">
+          <input id="d-password" type="password" placeholder="Min. 6 caractères" style="width:100%;padding-right:2rem">
+          <button onclick="togglePwdVisibility('d-password')" type="button" style="position:absolute;right:0;background:none;border:none;color:var(--gr);cursor:pointer;padding:.3rem">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="fg"><label>Téléphone</label><input id="d-tel" placeholder="+33 6 00 00 00 00"></div>
-      <div class="fg"><label>Email</label><input id="d-email" placeholder="email@example.com"></div>
+      <div class="fg"><label>Véhicule assigné</label><input id="d-vehicle" placeholder="Mercedes Classe E"></div>
       <div class="fg"><label>Statut</label>
         <select id="d-statut">
           <option value="disponible">Disponible</option>
@@ -1182,44 +1298,36 @@ button,input,select{font-family:inherit}
           <option value="congé">Congé</option>
         </select>
       </div>
-      <div class="fg"><label>Véhicule assigné</label><input id="d-vehicle" placeholder="Mercedes Classe E"></div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-gold btn-sm" onclick="saveDriver()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg></span> Enregistrer</button>
+      <button class="btn btn-gold btn-sm" onclick="saveDriver()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+        Enregistrer
+      </button>
       <button class="btn btn-outline btn-sm" onclick="closeModal('modal-driver')">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- ══ MODAL VÉHICULE ══ -->
-<div class="modal-ov" id="modal-vehicle" onclick="if(event.target===this)closeModal('modal-vehicle')">
-  <div class="modal">
+
+
+
+<!-- ══ MODAL ASSIGNER DEPUIS CHAUFFEUR ══ -->
+<div class="modal-ov" id="modal-assign-driver" onclick="if(event.target===this)closeModal('modal-assign-driver')">
+  <div class="modal" style="max-width:500px">
     <div class="modal-head">
-      <div class="modal-title">Ajouter un <em>véhicule</em></div>
-      <button class="modal-close" onclick="closeModal('modal-vehicle')"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></button>
+      <div class="modal-title">Assigner une <em>course</em></div>
+      <button class="modal-close" onclick="closeModal('modal-assign-driver')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-    <div class="form-grid">
-      <div class="fg"><label>Marque</label><input id="v-marque" placeholder="Mercedes-Benz"></div>
-      <div class="fg"><label>Modèle</label><input id="v-modele" placeholder="Classe E"></div>
-      <div class="fg"><label>Immatriculation</label><input id="v-plate" placeholder="AA-000-BB"></div>
-      <div class="fg"><label>Année</label><input id="v-year" type="number" placeholder="2024"></div>
-      <div class="fg"><label>Statut</label>
-        <select id="v-statut">
-          <option value="disponible">Disponible</option>
-          <option value="en service">En service</option>
-          <option value="maintenance">Maintenance</option>
-        </select>
-      </div>
-      <div class="fg"><label>Kilométrage</label><input id="v-km" type="number" placeholder="0"></div>
-    </div>
+    <div id="assign-driver-info" style="background:rgba(196,135,74,.06);border:1px solid var(--bd);padding:.6rem .9rem;margin-bottom:1rem;font-size:.68rem;color:var(--gc)"></div>
+    <div id="assign-resa-list" style="max-height:340px;overflow-y:auto"></div>
     <div class="modal-foot">
-      <button class="btn btn-gold btn-sm" onclick="saveVehicle()"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg></span> Enregistrer</button>
-      <button class="btn btn-outline btn-sm" onclick="closeModal('modal-vehicle')">Annuler</button>
+      <button class="btn btn-outline btn-sm" onclick="closeModal('modal-assign-driver')">Fermer</button>
     </div>
   </div>
 </div>
-
-
 
 <!-- ══ MODAL EMAIL PREVIEW ══ -->
 <div class="modal-ov" id="modal-email" onclick="if(event.target===this)closeModal('modal-email')">
@@ -1231,24 +1339,27 @@ button,input,select{font-family:inherit}
       </button>
     </div>
     <div style="display:flex;gap:.4rem;margin-bottom:1rem">
-      <button class="btn btn-gold btn-sm" onclick="showEmailPreview('confirmation')" id="prev-conf-btn">Confirmation</button>
-      <button class="btn btn-outline btn-sm" onclick="showEmailPreview('remerciement')" id="prev-rem-btn">Remerciement</button>
+      <button class="btn btn-gold btn-sm" id="prev-conf-btn" onclick="showEmailPreview('confirmation')">Confirmation</button>
+      <button class="btn btn-outline btn-sm" id="prev-rem-btn" onclick="showEmailPreview('remerciement')">Remerciement</button>
     </div>
-    <div id="email-preview-wrap" style="border:1px solid var(--bd);background:#fff;border-radius:0;overflow:hidden">
+    <div id="email-preview-wrap" style="border:1px solid var(--bd);overflow:hidden">
       <iframe id="email-preview-frame" style="width:100%;height:420px;border:none" title="Email preview"></iframe>
-    </div>
-    <div style="margin-top:.8rem;background:rgba(196,135,74,.07);border:1px solid var(--bd);padding:.8rem">
-      <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin-bottom:.5rem">Configuration EmailJS requise</div>
-      <div style="font-size:.65rem;color:var(--gc);line-height:1.9">
-        1. Créer un compte sur <strong style="color:var(--gt)">emailjs.com</strong> (gratuit — 200 emails/mois)<br>
-        2. Créer un service email (Gmail, Outlook…)<br>
-        3. Créer 2 templates avec les variables indiquées<br>
-        4. Renseigner <code style="background:rgba(196,135,74,.1);color:var(--gl);padding:.1rem .3rem">publicKey</code>, <code style="background:rgba(196,135,74,.1);color:var(--gl);padding:.1rem .3rem">serviceId</code> dans <code style="background:rgba(196,135,74,.1);color:var(--gl);padding:.1rem .3rem">EMAIL_CFG</code>
-      </div>
     </div>
   </div>
 </div>
 
+<!-- ══ MODAL CONFIRMATION ══ -->
+<div class="modal-ov" id="modal-confirm" onclick="if(event.target===this)closeConfirm(false)">
+  <div class="modal" style="max-width:380px;text-align:center">
+    <div style="font-size:2rem;margin-bottom:.8rem" id="confirm-icon">⚠️</div>
+    <div class="modal-title" id="confirm-title" style="margin-bottom:.6rem;font-size:1rem">Confirmer</div>
+    <p id="confirm-msg" style="font-size:.72rem;color:var(--gc);line-height:1.7;margin-bottom:1.2rem"></p>
+    <div style="display:flex;gap:.6rem;justify-content:center">
+      <button class="btn btn-danger" id="confirm-ok-btn" onclick="closeConfirm(true)">Confirmer</button>
+      <button class="btn btn-outline" onclick="closeConfirm(false)">Annuler</button>
+    </div>
+  </div>
+</div>
 <div class="toast-stack" id="toast-stack"></div>
 
 <!-- ══════════════════════════════════
@@ -1267,10 +1378,23 @@ button,input,select{font-family:inherit}
         <span>Chauffeur · RRD</span>
       </div>
     </div>
+    <button onclick="toggleDriverNotif()" style="position:relative;background:none;border:1px solid var(--bd);color:var(--gc);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span id="driver-notif-dot" style="display:none;position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--g);border-radius:50%;border:1px solid var(--bk)"></span>
+    </button>
     <button class="tb-logout" onclick="logout()">
       <svg style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Déco.
     </button>
+  </div>
+
+  <!-- PANEL NOTIFS DRIVER -->
+  <div id="driver-notif-panel" style="display:none;position:fixed;top:52px;right:0;width:300px;background:var(--c1);border:1px solid var(--bd);border-top:none;max-height:70vh;overflow-y:auto;z-index:400;box-shadow:var(--sh)">
+    <div style="padding:.8rem 1rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--g)">Notifications</span>
+      <button onclick="clearDriverNotifs()" style="background:none;border:none;color:var(--gr);cursor:pointer;font-size:.6rem;transition:color .2s">Tout lire</button>
+    </div>
+    <div id="driver-notif-list"></div>
   </div>
 
   <div class="content">
@@ -1337,6 +1461,59 @@ button,input,select{font-family:inherit}
         </span>
       </div>
       <div id="courses-list"><div class="shimmer"></div><div class="shimmer" style="height:60px;opacity:.5"></div></div>
+    </div>
+
+  
+
+    <!-- MON PROFIL -->
+    <div style="margin-top:.4rem">
+      <div class="section-title" style="display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="toggleProfil()">
+        Mon profil & paramètres
+        <span id="profil-chevron" style="margin-left:auto;color:var(--gr);font-size:.75rem;transition:transform .3s;display:inline-block">▼</span>
+      </div>
+      <div id="profil-panel" style="display:none">
+        <div style="background:var(--c1);border:1px solid var(--bd);padding:1.1rem;margin-bottom:.5rem">
+
+          <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin-bottom:.8rem">Informations personnelles</div>
+          <div class="lf" style="margin-bottom:.7rem"><label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Téléphone</label>
+            <input id="p-tel" type="tel" style="width:100%;background:rgba(255,255,255,.03);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="+33 6 00 00 00 00">
+          </div>
+          <div class="lf" style="margin-bottom:.7rem"><label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Véhicule</label>
+            <input id="p-vehicle" type="text" style="width:100%;background:rgba(255,255,255,.03);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Mercedes Classe E — AA-000-BB">
+          </div>
+
+          <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin:.9rem 0 .6rem">Horaires de travail</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.7rem">
+            <div><label style="font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Début</label>
+              <input id="p-start" type="time" style="width:100%;background:rgba(255,255,255,.03);border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="07:00">
+            </div>
+            <div><label style="font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Fin</label>
+              <input id="p-end" type="time" style="width:100%;background:rgba(255,255,255,.03);border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="22:00">
+            </div>
+          </div>
+
+          <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin:.9rem 0 .6rem">Sécurité</div>
+          <div class="lf" style="margin-bottom:.7rem">
+            <label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Nouveau mot de passe</label>
+            <input id="p-pwd" type="password" style="width:100%;background:rgba(255,255,255,.03);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Laisser vide = inchangé">
+          </div>
+
+          <button onclick="saveDriverProfile()" style="width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;padding:.85rem;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;margin-top:.4rem;display:flex;align-items:center;justify-content:center;gap:.4rem;min-height:48px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/></svg>
+            Enregistrer mon profil
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORIQUE DES COURSES -->
+    <div style="margin-top:.4rem">
+      <div class="section-title" style="display:flex;align-items:center;gap:.5rem;cursor:pointer" onclick="toggleHistorique()">
+        Historique des courses
+        <span id="histo-count" style="font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);background:var(--ga);border:1px solid var(--bd);padding:.12rem .45rem">0</span>
+        <span id="histo-chevron" style="margin-left:auto;color:var(--gr);font-size:.75rem;transition:transform .3s;display:inline-block">▼</span>
+      </div>
+      <div id="histo-list" style="display:none;padding-top:.2rem"></div>
     </div>
 
   </div><!-- /content -->
@@ -1583,7 +1760,18 @@ function doUnifiedLogin() {
     return;
   }
 
-  // 2. Vérifier si c'est un chauffeur (comptes démo)
+  // 2. Vérifier dans les drivers créés via le dashboard (localStorage)
+  const allDrivers = JSON.parse(localStorage.getItem('rrd_drivers') || '[]');
+  const driverFromStorage = allDrivers.find(a => a.email === email && a.password === pwd);
+  if (driverFromStorage) {
+    CURRENT_ROLE = 'driver';
+    currentDriver = driverFromStorage;
+    localStorage.setItem('rrd_driver_session', JSON.stringify(driverFromStorage));
+    setTimeout(showDriver, 300);
+    return;
+  }
+
+  // Fallback : comptes démo
   const driver = DRIVER_ACCOUNTS.find(a => a.email === email && a.password === pwd);
   if (driver) {
     CURRENT_ROLE = 'driver';
@@ -1648,33 +1836,41 @@ function showDriver() {
 
 /* ══ LOGOUT UNIVERSEL ══ */
 function logout() {
-  // Déconnexion sans confirm pour fiabilité mobile
-  sessionStorage.removeItem('rrd_role');
-  localStorage.removeItem('rrd_driver_session');
-  CURRENT_ROLE = null;
-
-  // Cacher les deux interfaces
-  const appAdmin  = document.getElementById('app');
-  const appDriver = document.getElementById('app-driver');
-  if (appAdmin)  { appAdmin.classList.remove('visible'); appAdmin.style.display = ''; }
-  if (appDriver) { appDriver.classList.remove('visible'); appDriver.style.display = ''; }
-
   // Stopper les processus
   if (statusPollInterval) clearInterval(statusPollInterval);
   if (typeof gpsWatcher !== 'undefined' && gpsWatcher) navigator.geolocation.clearWatch(gpsWatcher);
-  statusPollInterval = null; gpsWatcher = null;
 
-  // Réafficher login
+  const role = CURRENT_ROLE; // Sauvegarder avant de reset
+  sessionStorage.removeItem('rrd_role');
+  localStorage.removeItem('rrd_driver_session');
+  CURRENT_ROLE = null;
+  statusPollInterval = null;
+  gpsWatcher = null;
+
+  if (role === 'driver') {
+    // Rechargement propre pour le chauffeur — le plus fiable sur mobile
+    window.location.reload();
+    return;
+  }
+
+  // Admin : masquage sans rechargement
+  const appAdmin  = document.getElementById('app');
+  const appDriver = document.getElementById('app-driver');
+  if (appAdmin)  appAdmin.classList.remove('visible');
+  if (appDriver) { appDriver.classList.remove('visible'); appDriver.style.display = 'none'; }
+
   const ls = document.getElementById('login-screen');
   if (ls) {
-    ls.style.display = 'flex';
+    ls.removeAttribute('style');
+    ls.style.display  = 'flex';
+    ls.style.opacity  = '1';
+    ls.style.transform = 'none';
     ls.classList.remove('out');
   }
   const em = document.getElementById('l-email');
   const pw = document.getElementById('l-pwd');
-  if (em) em.value = '';
+  if (em) { em.value = ''; setTimeout(() => em.focus(), 150); }
   if (pw) pw.value = '';
-  setTimeout(() => { if (em) em.focus(); }, 150);
 }
 
 /* ══════════════════════════════════════════════════
@@ -1691,10 +1887,24 @@ let DATA = [];
 let DRIVERS = JSON.parse(localStorage.getItem('rrd_drivers') || '[]');
 let VEHICLES = JSON.parse(localStorage.getItem('rrd_vehicles') || '[]');
 let INVOICES = JSON.parse(localStorage.getItem('rrd_invoices') || '[]');
+let ASSIGNMENTS = JSON.parse(localStorage.getItem('rrd_assignments') || '{}');
 let editResaId = null;
 let resaSortKey = 'created_at', resaSortDir = -1;
 let charts = {};
 let notifications = JSON.parse(localStorage.getItem('rrd_notifs') || '[]');
+
+/* ══ ASSIGNMENTS HELPERS ══ */
+function saveAssignment(resaId, driverId, driverName) {
+  ASSIGNMENTS[resaId] = { driverId, driverName, assignedAt: new Date().toISOString() };
+  localStorage.setItem('rrd_assignments', JSON.stringify(ASSIGNMENTS));
+}
+function getAssignment(resaId) {
+  return ASSIGNMENTS[resaId] || null;
+}
+function removeAssignment(resaId) {
+  delete ASSIGNMENTS[resaId];
+  localStorage.setItem('rrd_assignments', JSON.stringify(ASSIGNMENTS));
+}
 
 /* ══════════════════════════════════════════════════
    AUTH
@@ -1709,6 +1919,11 @@ async function initApp() {
   renderNotifications();
   seedDemoData();
   updateLiveIndicator(true);
+  // Auto-refresh admin toutes les 30 secondes
+  setInterval(async () => {
+    await fetchData();
+    renderAll();
+  }, 30000);
   // Mettre à jour l'heure toutes les secondes
   setInterval(() => {
     const el = document.getElementById('live-indicator-time');
@@ -1776,7 +1991,12 @@ async function updateStatus(id, statut) {
 }
 
 async function deleteResa(id) {
-  if (!confirm('Supprimer cette réservation ?')) return;
+  const r = DATA.find(x => x.id == id);
+  const ok = await customConfirm(
+    `Supprimer la réservation de ${r ? r.prenom + ' ' + r.nom : '#' + id} ?`,
+    'Supprimer la réservation', '🗑️'
+  );
+  if (!ok) return;
   try {
     await fetch(SB_URL + '/rest/v1/reservations?id=eq.' + id, {
       method: 'DELETE', headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
@@ -1839,7 +2059,6 @@ function renderAll() {
   renderUpcoming();
   renderClients();
   renderDriversGrid();
-  renderVehiclesGrid();
   renderPayments();
   renderFactures();
   renderActivityFeed();
@@ -2027,101 +2246,126 @@ function renderDriversGrid() {
         <div style="font-size:.6rem;color:var(--gc)"><strong style="color:var(--gt);font-size:.75rem">${d.courses || 0}</strong> courses</div>
         <div class="stars">${'★'.repeat(Math.round(d.note || 5))}</div>
         <div class="td-actions">
-          <button class="act btn-sm" onclick="editDriver(${d.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></button>
-          <button class="act del btn-sm" onclick="deleteDriver(${d.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span></button>
+          <button class="act btn-sm" title="Assigner une course" onclick="openAssignFromDriver(${d.id})" style="color:var(--g);border-color:rgba(196,135,74,.3)"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20,6 9,17 4,12"/></svg></span></button>
+          <button class="act btn-sm" title="Modifier" onclick="editDriver(${d.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></button>
+          <button class="act del btn-sm" title="Supprimer" onclick="deleteDriver(${d.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span></button>
         </div>
       </div>
     </div>`).join('');
 }
 
-function openNewDriverModal() { document.getElementById('modal-driver').classList.add('show'); }
-function saveDriver() {
-  const d = {
-    id: Date.now(), prenom: document.getElementById('d-prenom').value, nom: document.getElementById('d-nom').value,
-    tel: document.getElementById('d-tel').value, email: document.getElementById('d-email').value,
-    statut: document.getElementById('d-statut').value, vehicle: document.getElementById('d-vehicle').value, courses: 0, note: 5.0
-  };
-  if (!d.prenom || !d.nom) { showToast('Prénom et nom requis', 'error'); return; }
-  DRIVERS.push(d); localStorage.setItem('rrd_drivers', JSON.stringify(DRIVERS));
-  renderDriversGrid(); closeModal('modal-driver'); showToast('Chauffeur ajouté ✓', 'success');
-  ['d-prenom','d-nom','d-tel','d-email','d-vehicle'].forEach(id => document.getElementById(id).value = '');
+let editDriverId = null;
+
+function togglePwdVisibility(inputId) {
+  const inp = document.getElementById(inputId);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
 }
-function editDriver(id) {
-  const d = DRIVERS.find(x => x.id == id); if (!d) return;
-  document.getElementById('d-prenom').value = d.prenom;
-  document.getElementById('d-nom').value = d.nom;
-  document.getElementById('d-tel').value = d.tel;
-  document.getElementById('d-email').value = d.email;
-  document.getElementById('d-statut').value = d.statut;
-  document.getElementById('d-vehicle').value = d.vehicle || '';
-  DRIVERS = DRIVERS.filter(x => x.id != id);
+
+function openNewDriverModal() {
+  editDriverId = null;
+  document.getElementById('modal-driver-title').innerHTML = 'Nouveau <em>Chauffeur</em>';
+  ['d-prenom','d-nom','d-email','d-password','d-tel','d-vehicle','d-km'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('d-statut').value = 'disponible';
+  document.getElementById('d-error').style.display = 'none';
   document.getElementById('modal-driver').classList.add('show');
 }
-function deleteDriver(id) {
-  if (!confirm('Supprimer ce chauffeur ?')) return;
-  DRIVERS = DRIVERS.filter(d => d.id != id);
+
+function saveDriver() {
+  const prenom   = document.getElementById('d-prenom').value.trim();
+  const nom      = document.getElementById('d-nom').value.trim();
+  const email    = document.getElementById('d-email').value.trim().toLowerCase();
+  const password = document.getElementById('d-password').value.trim();
+  const tel      = document.getElementById('d-tel').value.trim();
+  const vehicle  = document.getElementById('d-vehicle').value.trim();
+  const statut   = document.getElementById('d-statut').value;
+  const errEl    = document.getElementById('d-error');
+
+  // Validation
+  if (!prenom || !nom) { showDriverError('Prénom et nom sont obligatoires'); return; }
+  if (!email || !email.includes('@')) { showDriverError('Email invalide'); return; }
+  if (!editDriverId && !password) { showDriverError('Mot de passe obligatoire'); return; }
+  if (!editDriverId && password.length < 6) { showDriverError('Mot de passe trop court (6 caractères minimum)'); return; }
+
+  // Vérifier doublon email
+  const existing = DRIVERS.find(d => d.email === email && d.id != editDriverId);
+  if (existing) { showDriverError('Cet email est déjà utilisé par ' + existing.prenom + ' ' + existing.nom); return; }
+
+  if (editDriverId) {
+    // Modification
+    const idx = DRIVERS.findIndex(d => d.id == editDriverId);
+    if (idx > -1) {
+      DRIVERS[idx] = { ...DRIVERS[idx], prenom, nom, email, tel, vehicle, statut };
+      if (password) DRIVERS[idx].password = password;
+    }
+    showToast(`Profil de ${prenom} ${nom} mis à jour ✓`, 'success');
+  } else {
+    // Création
+    const newDriver = {
+      id: Date.now(), prenom, nom, email, password, tel, vehicle, statut,
+      courses: 0, note: 5.0, created_at: new Date().toISOString()
+    };
+    DRIVERS.push(newDriver);
+    showToast(`Chauffeur ${prenom} ${nom} créé ✓`, 'success');
+    addNotification('👤 Nouveau chauffeur', `${prenom} ${nom} — ${email}`, 'info');
+  }
+
   localStorage.setItem('rrd_drivers', JSON.stringify(DRIVERS));
-  renderDriversGrid(); showToast('Chauffeur supprimé', 'success');
+  renderDriversGrid();
+  closeModal('modal-driver');
+  editDriverId = null;
+}
+
+function showDriverError(msg) {
+  const el = document.getElementById('d-error');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function editDriver(id) {
+  const d = DRIVERS.find(x => x.id == id);
+  if (!d) return;
+  editDriverId = id;
+  document.getElementById('modal-driver-title').innerHTML = 'Modifier <em>' + d.prenom + '</em>';
+  document.getElementById('d-prenom').value  = d.prenom || '';
+  document.getElementById('d-nom').value     = d.nom    || '';
+  document.getElementById('d-email').value   = d.email  || '';
+  document.getElementById('d-password').value = '';
+  document.getElementById('d-tel').value     = d.tel    || '';
+  document.getElementById('d-vehicle').value = d.vehicle|| '';
+  document.getElementById('d-statut').value  = d.statut || 'disponible';
+  document.getElementById('d-error').style.display = 'none';
+  const pwLabel = document.querySelector('#d-password').closest('.fg').querySelector('label');
+  if (pwLabel) pwLabel.textContent = 'Nouveau mot de passe (laisser vide = inchangé)';
+  document.getElementById('modal-driver').classList.add('show');
+}
+
+async function deleteDriver(id) {
+  const d = DRIVERS.find(x => x.id == id);
+  if (!d) return;
+  if (!confirm(`Supprimer le profil de ${d.prenom} ${d.nom} ?
+Cette action est irréversible.`)) return;
+  DRIVERS = DRIVERS.filter(x => x.id != id);
+  localStorage.setItem('rrd_drivers', JSON.stringify(DRIVERS));
+  // Nettoyer les assignations
+  Object.keys(ASSIGNMENTS).forEach(rid => {
+    if (ASSIGNMENTS[rid] && ASSIGNMENTS[rid].driverId == id) delete ASSIGNMENTS[rid];
+  });
+  localStorage.setItem('rrd_assignments', JSON.stringify(ASSIGNMENTS));
+  renderDriversGrid();
+  showToast(`${d.prenom} ${d.nom} supprimé`, 'success');
 }
 
 /* ══════════════════════════════════════════════════
    VÉHICULES
 ══════════════════════════════════════════════════ */
-function renderVehiclesGrid() {
-  const grid = document.getElementById('vehicles-grid');
-  if (!grid) return;
-  if (!VEHICLES.length) { grid.innerHTML = `<div class="tbl-empty" style="grid-column:1/-1"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-4h10l2 4h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg></span><p>Aucun véhicule</p></div>`; return; }
-  const stColors = { 'disponible': 'b-active', 'en service': 'b-new', 'maintenance': 'b-cancelled' };
-  grid.innerHTML = VEHICLES.map(v => `
-    <div class="vehicle-card">
-      <div class="flex" style="justify-content:space-between;margin-bottom:.6rem">
-        <span class="badge ${stColors[v.statut] || 'b-info'}">${v.statut}</span>
-        <span style="font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">${v.year || ''}</span>
-      </div>
-      <div class="vc-model">${v.marque} ${v.modele}</div>
-      <div class="vc-plate">${v.plate || '—'}</div>
-      <div style="margin:.7rem 0;font-size:.65rem;color:var(--gc);line-height:2">
-        <div><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:1em;color:var(--g);vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12L8 8"/><circle cx="12" cy="12" r="2"/></svg></span></i> ${(v.km || 0).toLocaleString('fr-FR')} km</div>
-        <div><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:1em;color:var(--g);vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M10 14l-2 8h8l-2-8M10 14l2 3 2-3"/></svg></span></i> ${v.chauffeur || 'Non assigné'}</div>
-      </div>
-      <div class="prog"><div class="prog-fill" style="width:${Math.min((v.km || 0) / 1500, 100)}%"></div></div>
-      <div style="font-size:.52rem;color:var(--gr);margin-top:.2rem">Utilisation estimée</div>
-      <div class="td-actions" style="margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--bd)">
-        <button class="act btn-sm" onclick="editVehicle(${v.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span></button>
-        <button class="act del btn-sm" onclick="deleteVehicle(${v.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span></button>
-      </div>
-    </div>`).join('');
-}
 
-function openNewVehicleModal() { document.getElementById('modal-vehicle').classList.add('show'); }
-function saveVehicle() {
-  const v = {
-    id: Date.now(), marque: document.getElementById('v-marque').value, modele: document.getElementById('v-modele').value,
-    plate: document.getElementById('v-plate').value, year: document.getElementById('v-year').value,
-    statut: document.getElementById('v-statut').value, km: parseInt(document.getElementById('v-km').value) || 0, chauffeur: ''
-  };
-  if (!v.marque || !v.modele) { showToast('Marque et modèle requis', 'error'); return; }
-  VEHICLES.push(v); localStorage.setItem('rrd_vehicles', JSON.stringify(VEHICLES));
-  renderVehiclesGrid(); closeModal('modal-vehicle'); showToast('Véhicule ajouté ✓', 'success');
-  ['v-marque','v-modele','v-plate','v-year','v-km'].forEach(id => document.getElementById(id).value = '');
-}
-function editVehicle(id) {
-  const v = VEHICLES.find(x => x.id == id); if (!v) return;
-  document.getElementById('v-marque').value = v.marque;
-  document.getElementById('v-modele').value = v.modele;
-  document.getElementById('v-plate').value = v.plate;
-  document.getElementById('v-year').value = v.year;
-  document.getElementById('v-statut').value = v.statut;
-  document.getElementById('v-km').value = v.km;
-  VEHICLES = VEHICLES.filter(x => x.id != id);
-  document.getElementById('modal-vehicle').classList.add('show');
-}
-function deleteVehicle(id) {
-  if (!confirm('Supprimer ce véhicule ?')) return;
-  VEHICLES = VEHICLES.filter(v => v.id != id);
-  localStorage.setItem('rrd_vehicles', JSON.stringify(VEHICLES));
-  renderVehiclesGrid(); showToast('Véhicule supprimé', 'success');
-}
+
+
+
+
 
 /* ══════════════════════════════════════════════════
    PAIEMENTS
@@ -2194,8 +2438,9 @@ function renderFactures() {
     </td></tr>`).join('');
 }
 
-function deleteInvoice(id) {
-  if (!confirm('Supprimer cette facture ?')) return;
+async function deleteInvoice(id) {
+  const oki = await customConfirm('Supprimer cette facture ?', 'Supprimer la facture', '🧾');
+  if (!oki) return;
   INVOICES = INVOICES.filter(i => i.id != id);
   localStorage.setItem('rrd_invoices', JSON.stringify(INVOICES));
   renderFactures(); updateKPIs();
@@ -2246,6 +2491,13 @@ function openResaModal(id) {
     if ((r.statut || 'nouveau') === s) o.selected = true;
     sel.appendChild(o);
   });
+  // Reset onglet sur Détails
+  switchResaTab('detail');
+
+  // Nom client dans le titre
+  const titleEl = document.getElementById('modal-resa-client-name');
+  if (titleEl) titleEl.innerHTML = `${r.prenom || ''} <em>${r.nom || ''}</em>`;
+
   document.getElementById('modal-resa').classList.add('show');
 }
 
@@ -2671,6 +2923,500 @@ renderAll = function() {
   updateLiveIndicator(true);
 };
 
+
+/* ══ NOTIFS DRIVER ══ */
+function checkDriverNotifications() {
+  if (!currentDriver) return;
+  const notifs = JSON.parse(localStorage.getItem(`rrd_driver_notifs_${currentDriver.id}`) || '[]');
+  const hasUnread = notifs.some(n => n.unread);
+  const dot = document.getElementById('driver-notif-dot');
+  if (dot) dot.style.display = hasUnread ? 'block' : 'none';
+
+  // Toast pour les nouvelles non vues
+  const newNotifs = notifs.filter(n => n.unread && !n.toasted);
+  newNotifs.forEach(n => {
+    showToast(n.title + ' — ' + n.body.slice(0, 50), 'success');
+    // Vibration mobile
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    n.toasted = true;
+  });
+  if (newNotifs.length) {
+    localStorage.setItem(`rrd_driver_notifs_${currentDriver.id}`, JSON.stringify(notifs));
+  }
+  renderDriverNotifList(notifs);
+}
+
+function renderDriverNotifList(notifs) {
+  const list = document.getElementById('driver-notif-list');
+  if (!list) return;
+  if (!notifs.length) {
+    list.innerHTML = '<div style="padding:1.5rem;text-align:center;font-size:.65rem;color:var(--gr)">Aucune notification</div>';
+    return;
+  }
+  list.innerHTML = notifs.slice(0, 15).map(n => {
+    const d = new Date(n.time).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    return `<div onclick="markDriverNotifRead(${n.id})"
+      style="padding:.8rem 1rem;border-bottom:1px solid var(--bd2);cursor:pointer;background:${n.unread ? 'rgba(196,135,74,.04)' : 'transparent'};transition:background .2s">
+      <div style="font-size:.65rem;color:var(--gt);font-weight:600;margin-bottom:.2rem">${n.title}</div>
+      <div style="font-size:.6rem;color:var(--gc);line-height:1.55">${n.body}</div>
+      <div style="font-size:.52rem;color:var(--gr);margin-top:.3rem">${d}</div>
+    </div>`;
+  }).join('');
+}
+
+function markDriverNotifRead(id) {
+  if (!currentDriver) return;
+  const notifs = JSON.parse(localStorage.getItem(`rrd_driver_notifs_${currentDriver.id}`) || '[]');
+  const n = notifs.find(x => x.id == id);
+  if (n) { n.unread = false; localStorage.setItem(`rrd_driver_notifs_${currentDriver.id}`, JSON.stringify(notifs)); }
+  checkDriverNotifications();
+}
+
+function clearDriverNotifs() {
+  if (!currentDriver) return;
+  const notifs = JSON.parse(localStorage.getItem(`rrd_driver_notifs_${currentDriver.id}`) || '[]');
+  notifs.forEach(n => { n.unread = false; n.toasted = true; });
+  localStorage.setItem(`rrd_driver_notifs_${currentDriver.id}`, JSON.stringify(notifs));
+  checkDriverNotifications();
+  document.getElementById('driver-notif-panel').style.display = 'none';
+}
+
+function toggleDriverNotif() {
+  const panel = document.getElementById('driver-notif-panel');
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) checkDriverNotifications();
+}
+
+// Fermer panel si clic ailleurs
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('driver-notif-panel');
+  if (!panel) return;
+  if (!panel.contains(e.target) && !e.target.closest('[onclick="toggleDriverNotif()"]')) {
+    panel.style.display = 'none';
+  }
+});
+
+
+/* ══ HISTORIQUE COURSES DRIVER ══ */
+let histoOpen = false;
+
+function toggleHistorique() {
+  histoOpen = !histoOpen;
+  const list = document.getElementById('histo-list');
+  const chevron = document.getElementById('histo-chevron');
+  if (list) list.style.display = histoOpen ? 'block' : 'none';
+  if (chevron) chevron.style.transform = histoOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  if (histoOpen) renderHistorique();
+}
+
+function renderHistorique() {
+  const list = document.getElementById('histo-list');
+  if (!list || !currentDriver) return;
+
+  // Courses terminées assignées à ce chauffeur
+  const myDone = JSON.parse(localStorage.getItem('rrd_resa') || '[]')
+    .filter(r => r.statut === 'terminé');
+
+  // Depuis Supabase (déjà dans reservations si fetchDriverReservations garde tout)
+  const allResa = JSON.parse(localStorage.getItem('rrd_all_resa') || '[]');
+  const myAssigned = Object.entries(ASSIGNMENTS)
+    .filter(([rid, a]) => a.driverId == currentDriver.id)
+    .map(([rid]) => parseInt(rid));
+
+  // Fusionner : courses terminées qui m'étaient assignées
+  const myCompleted = allResa.filter(r =>
+    r.statut === 'terminé' && myAssigned.includes(r.id)
+  );
+
+  // Ajouter aussi les courses locales terminées si aucune donnée Supabase
+  const histo = myCompleted.length ? myCompleted : myDone;
+
+  const countEl = document.getElementById('histo-count');
+  if (countEl) countEl.textContent = histo.length;
+
+  if (!histo.length) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem 1rem;color:var(--gr);font-size:.68rem">
+      <span style="font-size:1.8rem;display:block;margin-bottom:.5rem;opacity:.3">🏁</span>
+      Aucune course effectuée pour le moment
+    </div>`;
+    return;
+  }
+
+  // Stats rapides
+  const totalCourses = histo.length;
+  const thisMonth = histo.filter(r => {
+    if (!r.date_course) return false;
+    const d = new Date(r.date_course);
+    const now = new Date();
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
+
+  list.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.8rem">
+      <div style="background:var(--c1);border:1px solid var(--bd);padding:.8rem;text-align:center">
+        <div style="font-family:Georgia,serif;font-size:1.6rem;color:var(--g)">${totalCourses}</div>
+        <div style="font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Total</div>
+      </div>
+      <div style="background:var(--c1);border:1px solid var(--bd);padding:.8rem;text-align:center">
+        <div style="font-family:Georgia,serif;font-size:1.6rem;color:var(--g)">${thisMonth}</div>
+        <div style="font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Ce mois</div>
+      </div>
+      <div style="background:var(--c1);border:1px solid var(--bd);padding:.8rem;text-align:center">
+        <div style="font-family:Georgia,serif;font-size:1.6rem;color:var(--grn)">★</div>
+        <div style="font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Statut</div>
+      </div>
+    </div>
+    ${histo.sort((a,b) => new Date(b.date_course||0) - new Date(a.date_course||0))
+      .map(r => {
+        const date = r.date_course
+          ? new Date(r.date_course).toLocaleDateString('fr-FR', { weekday:'short', day:'2-digit', month:'short', year:'numeric' })
+          : '—';
+        const trajet = [r.depart, r.arrivee].filter(Boolean).join(' → ') || '—';
+        return `<div style="background:var(--c1);border:1px solid var(--bd);border-left:3px solid var(--grn);padding:.9rem 1rem;margin-bottom:.5rem;opacity:.85">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+            <span style="font-size:.72rem;font-weight:600;color:var(--gt)">${r.prenom || ''} ${r.nom || ''}</span>
+            <span style="font-size:.52rem;color:var(--grn);background:rgba(46,125,82,.1);border:1px solid rgba(46,125,82,.2);padding:.1rem .4rem">✓ Terminée</span>
+          </div>
+          <div style="font-size:.65rem;color:var(--gc);line-height:1.8">
+            📅 ${date} ${r.heure_course ? '· ' + r.heure_course.slice(0,5) : ''}<br>
+            🛣 ${trajet}<br>
+            ${r.service ? '🏷 ' + r.service : ''}
+          </div>
+        </div>`;
+      }).join('')}
+  `;
+}
+
+/* Sauvegarder toutes les réservations pour l'historique driver */
+const _origFetchData = fetchData;
+fetchData = async function() {
+  await _origFetchData();
+  // Sauvegarder une copie complète pour l'historique
+  if (DATA.length) localStorage.setItem('rrd_all_resa', JSON.stringify(DATA));
+};
+
+
+function revealPwd(driverId) {
+  const d = DRIVERS.find(x => x.id == driverId);
+  if (!d) return;
+  showToast(`🔑 ${d.prenom}: ${d.password || 'Non défini'}`, '');
+}
+
+
+/* ══ CONFIRM MODAL CUSTOM (remplace confirm() bloqué sur mobile) ══ */
+let _confirmResolve = null;
+
+function customConfirm(msg, title = 'Confirmer', icon = '⚠️') {
+  return new Promise(resolve => {
+    _confirmResolve = resolve;
+    document.getElementById('confirm-msg').textContent = msg;
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-icon').textContent = icon;
+    document.getElementById('modal-confirm').classList.add('show');
+  });
+}
+
+function closeConfirm(result) {
+  document.getElementById('modal-confirm').classList.remove('show');
+  if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+}
+
+
+/* ══ ASSIGNATION DEPUIS FICHE CHAUFFEUR ══ */
+function openAssignFromDriver(driverId) {
+  const driver = DRIVERS.find(d => d.id == driverId);
+  if (!driver) return;
+
+  const info = document.getElementById('assign-driver-info');
+  if (info) info.innerHTML = `<strong style="color:var(--g)">${driver.prenom} ${driver.nom}</strong> — ${driver.vehicle || 'Véhicule non défini'}`;
+
+  // Courses non assignées ou assignées à ce chauffeur
+  const unassigned = DATA.filter(r =>
+    r.statut !== 'annulé' && r.statut !== 'terminé' &&
+    (!ASSIGNMENTS[r.id] || ASSIGNMENTS[r.id].driverId == driverId)
+  );
+
+  const list = document.getElementById('assign-resa-list');
+  if (!list) return;
+
+  if (!unassigned.length) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;font-size:.68rem;color:var(--gr)">
+      <div style="font-size:1.5rem;margin-bottom:.5rem">📭</div>
+      Aucune course disponible à assigner
+    </div>`;
+  } else {
+    list.innerHTML = unassigned.map(r => {
+      const isAssigned = ASSIGNMENTS[r.id] && ASSIGNMENTS[r.id].driverId == driverId;
+      const date = r.date_course ? new Date(r.date_course).toLocaleDateString('fr-FR', {weekday:'short', day:'2-digit', month:'short'}) : '—';
+      const trajet = [r.depart, r.arrivee].filter(Boolean).join(' → ') || '—';
+      return `<div style="border:1px solid ${isAssigned ? 'var(--g)' : 'var(--bd)'};background:${isAssigned ? 'rgba(196,135,74,.06)' : 'var(--c2)'};padding:.9rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:.2s" onclick="quickAssign(${r.id}, ${driverId})">
+        <div style="flex:1">
+          <div style="font-size:.75rem;font-weight:600;color:var(--gt);margin-bottom:.2rem">${r.prenom || ''} ${r.nom || ''}</div>
+          <div style="font-size:.62rem;color:var(--gc);line-height:1.7">${date} · ${trajet}</div>
+          <div style="font-size:.58rem;color:var(--gr)">${r.service || ''}</div>
+        </div>
+        <div>
+          ${isAssigned
+            ? `<span style="font-size:.52rem;background:rgba(196,135,74,.15);color:var(--g);border:1px solid rgba(196,135,74,.3);padding:.2rem .5rem">✓ Assigné</span>`
+            : `<button style="background:var(--grn);color:#fff;border:none;padding:.35rem .7rem;font-size:.52rem;font-weight:700;cursor:pointer;letter-spacing:.08em;text-transform:uppercase">Assigner</button>`
+          }
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('modal-assign-driver').classList.add('show');
+}
+
+function quickAssign(resaId, driverId) {
+  const driver = DRIVERS.find(d => d.id == driverId);
+  if (!driver) return;
+  saveAssignment(resaId, driverId, `${driver.prenom} ${driver.nom}`);
+  // Notifier le chauffeur
+  const notifKey = `rrd_driver_notifs_${driverId}`;
+  const notifs = JSON.parse(localStorage.getItem(notifKey) || '[]');
+  const r = DATA.find(x => x.id == resaId);
+  const trajet = r ? ([r.depart, r.arrivee].filter(Boolean).join(' → ') || r.service || '') : '';
+  notifs.unshift({ id: Date.now(), title: '🚗 Course assignée', body: trajet, time: new Date().toISOString(), unread: true });
+  localStorage.setItem(notifKey, JSON.stringify(notifs.slice(0, 30)));
+  renderDriverDropdown();
+  showToast(`${driver.prenom} ${driver.nom} assigné ✓`, 'success');
+}
+
+
+/* ══ PROFIL DRIVER ══ */
+let profilOpen = false;
+
+function toggleProfil() {
+  profilOpen = !profilOpen;
+  const panel = document.getElementById('profil-panel');
+  const chevron = document.getElementById('profil-chevron');
+  if (panel) panel.style.display = profilOpen ? 'block' : 'none';
+  if (chevron) chevron.style.transform = profilOpen ? 'rotate(180deg)' : '';
+  if (profilOpen) loadDriverProfile();
+}
+
+function loadDriverProfile() {
+  if (!currentDriver) return;
+  const saved = JSON.parse(localStorage.getItem(`rrd_driver_profile_${currentDriver.id}`) || '{}');
+  const fields = { 'p-tel': saved.tel || currentDriver.tel || '',
+                   'p-vehicle': saved.vehicle || currentDriver.vehicle || '',
+                   'p-start': saved.start || '07:00',
+                   'p-end': saved.end || '22:00' };
+  Object.entries(fields).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+}
+
+function saveDriverProfile() {
+  if (!currentDriver) return;
+  const tel     = document.getElementById('p-tel')?.value?.trim();
+  const vehicle = document.getElementById('p-vehicle')?.value?.trim();
+  const start   = document.getElementById('p-start')?.value;
+  const end     = document.getElementById('p-end')?.value;
+  const pwd     = document.getElementById('p-pwd')?.value?.trim();
+
+  const profile = { tel, vehicle, start, end, updated: new Date().toISOString() };
+  localStorage.setItem(`rrd_driver_profile_${currentDriver.id}`, JSON.stringify(profile));
+
+  // Mettre à jour le profil dans DRIVERS (pour l'admin)
+  const allDrivers = JSON.parse(localStorage.getItem('rrd_drivers') || '[]');
+  const idx = allDrivers.findIndex(d => d.id == currentDriver.id);
+  if (idx > -1) {
+    if (tel) allDrivers[idx].tel = tel;
+    if (vehicle) allDrivers[idx].vehicle = vehicle;
+    if (start) allDrivers[idx].workStart = start;
+    if (end) allDrivers[idx].workEnd = end;
+    if (pwd && pwd.length >= 6) allDrivers[idx].password = pwd;
+    localStorage.setItem('rrd_drivers', JSON.stringify(allDrivers));
+  }
+
+  // Sync Supabase
+  fetch(`${SB_URL}/rest/v1/chauffeurs?id=eq.${currentDriver.id}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tel, vehicle, statut: currentStatus })
+  }).catch(() => {});
+
+  if (pwd && pwd.length >= 6) {
+    document.getElementById('p-pwd').value = '';
+    showToast('Profil et mot de passe mis à jour ✓', 'success');
+  } else {
+    showToast('Profil mis à jour ✓', 'success');
+  }
+
+  // Mettre à jour la topbar
+  if (vehicle) {
+    const roleEl = document.querySelector('#app-driver .tb-role span:last-child');
+    if (roleEl) roleEl.textContent = vehicle || 'Chauffeur · RRD';
+  }
+}
+
+
+/* ══ ONGLETS MODAL RÉSERVATION ══ */
+function switchResaTab(tab) {
+  const detail = document.getElementById('tab-detail');
+  const assign = document.getElementById('tab-assign');
+  const btnD   = document.getElementById('tab-detail-btn');
+  const btnA   = document.getElementById('tab-assign-btn');
+  if (tab === 'detail') {
+    detail.style.display = 'block';
+    assign.style.display = 'none';
+    btnD.style.borderBottomColor = 'var(--g)'; btnD.style.color = 'var(--g)';
+    btnA.style.borderBottomColor = 'transparent'; btnA.style.color = 'var(--gr)';
+  } else {
+    detail.style.display = 'none';
+    assign.style.display = 'block';
+    btnA.style.borderBottomColor = 'var(--g)'; btnA.style.color = 'var(--g)';
+    btnD.style.borderBottomColor = 'transparent'; btnD.style.color = 'var(--gr)';
+    renderDriverDropdown();
+  }
+}
+
+function renderDriverSelectList() {
+  renderDriverDropdown();
+}
+
+function renderDriverDropdown() {
+  const sel = document.getElementById('driver-select-dropdown');
+  const statusInfo = document.getElementById('driver-status-info');
+  const banner = document.getElementById('current-assign-banner');
+  const nameEl = document.getElementById('current-assign-name');
+  const summary = document.getElementById('assign-resa-summary');
+  if (!sel) return;
+
+  // Remplir le résumé de la réservation
+  if (summary && editResaId) {
+    const r = DATA.find(x => x.id == editResaId);
+    if (r) {
+      const trajet = [r.depart, r.arrivee].filter(Boolean).join(' → ') || '—';
+      const date = r.date_course ? new Date(r.date_course).toLocaleDateString('fr-FR', { weekday:'long', day:'2-digit', month:'long' }) : '—';
+      const heure = r.heure_course ? r.heure_course.slice(0,5) : '—';
+      summary.innerHTML = `
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem 1.5rem">
+          <span><span style="color:var(--g);font-weight:700">Client</span> ${r.prenom || ''} ${r.nom || ''}</span>
+          <span><span style="color:var(--g);font-weight:700">Date</span> ${date} à ${heure}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:.25rem">
+          <span><span style="color:var(--g);font-weight:700">Départ</span> ${r.depart || '—'}</span>
+          <span><span style="color:var(--g);font-weight:700">Arrivée</span> ${r.arrivee || '—'}</span>
+          ${r.service ? `<span><span style="color:var(--g);font-weight:700">Service</span> ${r.service}</span>` : ''}
+          ${r.telephone ? `<span><span style="color:var(--g);font-weight:700">Tél.</span> <a href="tel:${r.telephone}" style="color:var(--g)">${r.telephone}</a></span>` : ''}
+        </div>
+        ${r.message ? `<div style="margin-top:.3rem;color:var(--gr);font-size:.62rem;font-style:italic">📝 ${r.message.slice(0,80)}${r.message.length>80?'…':''}</div>` : ''}`;
+    }
+  }
+
+  // Bannière assignment actuel
+  const assigned = getAssignment(editResaId);
+  if (assigned) {
+    if (banner) banner.style.display = 'flex';
+    if (nameEl) nameEl.textContent = assigned.driverName;
+  } else {
+    if (banner) banner.style.display = 'none';
+  }
+
+  // Peupler le select
+  const current = assigned ? assigned.driverId : '';
+  sel.innerHTML = '<option value="">— Choisir un chauffeur —</option>';
+  if (!DRIVERS.length) {
+    sel.innerHTML += '<option value="" disabled>Aucun chauffeur enregistré</option>';
+    return;
+  }
+  const STATUS_LABELS = {
+    'disponible': '🟢 Disponible', 'en course': '🟡 En course',
+    'congé': '⚪ Congé', 'en-route': '🟠 En route', 'arrive': '🔵 Arrivé',
+    'en-course': '🟡 En course', 'termine': '⚪ Repos'
+  };
+  DRIVERS.forEach(d => {
+    const liveStatus = localStorage.getItem('rrd_status_' + d.id) || d.statut || 'disponible';
+    const label = STATUS_LABELS[liveStatus] || liveStatus;
+    const opt = document.createElement('option');
+    opt.value = d.id;
+    opt.textContent = `${d.prenom} ${d.nom}  ·  ${d.vehicle || 'Véhicule non défini'}  ·  ${label}`;
+    if (d.id == current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+
+  // Afficher info du chauffeur actuellement sélectionné
+  if (sel.value) showDriverInfo(sel.value);
+  else if (statusInfo) statusInfo.style.display = 'none';
+}
+
+function onDriverDropdownChange() {
+  const sel = document.getElementById('driver-select-dropdown');
+  showDriverInfo(sel.value);
+}
+
+function showDriverInfo(driverId) {
+  const info = document.getElementById('driver-status-info');
+  if (!info) return;
+  if (!driverId) { info.style.display = 'none'; return; }
+  const d = DRIVERS.find(x => x.id == driverId);
+  if (!d) { info.style.display = 'none'; return; }
+  const liveStatus = localStorage.getItem('rrd_status_' + d.id) || d.statut || 'disponible';
+  const dotColor = {'disponible':'var(--grn)','en course':'var(--org)','en-course':'var(--org)','congé':'var(--gr)'}[liveStatus] || 'var(--gc)';
+  info.style.display = 'flex';
+  info.innerHTML = `
+    <div style="width:36px;height:36px;background:linear-gradient(135deg,var(--c3),var(--gx));border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:var(--g);flex-shrink:0">${d.prenom[0]}${d.nom[0]}</div>
+    <div style="flex:1">
+      <div style="font-size:.72rem;font-weight:600;color:var(--gt)">${d.prenom} ${d.nom}</div>
+      <div style="font-size:.6rem;color:var(--gc)">${d.vehicle || '—'} · <span style="color:${dotColor}">${liveStatus}</span></div>
+    </div>
+    <div style="font-size:.7rem;color:var(--g)">${'★'.repeat(Math.round(d.note||5))}</div>`;
+}
+
+function assignFromModal(driverId) {
+  const driver = DRIVERS.find(d => d.id == driverId);
+  if (!driver || !editResaId) return;
+  saveAssignment(editResaId, driverId, `${driver.prenom} ${driver.nom}`);
+  renderDriverDropdown();
+  showToast(`Course assignée à ${driver.prenom} ${driver.nom} ✓`, 'success');
+}
+
+function assignFromDropdown() {
+  const sel = document.getElementById('driver-select-dropdown');
+  if (!sel || !sel.value) { showToast('Sélectionnez un chauffeur dans la liste', 'error'); return; }
+  const driverId = parseInt(sel.value);
+  const driver = DRIVERS.find(d => d.id == driverId);
+  if (!driver || !editResaId) return;
+  saveAssignment(editResaId, driverId, `${driver.prenom} ${driver.nom}`);
+  // Notifier le chauffeur
+  const notifKey = `rrd_driver_notifs_${driverId}`;
+  const notifs = JSON.parse(localStorage.getItem(notifKey) || '[]');
+  const r = DATA.find(x => x.id == editResaId);
+  const trajet = r ? ([r.depart, r.arrivee].filter(Boolean).join(' → ') || r.service || '') : '';
+  const date = r && r.date_course ? new Date(r.date_course).toLocaleDateString('fr-FR') : '—';
+  notifs.unshift({ id: Date.now(), title: '🚗 Nouvelle course assignée', body: `${trajet} · ${date}`, time: new Date().toISOString(), unread: true });
+  localStorage.setItem(notifKey, JSON.stringify(notifs.slice(0, 30)));
+  renderDriverDropdown();
+  addNotification('✅ Course assignée', `${driver.prenom} ${driver.nom} — ${trajet}`, 'info');
+  showToast(`Course assignée à ${driver.prenom} ${driver.nom} ✓`, 'success');
+}
+
+function removeAssignFromModal() {
+  if (!editResaId) return;
+  removeAssignment(editResaId);
+  renderDriverDropdown();
+  showToast('Assignation retirée', '');
+}
+
+
+function openQuickAssign() {
+  const unassigned = DATA.filter(r =>
+    r.statut !== 'annulé' && r.statut !== 'terminé' && !ASSIGNMENTS[r.id]
+  );
+  if (!unassigned.length) {
+    showToast('Toutes les courses sont déjà assignées ✓', 'success');
+    return;
+  }
+  // Aller sur la page réservations et ouvrir la première non assignée
+  openResaModal(unassigned[0].id);
+  setTimeout(() => switchResaTab('assign'), 150);
+  showToast(`${unassigned.length} course(s) à assigner`, '');
+}
+
 /* ══ KEYBOARD SHORTCUTS ══ */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -2703,7 +3449,11 @@ function initDriverApp() {
   statusTime = savedTime ? new Date(savedTime) : new Date();
   renderStatus();
   fetchDriverReservations();
-  statusPollInterval = setInterval(fetchDriverReservations, 8000); // refresh toutes les 8s
+  checkDriverNotifications();
+  statusPollInterval = setInterval(() => {
+    fetchDriverReservations();
+    checkDriverNotifications();
+  }, 8000); // refresh toutes les 8s
 }
 
 /* ══════════════════════════════════════════════════
@@ -2728,18 +3478,39 @@ function initDriverApp() {
    RÉSERVATIONS
 ══════════════════════════════════════════════════ */
 async function fetchDriverReservations() {
+  // Rafraîchir les assignations depuis localStorage (sync multi-sessions)
+  ASSIGNMENTS = JSON.parse(localStorage.getItem('rrd_assignments') || '{}');
+  // Mettre à jour l'historique si ouvert
+  if (histoOpen) renderHistorique();
+  // Mettre à jour le compteur
+  setTimeout(() => {
+    if (!currentDriver) return;
+    const myAssigned = Object.entries(ASSIGNMENTS)
+      .filter(([rid, a]) => a.driverId == currentDriver.id)
+      .map(([rid]) => parseInt(rid));
+    const allResa = JSON.parse(localStorage.getItem('rrd_all_resa') || '[]');
+    const done = allResa.filter(r => r.statut === 'terminé' && myAssigned.includes(r.id)).length;
+    const countEl = document.getElementById('histo-count');
+    if (countEl) countEl.textContent = done;
+  }, 500);
   try {
     const res = await fetch(`${SB_URL}/rest/v1/reservations?order=date_course.asc,heure_course.asc`, {
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
     });
     if (res.ok) {
       const all = await res.json();
-      // Filtrer : non annulées, dans les 7 prochains jours + passées récentes
+      // Filtrer : courses assignées à CE chauffeur OU non assignées si confirmées
       const now = new Date();
       const week = new Date(now); week.setDate(week.getDate() + 7);
+      const myAssignments = Object.entries(ASSIGNMENTS)
+        .filter(([rid, a]) => a.driverId == currentDriver.id)
+        .map(([rid]) => parseInt(rid));
       reservations = all.filter(r => {
-        if (r.statut === 'annulé') return false;
-        if (!r.date_course) return r.statut === 'nouveau' || r.statut === 'confirmé';
+        if (r.statut === 'annulé' || r.statut === 'terminé') return false;
+        const isAssignedToMe = myAssignments.includes(r.id);
+        const isNotAssigned  = !ASSIGNMENTS[r.id];
+        if (!isAssignedToMe && !isNotAssigned) return false;
+        if (!r.date_course) return true;
         const d = new Date(r.date_course);
         return d >= new Date(now.toDateString()) && d <= week;
       });
@@ -2915,7 +3686,8 @@ function confirmerArrivee() {
 }
 
 async function markDone(id) {
-  if (!confirm('Marquer cette course comme terminée ?')) return;
+  const okd = await customConfirm('Marquer cette course comme terminée ?', 'Terminer la course', '🏁');
+  if (!okd) return;
   const resa = reservations.find(r => r.id == id);
   try {
     await fetch(`${SB_URL}/rest/v1/reservations?id=eq.${id}`, {
@@ -2993,9 +3765,16 @@ async function syncPosition(coords) {
    ACTIONS
 ══════════════════════════════════════════════════ */
 function callClient(tel) {
-  // Appel masqué : le numéro n'est pas affiché mais l'appel est passé
-  // En production : remplacer par un proxy Twilio pour anonymisation complète
-  window.location.href = `tel:${tel}`;
+  if (!tel) { showToast('Numéro non disponible', 'error'); return; }
+  // Nettoyer le numéro
+  const clean = tel.toString().replace(/[^0-9+]/g, '');
+  // Créer un lien tel: temporaire et le déclencher
+  const a = document.createElement('a');
+  a.href = 'tel:' + clean;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => document.body.removeChild(a), 300);
 }
 function sendWA(tel, prenom, nom) {
   const name = [prenom, nom].filter(Boolean).join(' ') || 'cher client';
