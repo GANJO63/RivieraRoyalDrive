@@ -971,14 +971,23 @@ function send(){
 }
 
 function showConfirmation(prenom, nom){
-  /* Reset tous les champs */
-  ['prenom','nom','tel','email','dep','arr','dat','hre','msg'].forEach(function(id){
+  /* Reset seulement les champs de course (pas les infos personnelles) */
+  ['dep','arr','dat','hre','msg'].forEach(function(id){
     var el = document.getElementById(id);
     if(el) el.value = '';
   });
   /* Remettre le select au début */
   var srv = document.getElementById('srv');
   if(srv) srv.selectedIndex = 0;
+  /* Effacer aussi les infos perso si remember désactivé */
+  if(!rememberEnabled){
+    ['prenom','nom','tel','email'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.value = '';
+    });
+  }
+  /* Effacer le brouillon */
+  localStorage.removeItem('rrd_draft');
 
   /* Réactiver le bouton */
   const sbtn = document.getElementById('submit-btn');
@@ -1051,6 +1060,41 @@ async function saveReservation(data){
 
 /* ══ AUTOCOMPLETE — API Adresse Officielle France (data.gouv.fr) ══ */
 var acT={};
+
+/* ── DRAFT AUTO-SAVE ── */
+const DRAFT_KEY='rrd_draft';
+function saveDraft(){
+  const d={};
+  ['prenom','nom','tel','email','dep','arr','dat','hre','msg'].forEach(function(id){
+    var el=document.getElementById(id); if(el) d[id]=el.value;
+  });
+  var srv=document.getElementById('srv'); if(srv) d.srv=srv.value;
+  localStorage.setItem(DRAFT_KEY,JSON.stringify(d));
+}
+function loadDraft(){
+  var saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');
+  if(!saved) return;
+  ['dep','arr','dat','hre','msg'].forEach(function(id){
+    var el=document.getElementById(id); if(el&&saved[id]) el.value=saved[id];
+  });
+  var srv=document.getElementById('srv'); if(srv&&saved.srv) srv.value=saved.srv;
+  if(!localStorage.getItem('rrd_profile')){
+    ['prenom','nom','tel','email'].forEach(function(id){
+      var el=document.getElementById(id); if(el&&saved[id]) el.value=saved[id];
+    });
+  }
+}
+document.addEventListener('DOMContentLoaded',function(){
+  loadDraft();
+  setTimeout(function(){
+    ['prenom','nom','tel','email','dep','arr','dat','hre','msg'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.addEventListener('input',saveDraft);
+    });
+    var srv=document.getElementById('srv');
+    if(srv) srv.addEventListener('change',saveDraft);
+  },500);
+});
 function acSearch(inp,lid){
   var q=inp.value.trim();
   var list=document.getElementById(lid);
