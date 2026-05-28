@@ -1529,15 +1529,8 @@ async function sendConfirmationEmail(resa) {
     logEmailActivity(resa, 'confirmation');
     showToast(`✉️ Confirmation envoyée à ${resa.prenom}`, 'success');
   } catch(e) {
-    // Mode démo : simuler l'envoi si EmailJS pas configuré
-    if (EMAIL_CFG.publicKey === 'VOTRE_PUBLIC_KEY') {
-      markEmailSent(resa.id, 'confirmation');
-      logEmailActivity(resa, 'confirmation');
-      showToast(`✉️ [Démo] Email confirmation → ${resa.email}`, 'success');
-    } else {
-      showToast('Erreur envoi email confirmation', 'error');
-      console.error('EmailJS:', e);
-    }
+    showToast('Erreur envoi email confirmation', 'error');
+    console.error('EmailJS confirmation:', e);
   }
 }
 
@@ -1627,14 +1620,8 @@ async function sendThankYouEmail(resa) {
     logEmailActivity(resa, 'remerciement');
     showToast(`🙏 Remerciement envoyé à ${resa.prenom}`, 'success');
   } catch(e) {
-    if (EMAIL_CFG.publicKey === 'VOTRE_PUBLIC_KEY') {
-      markEmailSent(resa.id, 'remerciement');
-      logEmailActivity(resa, 'remerciement');
-      showToast(`🙏 [Démo] Email remerciement → ${resa.email}`, 'success');
-    } else {
-      showToast('Erreur envoi email remerciement', 'error');
-      console.error('EmailJS:', e);
-    }
+    showToast('Erreur envoi email remerciement', 'error');
+    console.error('EmailJS remerciement:', e);
   }
 }
 
@@ -1946,7 +1933,30 @@ async function removeAssignment(resaId) {
 /* ══════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════ */
+async function migrateSupabaseColumns() {
+  // Crée automatiquement les colonnes chauffeur_id et chauffeur_nom si elles n'existent pas
+  if (localStorage.getItem('rrd_migration_done')) return;
+  try {
+    // Tentative de lecture d'une résa avec ces colonnes pour tester
+    const res = await fetch(`${SB_URL}/rest/v1/reservations?select=chauffeur_id,chauffeur_nom&limit=1`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if (res.ok) {
+      localStorage.setItem('rrd_migration_done', '1');
+      return; // Colonnes déjà présentes
+    }
+    // Colonnes absentes → les créer via l'API SQL de Supabase
+    await fetch(`${SB_URL}/rest/v1/rpc/exec_sql`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: `ALTER TABLE reservations ADD COLUMN IF NOT EXISTS chauffeur_id integer; ALTER TABLE reservations ADD COLUMN IF NOT EXISTS chauffeur_nom text;` })
+    });
+    localStorage.setItem('rrd_migration_done', '1');
+  } catch(e) {}
+}
+
 async function initApp() {
+  await migrateSupabaseColumns();
   await fetchData();
   renderAll();
   initCharts();
@@ -2537,7 +2547,7 @@ function renderActivityFeed() {
 /* ══════════════════════════════════════════════════
    MODAL RÉSERVATION
 ══════════════════════════════════════════════════ */
-function openResaModal(id) {
+async function openResaModal(id) {
   const r = DATA.find(x => x.id == id); if (!r) return;
   editResaId = id;
   const fields = [
@@ -3440,7 +3450,7 @@ function showDriverInfo(driverId) {
     <div style="font-size:.7rem;color:var(--g)">${'★'.repeat(Math.round(d.note||5))}</div>`;
 }
 
-function assignFromModal(driverId) {
+async function assignFromModal(driverId) {
   const driver = DRIVERS.find(d => d.id == driverId);
   if (!driver || !editResaId) return;
   saveAssignment(editResaId, driverId, `${driver.prenom} ${driver.nom}`);
@@ -3448,7 +3458,7 @@ function assignFromModal(driverId) {
   showToast(`Course assignée à ${driver.prenom} ${driver.nom} ✓`, 'success');
 }
 
-function assignFromDropdown() {
+async function assignFromDropdown() {
   const sel = document.getElementById('driver-select-dropdown');
   if (!sel || !sel.value) { showToast('Sélectionnez un chauffeur dans la liste', 'error'); return; }
   const driverId = parseInt(sel.value);
@@ -3760,7 +3770,7 @@ async function setStatus(status) {
   }
 }
 
-function confirmerArrivee() {
+async function confirmerArrivee() {
   setStatus('arrive');
   const btn = document.getElementById('arrivee-btn');
   btn.classList.add('done');
