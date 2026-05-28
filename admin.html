@@ -150,7 +150,7 @@ a{text-decoration:none;color:inherit}
 .content-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;min-height:0}
 
 /* ══ TOPBAR ══ */
-.topbar{height:var(--nav);background:rgba(9,8,6,.96);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;backdrop-filter:blur(12px);z-index:50}
+.topbar{height:var(--nav);background:rgba(9,8,6,.96);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;backdrop-filter:blur(12px);z-index:50;color:var(--gt)}
 .topbar-title{font-family:Georgia,serif;font-size:1.05rem;font-weight:400;color:var(--gt);flex:1}
 .topbar-title em{font-style:italic;color:var(--g)}
 .topbar-title small{display:block;font-family:'Outfit',sans-serif;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);margin-top:.1rem}
@@ -608,8 +608,9 @@ button,input,select{font-family:inherit}
 .cc-client{font-size:.9rem;font-weight:600;color:var(--gt);margin-bottom:.3rem}
 .cc-trajet{font-size:.72rem;color:var(--gc);line-height:1.8;margin-bottom:.7rem}
 .cc-trajet strong{color:var(--gt)}
-.cc-row{display:flex;gap:.5rem}
-.cc-btn{flex:1;padding:.6rem .4rem;min-height:44px;font-size:.56rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.35rem;-webkit-tap-highlight-color:transparent}
+.cc-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.cc-btn{flex:1;min-width:calc(33% - .4rem);padding:.6rem .4rem;min-height:44px;font-size:.56rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--bd);background:var(--c2);color:var(--gc);cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.35rem;-webkit-tap-highlight-color:transparent}
+.cc-btn.full{min-width:calc(50% - .3rem);flex:1}
 .cc-btn:active{transform:scale(.97)}
 .cc-btn.call{border-color:rgba(46,125,82,.3);color:var(--grn)}
 .cc-btn.call:active{background:rgba(46,125,82,.15)}
@@ -1548,9 +1549,7 @@ async function sendDriverEnRouteEmail(resa) {
     arrivee:     resa.arrivee || '—',
     date_course: resa.date_course ? new Date(resa.date_course).toLocaleDateString('fr-FR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' }) : '—',
     heure:       resa.heure_course ? resa.heure_course.slice(0,5) : '—',
-    message:     resa._accepted
-      ? `✅ ${driverName} a accepté votre course et sera là pour vous à l'heure prévue.`
-      : `🚗 ${driverName} est en route pour vous prendre en charge. Préparez-vous, il arrive bientôt.`,
+    message:     `🚗 ${driverName} a accepté votre course et est en route pour vous prendre en charge. Préparez-vous !`,
     admin_email: EMAIL_CFG.adminEmail,
     reply_to:    EMAIL_CFG.adminEmail,
   };
@@ -3076,23 +3075,9 @@ function renderHistorique() {
   const list = document.getElementById('histo-list');
   if (!list || !currentDriver) return;
 
-  // Courses terminées assignées à ce chauffeur
-  const myDone = JSON.parse(localStorage.getItem('rrd_resa') || '[]')
-    .filter(r => r.statut === 'terminé');
-
-  // Depuis Supabase (déjà dans reservations si fetchDriverReservations garde tout)
-  const allResa = JSON.parse(localStorage.getItem('rrd_all_resa') || '[]');
-  const myAssigned = Object.entries(ASSIGNMENTS)
-    .filter(([rid, a]) => a.driverId == currentDriver.id)
-    .map(([rid]) => parseInt(rid));
-
-  // Fusionner : courses terminées qui m'étaient assignées
-  const myCompleted = allResa.filter(r =>
-    r.statut === 'terminé' && myAssigned.includes(r.id)
-  );
-
-  // Ajouter aussi les courses locales terminées si aucune donnée Supabase
-  const histo = myCompleted.length ? myCompleted : myDone;
+  // ── Lire depuis la clé dédiée du chauffeur (alimentée par markDone)
+  const histoKey = `rrd_driver_histo_${currentDriver.id}`;
+  const histo = JSON.parse(localStorage.getItem(histoKey) || '[]');
 
   const countEl = document.getElementById('histo-count');
   if (countEl) countEl.textContent = histo.length;
@@ -3515,6 +3500,11 @@ function initDriverApp() {
   renderStatus();
   fetchDriverReservations();
   checkDriverNotifications();
+  // Compteur historique dès le démarrage
+  const _hk = `rrd_driver_histo_${currentDriver.id}`;
+  const _hc = document.getElementById('histo-count');
+  if (_hc) _hc.textContent = JSON.parse(localStorage.getItem(_hk)||'[]').length;
+
   statusPollInterval = setInterval(() => {
     fetchDriverReservations();
     checkDriverNotifications();
@@ -3644,7 +3634,7 @@ function renderCourses() {
         </span>
       </div>
       </div>
-      <div class="cc-row">
+      <div class="cc-row" style="margin-bottom:.4rem">
         ${r.telephone ? `<button class="cc-btn call" onclick="callClient('${r.telephone}')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.69 13.6 19.79 19.79 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           Appeler
@@ -3657,16 +3647,17 @@ function renderCourses() {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="3,11 22,2 13,21 11,13"/></svg>
           Nav.
         </button>` : ''}
-        ${!isDone ? `
-        <button class="cc-btn" style="background:rgba(46,125,82,.12);border-color:rgba(46,125,82,.3);color:var(--grn)" onclick="acceptCourse(${r.id})">
+      </div>
+      ${!isDone ? `<div class="cc-row">
+        <button class="cc-btn full" style="background:rgba(46,125,82,.12);border-color:rgba(46,125,82,.3);color:var(--grn)" onclick="acceptCourse(${r.id})">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20,6 9,17 4,12"/></svg>
           Accepter la course
-        </button>` : ''}
-        ${!isDone ? `<button class="cc-btn done-btn" onclick="markDone(${r.id})">
+        </button>
+        <button class="cc-btn full done-btn" onclick="markDone(${r.id})">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
           Terminé
-        </button>` : ''}
-      </div>
+        </button>
+      </div>` : ''}
     </div>`;
   }).join('');
 }
@@ -3734,19 +3725,7 @@ async function setStatus(status) {
   const labels = { 'disponible':'Disponible ✓', 'en-route':'En route 🚗', 'arrive':'Arrivé ! 📍', 'en-course':'Course démarrée ✓', 'termine':'Terminé ✓' };
   showToast(labels[status] || status, 'success');
 
-  // ── Email "chauffeur en route" au client
-  if (status === 'en-route') {
-    // Trouver la prochaine course de ce chauffeur (pas seulement aujourd'hui)
-    const now = new Date();
-    const activeResa = reservations
-      .filter(r => r.statut !== 'annulé' && r.statut !== 'terminé')
-      .sort((a, b) => {
-        const da = a.date_course ? new Date(a.date_course) : new Date(0);
-        const db = b.date_course ? new Date(b.date_course) : new Date(0);
-        return da - db;
-      })[0]; // La plus proche
-    if (activeResa) await sendDriverEnRouteEmail(activeResa);
-  }
+  // Pas d'email automatique au clic "En route" — l'email est envoyé à l'acceptation
 }
 
 async function confirmerArrivee() {
@@ -3768,9 +3747,9 @@ async function acceptCourse(id) {
       body: JSON.stringify({ statut: 'confirmé' })
     });
   } catch(e) {}
-  showToast('Course acceptée ✓ — Le client a été notifié', 'success');
-  // Email "course confirmée par le chauffeur" au client
-  await sendDriverEnRouteEmail({ ...resa, _accepted: true });
+  showToast('Course acceptée ✓ — Le client est notifié', 'success');
+  // Email "votre chauffeur est en route" envoyé au client dès l'acceptation
+  if (resa) await sendDriverEnRouteEmail(resa);
   fetchDriverReservations();
 }
 
@@ -3778,6 +3757,21 @@ async function markDone(id) {
   const okd = await customConfirm('Marquer cette course comme terminée ?', 'Terminer la course', '🏁');
   if (!okd) return;
   const resa = reservations.find(r => r.id == id);
+
+  // ── Sauvegarder dans l'historique du chauffeur AVANT de retirer la course
+  if (resa && currentDriver) {
+    const histoKey = `rrd_driver_histo_${currentDriver.id}`;
+    const histo = JSON.parse(localStorage.getItem(histoKey) || '[]');
+    const exists = histo.find(h => h.id == id);
+    if (!exists) {
+      histo.unshift({ ...resa, statut: 'terminé', done_at: new Date().toISOString() });
+      localStorage.setItem(histoKey, JSON.stringify(histo));
+    }
+    // Mettre à jour le compteur
+    const countEl = document.getElementById('histo-count');
+    if (countEl) countEl.textContent = histo.length;
+  }
+
   try {
     await fetch(`${SB_URL}/rest/v1/reservations?id=eq.${id}`, {
       method: 'PATCH',
@@ -3789,10 +3783,11 @@ async function markDone(id) {
     const item = arr.find(r => r.id == id);
     if (item) { item.statut = 'terminé'; localStorage.setItem('rrd_resa', JSON.stringify(arr)); }
   }
-  reservations = reservations.map(r => r.id == id ? { ...r, statut: 'terminé' } : r);
+  reservations = reservations.filter(r => r.id != id);
   renderCourses();
   setStatus('disponible');
-  showToast('Course terminée ✓', 'success');
+  showToast('Course terminée ✓ — Ajoutée à votre historique', 'success');
+  if (histoOpen) renderHistorique();
   // ── Envoyer email de remerciement
   if (resa) await sendThankYouEmail(resa);
 }
