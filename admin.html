@@ -1779,11 +1779,13 @@ function doUnifiedLogin() {
     return;
   }
 
-  // 3. Tentative Supabase chauffeurs
+  // 3. Tentative chauffeurs
+  const localDriver = DRIVERS.find(d => d.email && d.email.toLowerCase() === email.toLowerCase());
+  if (localDriver) { showDriverApp(localDriver); return; }
   fetch(`${SB_URL}/rest/v1/chauffeurs?email=eq.${encodeURIComponent(email)}&select=*`, {
     headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
   })
-  .then(r => r.json())
+  .then(r => { if (!r.ok) throw new Error('table introuvable'); return r.json(); })
   .then(rows => {
     if (rows && rows.length && rows[0].password === pwd) {
       CURRENT_ROLE = 'driver';
@@ -1934,25 +1936,8 @@ async function removeAssignment(resaId) {
    INIT
 ══════════════════════════════════════════════════ */
 async function migrateSupabaseColumns() {
-  // Crée automatiquement les colonnes chauffeur_id et chauffeur_nom si elles n'existent pas
-  if (localStorage.getItem('rrd_migration_done')) return;
-  try {
-    // Tentative de lecture d'une résa avec ces colonnes pour tester
-    const res = await fetch(`${SB_URL}/rest/v1/reservations?select=chauffeur_id,chauffeur_nom&limit=1`, {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
-    if (res.ok) {
-      localStorage.setItem('rrd_migration_done', '1');
-      return; // Colonnes déjà présentes
-    }
-    // Colonnes absentes → les créer via l'API SQL de Supabase
-    await fetch(`${SB_URL}/rest/v1/rpc/exec_sql`, {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: `ALTER TABLE reservations ADD COLUMN IF NOT EXISTS chauffeur_id integer; ALTER TABLE reservations ADD COLUMN IF NOT EXISTS chauffeur_nom text;` })
-    });
-    localStorage.setItem('rrd_migration_done', '1');
-  } catch(e) {}
+  // Colonnes ajoutées manuellement via Supabase SQL editor — rien à faire ici
+  localStorage.setItem('rrd_migration_done', '1');
 }
 
 async function initApp() {
@@ -1967,13 +1952,7 @@ async function initApp() {
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
   }
-  // Supabase Realtime — nouvelles réservations instantanées
-  try {
-    const evtSource = new EventSource(
-      `${SB_URL}/rest/v1/reservations?order=created_at.desc&limit=1`,
-      { withCredentials: false }
-    );
-  } catch(e) {}
+  // Polling actif — pas d'EventSource (incompatible avec auth headers)
   // Polling rapide toutes les 5 secondes
   let _lastResaCount = DATA.length;
   let _lastResaIds = new Set(DATA.map(r => r.id));
