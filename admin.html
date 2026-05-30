@@ -15,9 +15,9 @@
 /* ══ SHARED TOKENS ══ */
 :root{
   --g:#C4874A;--gl:#D4A470;--gd:#8B5230;--ga:rgba(196,135,74,.1);
-  --bk:#FFFFFF;--c1:#FFFFFF;--c2:#FFFFFF;--c3:#FFFFFF;
-  --bd:rgba(139,82,48,.2);--bd2:rgba(139,82,48,.1);
-  --gt:#1E0F05;--gc:#6B3F1A;--gr:#A07040;
+  --bk:#090806;--c1:#111009;--c2:#18160f;--c3:#201d15;
+  --bd:rgba(196,135,74,.14);--bd2:rgba(196,135,74,.07);
+  --gt:#F0E8DC;--gc:#A89880;--gr:#6A5E50;
   --grn:#2E7D52;--red:#C0392B;--org:#E67E22;--blu:#1a5276;
   --sb:220px; --nav:54px; --rad:2px; --sh:0 4px 24px rgba(0,0,0,.45);
 }
@@ -48,7 +48,7 @@ a{text-decoration:none;color:inherit}
 .login-crown::before,.login-crown::after{content:'';flex:1;height:1px;background:var(--bd)}
 .lf{margin-bottom:1rem}
 .lf label{display:block;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gc);margin-bottom:.35rem}
-.lf input{width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.65rem 0;font-size:15px;outline:none;transition:border-color .25s}
+.lf input{width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.65rem 0;font-size:15px;outline:none;transition:border-color .25s}
 .lf input:focus{border-bottom-color:var(--g);background:rgba(196,135,74,.035)}
 .login-btn{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;padding:.88rem;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;transition:.25s;margin-top:.4rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
 .login-btn:active{opacity:.85;transform:scale(.99)}
@@ -68,9 +68,9 @@ a{text-decoration:none;color:inherit}
 ══════════════════════════════════════════════════ */
 :root{
   --g:#C4874A;--gl:#D4A470;--gd:#8B5230;--ga:rgba(196,135,74,.1);
-  --bk:#FFFFFF;--c1:#FFFFFF;--c2:#FFFFFF;--c3:#FFFFFF;
-  --bd:rgba(139,82,48,.2);--bd2:rgba(139,82,48,.1);
-  --gt:#1E0F05;--gc:#6B3F1A;--gr:#A07040;--gx:#E8DDD4;
+  --bk:#090806;--c1:#111009;--c2:#18160f;--c3:#201d15;
+  --bd:rgba(196,135,74,.12);--bd2:rgba(196,135,74,.06);
+  --gt:#F0E8DC;--gc:#A89880;--gr:#6A5E50;--gx:#E8DDD4;
   --grn:#2E7D52;--red:#C0392B;--blu:#1a5276;--org:#E67E22;
   --sb:220px;
   --nav:54px;
@@ -101,7 +101,7 @@ a{text-decoration:none;color:inherit}
 .login-sub{font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gr);margin-bottom:2rem}
 .login-field{margin-bottom:1rem}
 .login-field label{display:block;font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);margin-bottom:.4rem}
-.login-field input{width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.65rem 0;font-size:15px;outline:none;transition:border-color .25s}
+.login-field input{width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.65rem 0;font-size:15px;outline:none;transition:border-color .25s}
 .login-field input:focus{border-bottom-color:var(--g)}
 .login-btn{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;padding:.85rem;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;transition:.25s;margin-top:.5rem;position:relative;overflow:hidden}
 .login-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .25s}
@@ -151,7 +151,7 @@ a{text-decoration:none;color:inherit}
 .content-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;min-height:0}
 
 /* ══ TOPBAR ══ */
-.topbar{height:var(--nav);background:#1C1510;border-bottom:1px solid rgba(139,82,48,.3);display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;backdrop-filter:blur(12px);z-index:50;color:var(--gt)}
+.topbar{height:var(--nav);background:rgba(9,8,6,.96);border-bottom:1px solid rgba(196,135,74,.12);display:flex;align-items:center;padding:0 1.2rem;gap:.8rem;flex-shrink:0;backdrop-filter:blur(12px);z-index:50;color:var(--gt)}
 .topbar-title{font-family:Georgia,serif;font-size:1.2rem;font-weight:600;color:var(--gt);flex:1}
 .topbar-title em{font-style:italic;color:var(--g)}
 .topbar-title small{display:block;font-family:'Outfit',sans-serif;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gr);margin-top:.1rem}
@@ -160,15 +160,15 @@ a{text-decoration:none;color:inherit}
 .tb-search input{background:none;border:none;color:var(--gt);outline:none;font-size:.72rem;width:100%}
 .tb-search input::placeholder{color:var(--gr)}
 .tb-btn{background:none;border:1px solid var(--bd);color:var(--gc);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-size:.7rem;position:relative;flex-shrink:0}
-.tb-btn:hover{border-color:var(--g);color:var(--g);background:#FFFFFF}
+.tb-btn:hover{border-color:var(--g);color:var(--g);background:var(--c1)}
 .tb-notif-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--g);border-radius:50%;border:1px solid var(--bk)}
 .tb-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--g),var(--gd));display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0}
-.ham-sb{display:none;background:none;border:1px solid rgba(139,82,48,.2);color:#6B3F1A;width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;font-size:.75rem;flex-shrink:0;border-radius:6px}
+.ham-sb{display:none;background:none;border:1px solid var(--bd);color:var(--gc);width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;font-size:.75rem;flex-shrink:0;border-radius:6px}
 .ham-sb:hover{border-color:var(--g);color:var(--g)}
 
 /* ══ PAGES ══ */
-.pages{flex:1;overflow:hidden;position:relative;min-height:0;background:#FFFFFF}
-.page{position:absolute;inset:0;overflow-y:auto;background:#FFFFFF;overflow-x:hidden;padding:1.4rem;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s ease;-webkit-overflow-scrolling:touch}
+.pages{flex:1;overflow:hidden;position:relative;min-height:0}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:1.4rem;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .3s ease;-webkit-overflow-scrolling:touch}
 .page.active{opacity:1;transform:translateY(0);pointer-events:all}
 
 /* ══ GRID UTILS ══ */
@@ -276,15 +276,15 @@ td a:hover{color:var(--gl)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 .fg{margin-bottom:.8rem}
 .fg label{display:block;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gc);margin-bottom:.3rem}
-.fg input,.fg select,.fg textarea{width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.8rem;outline:none;transition:border-color .22s}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.8rem;outline:none;transition:border-color .22s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-bottom-color:var(--g);background:rgba(196,135,74,.04)}
 .fg select option{background:var(--c2)}
-.fg textarea{border:1px solid var(--bd);padding:.5rem;resize:none;height:72px;background:#FFFFFF;border-radius:0}
+.fg textarea{border:1px solid var(--bd);padding:.5rem;resize:none;height:72px;background:var(--c1);border-radius:0}
 .fg textarea:focus{border-color:rgba(196,135,74,.35);background:rgba(196,135,74,.04)}
 .fg-full{grid-column:1/-1}
 
 /* ══ MODAL ══ */
-.modal-ov{display:none;position:fixed;inset:0;background:rgba(80,40,10,.55);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .modal-ov.show{display:flex}
 .modal{background:var(--c1);border:1px solid var(--bd);padding:2rem;width:min(560px,94vw);max-height:88vh;overflow-y:auto;animation:modalIn .25s ease both;box-shadow:var(--sh)}
 @keyframes modalIn{from{opacity:0;transform:translateY(-16px) scale(.98)}to{opacity:1;transform:none}}
@@ -406,7 +406,7 @@ td a:hover{color:var(--gl)}
 .toast.error{border-left-color:var(--red)}
 
 /* ══ OVERLAY MOBILE SIDEBAR ══ */
-.sb-ov{display:none;position:fixed;inset:0;background:rgba(80,40,10,.45);z-index:99;backdrop-filter:blur(2px)}
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;backdrop-filter:blur(2px)}
 
 /* ══ RESPONSIVE ══ */
 @media(max-width:900px){
@@ -506,9 +506,9 @@ html, body { height:100%; overflow:hidden; touch-action:manipulation; }
 /* ══ TOKENS ══ */
 :root{
   --g:#C4874A;--gl:#D4A470;--gd:#8B5230;--ga:rgba(196,135,74,.1);
-  --bk:#FFFFFF;--c1:#FFFFFF;--c2:#FFFFFF;--c3:#FFFFFF;
-  --bd:rgba(139,82,48,.2);--bd2:rgba(139,82,48,.1);
-  --gt:#1E0F05;--gc:#6B3F1A;--gr:#A07040;
+  --bk:#090806;--c1:#111009;--c2:#18160f;--c3:#201d15;
+  --bd:rgba(196,135,74,.14);--bd2:rgba(196,135,74,.07);
+  --gt:#F0E8DC;--gc:#A89880;--gr:#6A5E50;
   --grn:#2E7D52;--red:#C0392B;--org:#E67E22;--blu:#1a5276;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -530,7 +530,7 @@ button,input,select{font-family:inherit}
 .login-title{font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gr);margin-bottom:1.4rem;text-align:center}
 .lf{margin-bottom:1rem}
 .lf label{display:block;font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gc);margin-bottom:.4rem}
-.lf input{width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.7rem 0;font-size:1rem;outline:none;transition:border-color .25s}
+.lf input{width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.7rem 0;font-size:1rem;outline:none;transition:border-color .25s}
 .lf input:focus{border-bottom-color:var(--g);background:rgba(196,135,74,.04)}
 .login-btn{width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;padding:.9rem;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;margin-top:.5rem;transition:.25s;position:relative;overflow:hidden}
 .login-btn:active{opacity:.85}
@@ -555,7 +555,7 @@ button,input,select{font-family:inherit}
 .content{flex:1;padding:1.1rem;display:flex;flex-direction:column;gap:1rem}
 
 /* ══ STATUS CARD ══ */
-.status-card{background:#FFFFFF;border:1px solid rgba(139,82,48,.15);box-shadow:0 2px 10px rgba(139,82,48,.08);padding:1.3rem}
+.status-card{background:var(--c1);border:1px solid var(--bd);padding:1.3rem}
 .sc-label{font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gr);margin-bottom:.8rem;display:flex;align-items:center;justify-content:space-between}
 .sc-label span{color:var(--gc);font-size:.55rem;letter-spacing:0;text-transform:none}
 .status-current{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;padding:.8rem;background:var(--c2);border:1px solid var(--bd)}
@@ -592,9 +592,9 @@ button,input,select{font-family:inherit}
 .arrivee-btn.done{background:linear-gradient(135deg,var(--grn),#1e8449);animation:none}
 
 /* ══ COURSES ══ */
-.section-title{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.section-title{font-size:.46rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gr);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
 .section-title::after{content:'';flex:1;height:1px;background:var(--bd)}
-.course-card{background:#FFFFFF;border:1px solid rgba(139,82,48,.15);box-shadow:0 3px 12px rgba(139,82,48,.1);padding:1.1rem;margin-bottom:.6rem;position:relative;transition:border-color .25s}
+.course-card{background:var(--c1);border:1px solid var(--bd);padding:1.1rem;margin-bottom:.6rem;position:relative;transition:border-color .25s}
 .course-card.active-course{border-color:rgba(196,135,74,.4);background:rgba(196,135,74,.04)}
 .course-card.done-course{opacity:.55}
 .cc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.8rem}
@@ -623,7 +623,7 @@ button,input,select{font-family:inherit}
 .cc-btn.done-btn:active{background:rgba(196,135,74,.1)}
 
 /* ══ GPS ══ */
-.gps-card{background:#FFFFFF;border:1px solid rgba(139,82,48,.15);box-shadow:0 2px 10px rgba(139,82,48,.08);padding:1.1rem;display:flex;align-items:center;gap:.9rem}
+.gps-card{background:var(--c1);border:1px solid var(--bd);padding:1.1rem;display:flex;align-items:center;gap:.9rem}
 .gps-icon{width:38px;height:38px;background:var(--ga);display:flex;align-items:center;justify-content:center;color:var(--g);flex-shrink:0}
 .gps-info{flex:1}
 .gps-title{font-size:.72rem;font-weight:600;color:var(--gt)}
@@ -776,27 +776,33 @@ button,input,select{font-family:inherit}
   <div class="content-area">
 
     <!-- TOPBAR -->
-    <header class="topbar" style="background:#FFFFFF;border-bottom:1px solid rgba(139,82,48,.15);box-shadow:0 2px 8px rgba(139,82,48,.08)">
-      <button class="ham-sb" onclick="openSidebar()" style="background:none;border:1px solid rgba(139,82,48,.2);color:#6B3F1A;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B3F1A" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <header class="topbar" style="background:#111009;border-bottom:1px solid rgba(196,135,74,.12)">
+      <button class="ham-sb" onclick="openSidebar()" style="background:none;border:1px solid var(--bd);color:var(--gc);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gc)" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-      <div class="topbar-title" id="topbar-title" style="color:#1E0F05;font-weight:700">
-        Vue d'ensemble<small style="color:#A07040;font-weight:500">Dashboard principal</small>
+      <div class="topbar-title" id="topbar-title" style="color:var(--gt);font-weight:700">
+        Vue d'ensemble<small style="color:var(--gr);font-weight:500">Dashboard principal</small>
       </div>
 
-      <div class="tb-search" style="background:#FFFFFF;border:1px solid rgba(139,82,48,.18);border-radius:6px">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A07040" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Recherche..." id="global-search" oninput="globalSearch(this.value)" style="background:none;color:#1E0F05">
+      <div class="tb-search" style="background:var(--c1);border:1px solid var(--bd);border-radius:6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Recherche..." id="global-search" oninput="globalSearch(this.value)" style="background:none;color:var(--gt)">
       </div>
-      <button class="tb-btn" onclick="refreshData()" title="Actualiser" style="background:none;border:1px solid rgba(139,82,48,.2);border-radius:6px;padding:.4rem;cursor:pointer;color:#6B3F1A">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B3F1A" stroke-width="2.5" stroke-linecap="round"><polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <button class="tb-btn" onclick="refreshData()" title="Actualiser" style="background:none;border:1px solid var(--bd);padding:.4rem;cursor:pointer;color:var(--gc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gc)" stroke-width="2.5" stroke-linecap="round"><polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </button>
-      <button class="tb-btn" onclick="exportExcel()" title="Exporter Excel" style="background:none;border:1px solid rgba(139,82,48,.2);border-radius:6px;padding:.4rem;cursor:pointer;color:#6B3F1A">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B3F1A" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="10" y2="17"/><line x1="10" y1="13" x2="8" y2="17"/><line x1="12" y1="13" x2="16" y2="13"/><line x1="14" y1="13" x2="14" y2="17"/><line x1="12" y1="17" x2="16" y2="17"/></svg>
+      <button class="tb-btn" onclick="exportExcel()" title="Exporter Excel" style="background:none;border:1px solid var(--bd);padding:.4rem;cursor:pointer;color:var(--gc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gc)" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="10" y2="17"/><line x1="10" y1="13" x2="8" y2="17"/><line x1="12" y1="13" x2="16" y2="13"/><line x1="14" y1="13" x2="14" y2="17"/><line x1="12" y1="17" x2="16" y2="17"/></svg>
       </button>
-      <button class="tb-btn" onclick="toggleNotif()" id="notif-btn" title="Notifications" style="background:none;border:1px solid rgba(139,82,48,.2);border-radius:6px;padding:.4rem;cursor:pointer;color:#6B3F1A;position:relative">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B3F1A" stroke-width="2.5" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <button class="tb-btn" onclick="toggleNotif()" id="notif-btn" title="Notifications" style="background:none;border:1px solid var(--bd);border-radius:6px;padding:.4rem;cursor:pointer;color:var(--gc);position:relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gc)" stroke-width="2.5" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span class="tb-notif-dot" id="notif-dot"></span>
+      </button>
+      <button onclick="logout()" title="Déconnexion"
+        style="background:none;border:1px solid rgba(196,82,82,.3);border-radius:6px;padding:.4rem .65rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;color:#C05050;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:.2s"
+        onmouseover="this.style.background='rgba(196,82,82,.08)'" onmouseout="this.style.background='none'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C05050" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
       </button>
     </header>
 
@@ -1447,26 +1453,26 @@ button,input,select{font-family:inherit}
 
           <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin-bottom:.8rem">Informations personnelles</div>
           <div class="lf" style="margin-bottom:.7rem"><label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Téléphone</label>
-            <input id="p-tel" type="tel" style="width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="+33 6 00 00 00 00">
+            <input id="p-tel" type="tel" style="width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="+33 6 00 00 00 00">
           </div>
           <div class="lf" style="margin-bottom:.7rem"><label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Véhicule</label>
-            <input id="p-vehicle" type="text" style="width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Mercedes Classe E — AA-000-BB">
+            <input id="p-vehicle" type="text" style="width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Mercedes Classe E — AA-000-BB">
           </div>
 
           <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin:.9rem 0 .6rem">Horaires de travail</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.7rem">
             <div><label style="font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Début</label>
-              <input id="p-start" type="time" style="width:100%;background:#FFFFFF;border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="07:00">
+              <input id="p-start" type="time" style="width:100%;background:var(--c1);border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="07:00">
             </div>
             <div><label style="font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Fin</label>
-              <input id="p-end" type="time" style="width:100%;background:#FFFFFF;border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="22:00">
+              <input id="p-end" type="time" style="width:100%;background:var(--c1);border:1px solid var(--bd);color:var(--gt);padding:.45rem;font-size:.85rem;outline:none;color-scheme:dark" value="22:00">
             </div>
           </div>
 
           <div style="font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gr);margin:.9rem 0 .6rem">Sécurité</div>
           <div class="lf" style="margin-bottom:.7rem">
             <label style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem">Nouveau mot de passe</label>
-            <input id="p-pwd" type="password" style="width:100%;background:#FFFFFF;border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Laisser vide = inchangé">
+            <input id="p-pwd" type="password" style="width:100%;background:var(--c1);border:none;border-bottom:1px solid var(--bd);color:var(--gt);padding:.55rem 0;font-size:.9rem;outline:none" placeholder="Laisser vide = inchangé">
           </div>
 
           <button onclick="saveDriverProfile()" style="width:100%;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;padding:.85rem;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;margin-top:.4rem;display:flex;align-items:center;justify-content:center;gap:.4rem;min-height:48px">
@@ -2982,22 +2988,7 @@ window.addEventListener('focus', function() {
   }
 });
 
-function updateLiveIndicator(active) {
-  const dot  = document.getElementById('live-indicator-dot');
-  const text = document.getElementById('live-indicator-text');
-  const time = document.getElementById('live-indicator-time');
-  if (!dot) return;
-  if (active !== false) {
-    dot.style.background  = 'var(--grn)';
-    dot.style.boxShadow   = '0 0 6px rgba(46,125,82,.6)';
-    if (text) text.textContent = 'Live';
-    if (time) time.textContent = new Date().toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-  } else {
-    dot.style.background = 'var(--gr)';
-    dot.style.boxShadow  = 'none';
-    if (text) text.textContent = 'Pause';
-  }
-}
+function updateLiveIndicator(ok) {}
 
 /* Mettre à jour le timestamp à chaque refresh */
 const _origRenderAll = renderAll;
@@ -3465,6 +3456,8 @@ async function assignFromDropdown() {
   // Envoyer email de confirmation au client
   const rForEmail = DATA.find(x => x.id == editResaId);
   if (rForEmail) await sendAssignmentEmail(rForEmail, `${driver.prenom} ${driver.nom}`);
+  // Fermer le pop-up automatiquement
+  closeModal('modal-resa');
 }
 
 function removeAssignFromModal() {
@@ -3657,10 +3650,7 @@ function renderCourses() {
       </div>
       </div>
       <div class="cc-row" style="margin-bottom:.4rem">
-        ${r.telephone ? `<button class="cc-btn call" onclick="callClient(${r.id})">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.69 13.6 19.79 19.79 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Appeler
-        </button>` : ''}
+
         <button class="cc-btn wa" onclick="contactAdmin(${r.id})">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
           Admin
@@ -3935,11 +3925,11 @@ const EMAIL_TEMPLATES = {
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EA;padding:32px 16px">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%">
-  <tr><td style="background:#FFFFFF;padding:28px 40px;text-align:center;border-bottom:2px solid #C4874A">
-    <div style="font-family:Georgia,serif;font-size:22px;color:#1E0F05;font-weight:400;letter-spacing:.04em">
+  <tr><td style="background:var(--c1);padding:28px 40px;text-align:center;border-bottom:2px solid #C4874A">
+    <div style="font-family:Georgia,serif;font-size:22px;color:var(--gt);font-weight:400;letter-spacing:.04em">
       Riviera <em style="color:#C4874A;font-style:italic">Royal</em> Drive
     </div>
-    <div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#9B6B3A;margin-top:5px;font-family:Arial,sans-serif">
+    <div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gr);margin-top:5px;font-family:Arial,sans-serif">
       Chauffeur Prive Premium . Cannes
     </div>
   </td></tr>
@@ -3979,25 +3969,25 @@ const EMAIL_TEMPLATES = {
       <tr><td style="padding:0">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr><td style="padding:10px 20px;border-bottom:1px solid #EDE8E2">
-            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7B4F28;font-family:Arial,sans-serif;display:block;margin-bottom:2px">Service</span>
+            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);font-family:Arial,sans-serif;display:block;margin-bottom:2px">Service</span>
             <span style="font-size:14px;color:#1A1410;font-family:Georgia,serif">{{service}}</span>
           </td></tr>
           <tr><td style="padding:10px 20px;border-bottom:1px solid #EDE8E2">
-            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7B4F28;font-family:Arial,sans-serif;display:block;margin-bottom:2px">Date &amp; Heure / Time</span>
+            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);font-family:Arial,sans-serif;display:block;margin-bottom:2px">Date &amp; Heure / Time</span>
             <span style="font-size:14px;color:#1A1410;font-family:Georgia,serif">{{date_course}} a {{heure}}</span>
           </td></tr>
           <tr><td style="padding:10px 20px;border-bottom:1px solid #EDE8E2">
-            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7B4F28;font-family:Arial,sans-serif;display:block;margin-bottom:2px">Prise en charge / Pick-up</span>
+            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);font-family:Arial,sans-serif;display:block;margin-bottom:2px">Prise en charge / Pick-up</span>
             <span style="font-size:14px;color:#1A1410;font-family:Georgia,serif">{{depart}}</span>
           </td></tr>
           <tr><td style="padding:10px 20px">
-            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7B4F28;font-family:Arial,sans-serif;display:block;margin-bottom:2px">Destination</span>
+            <span style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gc);font-family:Arial,sans-serif;display:block;margin-bottom:2px">Destination</span>
             <span style="font-size:14px;color:#1A1410;font-family:Georgia,serif">{{arrivee}}</span>
           </td></tr>
         </table>
       </td></tr>
     </table>
-    <p style="font-family:Arial,sans-serif;font-size:12px;color:#7B4F28;text-align:center;margin:0">
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:var(--gc);text-align:center;margin:0">
       Contact : <strong style="color:#C4874A">07 80 97 79 39</strong>
     </p>
   </td></tr>
@@ -4006,7 +3996,7 @@ const EMAIL_TEMPLATES = {
   <tr><td style="padding:24px 40px 32px">
     <table width="100%" cellpadding="0" cellspacing="0" style="border:2px solid #C4874A;overflow:hidden;max-width:520px;margin:0 auto">
       <tr>
-        <td width="50%" style="background:#FFFFFF;padding:20px 22px;vertical-align:middle">
+        <td width="50%" style="background:var(--c1);padding:20px 22px;vertical-align:middle">
           <table cellpadding="0" cellspacing="0" style="margin-bottom:14px">
             <tr>
               <td style="padding-right:10px;vertical-align:middle">
@@ -4016,7 +4006,7 @@ const EMAIL_TEMPLATES = {
               </td>
               <td style="border-left:1.5px solid #C4874A;padding-left:10px;vertical-align:middle">
                 <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#C4874A">MAHHA Reda</div>
-                <div style="font-family:Arial,sans-serif;font-size:10px;color:#7B4F28;margin-top:2px">Directeur General</div>
+                <div style="font-family:Arial,sans-serif;font-size:10px;color:var(--gc);margin-top:2px">Directeur General</div>
               </td>
             </tr>
           </table>
@@ -4028,7 +4018,7 @@ const EMAIL_TEMPLATES = {
                 </div>
               </td>
               <td style="border-left:1.5px solid #C4874A;padding-left:10px;vertical-align:middle">
-                <div style="font-family:Arial,sans-serif;font-size:13px;color:#1E0F05;font-weight:600">07 809 779 39</div>
+                <div style="font-family:Arial,sans-serif;font-size:13px;color:var(--gt);font-weight:600">07 809 779 39</div>
               </td>
             </tr>
           </table>
@@ -4041,7 +4031,7 @@ const EMAIL_TEMPLATES = {
           <div style="font-family:Arial,sans-serif;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#1A1410;font-weight:600">
             RIVIERA <span style="color:#C4874A">ROYAL</span> DRIVE
           </div>
-          <div style="font-family:Arial,sans-serif;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#7B4F28;margin-top:4px">
+          <div style="font-family:Arial,sans-serif;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);margin-top:4px">
             Cannes &nbsp;.&nbsp; Cote d Azur
           </div>
         </td>
@@ -4049,7 +4039,7 @@ const EMAIL_TEMPLATES = {
     </table>
   </td></tr>
   
-  <tr><td style="background:#FFFFFF;padding:20px 40px;text-align:center;border-top:1px solid #1A1410">
+  <tr><td style="background:var(--c1);padding:20px 40px;text-align:center;border-top:1px solid #1A1410">
     <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#3A3028;font-family:Arial,sans-serif;line-height:2">
       Riviera Royal Drive &nbsp;.&nbsp; Cannes &nbsp;.&nbsp; Cote d Azur<br>
       <span style="color:#4A4038">07 80 97 79 39 &nbsp;.&nbsp; rivieraroyaldrive@gmail.com</span>
@@ -4065,11 +4055,11 @@ const EMAIL_TEMPLATES = {
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0EA;padding:32px 16px">
 <tr><td align="center">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%">
-  <tr><td style="background:#FFFFFF;padding:28px 40px;text-align:center;border-bottom:2px solid #C4874A">
-    <div style="font-family:Georgia,serif;font-size:22px;color:#1E0F05;font-weight:400;letter-spacing:.04em">
+  <tr><td style="background:var(--c1);padding:28px 40px;text-align:center;border-bottom:2px solid #C4874A">
+    <div style="font-family:Georgia,serif;font-size:22px;color:var(--gt);font-weight:400;letter-spacing:.04em">
       Riviera <em style="color:#C4874A;font-style:italic">Royal</em> Drive
     </div>
-    <div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#9B6B3A;margin-top:5px;font-family:Arial,sans-serif">
+    <div style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gr);margin-top:5px;font-family:Arial,sans-serif">
       Chauffeur Prive Premium . Cannes
     </div>
   </td></tr>
@@ -4125,7 +4115,7 @@ const EMAIL_TEMPLATES = {
         </a>
       </td></tr>
     </table>
-    <p style="font-family:Arial,sans-serif;font-size:12px;color:#7B4F28;text-align:center;margin:0">
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:var(--gc);text-align:center;margin:0">
       Contact : <strong style="color:#C4874A">07 80 97 79 39</strong>
     </p>
   </td></tr>
@@ -4134,7 +4124,7 @@ const EMAIL_TEMPLATES = {
   <tr><td style="padding:24px 40px 32px">
     <table width="100%" cellpadding="0" cellspacing="0" style="border:2px solid #C4874A;overflow:hidden;max-width:520px;margin:0 auto">
       <tr>
-        <td width="50%" style="background:#FFFFFF;padding:20px 22px;vertical-align:middle">
+        <td width="50%" style="background:var(--c1);padding:20px 22px;vertical-align:middle">
           <table cellpadding="0" cellspacing="0" style="margin-bottom:14px">
             <tr>
               <td style="padding-right:10px;vertical-align:middle">
@@ -4144,7 +4134,7 @@ const EMAIL_TEMPLATES = {
               </td>
               <td style="border-left:1.5px solid #C4874A;padding-left:10px;vertical-align:middle">
                 <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#C4874A">MAHHA Reda</div>
-                <div style="font-family:Arial,sans-serif;font-size:10px;color:#7B4F28;margin-top:2px">Directeur General</div>
+                <div style="font-family:Arial,sans-serif;font-size:10px;color:var(--gc);margin-top:2px">Directeur General</div>
               </td>
             </tr>
           </table>
@@ -4156,7 +4146,7 @@ const EMAIL_TEMPLATES = {
                 </div>
               </td>
               <td style="border-left:1.5px solid #C4874A;padding-left:10px;vertical-align:middle">
-                <div style="font-family:Arial,sans-serif;font-size:13px;color:#1E0F05;font-weight:600">07 809 779 39</div>
+                <div style="font-family:Arial,sans-serif;font-size:13px;color:var(--gt);font-weight:600">07 809 779 39</div>
               </td>
             </tr>
           </table>
@@ -4169,7 +4159,7 @@ const EMAIL_TEMPLATES = {
           <div style="font-family:Arial,sans-serif;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:#1A1410;font-weight:600">
             RIVIERA <span style="color:#C4874A">ROYAL</span> DRIVE
           </div>
-          <div style="font-family:Arial,sans-serif;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:#7B4F28;margin-top:4px">
+          <div style="font-family:Arial,sans-serif;font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);margin-top:4px">
             Cannes &nbsp;.&nbsp; Cote d Azur
           </div>
         </td>
@@ -4177,7 +4167,7 @@ const EMAIL_TEMPLATES = {
     </table>
   </td></tr>
   
-  <tr><td style="background:#FFFFFF;padding:20px 40px;text-align:center;border-top:1px solid #1A1410">
+  <tr><td style="background:var(--c1);padding:20px 40px;text-align:center;border-top:1px solid #1A1410">
     <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#3A3028;font-family:Arial,sans-serif;line-height:2">
       Riviera Royal Drive &nbsp;.&nbsp; Cannes &nbsp;.&nbsp; Cote d Azur<br>
       <span style="color:#4A4038">07 80 97 79 39 &nbsp;.&nbsp; rivieraroyaldrive@gmail.com</span>
