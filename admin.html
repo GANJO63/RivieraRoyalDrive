@@ -1511,7 +1511,7 @@ const EMAIL_CFG = {
   tplConfirmation:  'template_su51hnc',
   tplEnRoute:       'template_su51hnc',
   tplRemerciement:  'template_ddy1dps',
-  adminEmail:       'admin@rivieraroyaldrive.fr',
+  adminEmail:       'rivieraroyaldrive@gmail.com',
   adminWA:          '33780977939', // ← numéro WA admin (sans +, sans 0)
 };
 
@@ -1843,10 +1843,12 @@ function hideLoginScreen(cb) {
 }
 
 /* ══ SHOW ADMIN ══ */
-function showAdmin() {
-  hideLoginScreen(() => {
+async function showAdmin() {
+  hideLoginScreen(async () => {
     const app = document.getElementById('app');
     app.classList.add('visible');
+    await createSession();
+    sessionInterval = setInterval(checkSession, 20000);
     initApp();
   });
 }
@@ -1862,7 +1864,112 @@ function showDriver() {
 }
 
 /* ══ LOGOUT UNIVERSEL ══ */
+/* ══ SESSION UNIQUE ══ */
+function genToken() {
+  return Math.random().toString(36).substr(2,9) + Date.now().toString(36);
+}
+
+async function sendLoginAlert() {
+  try {
+    if (typeof emailjs === 'undefined') return;
+    // Attendre que EmailJS soit initialisé
+    await new Promise(r => setTimeout(r, 1500));
+    if (typeof emailjs === 'undefined' || !EMAIL_CFG.publicKey) return;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+    const timeStr = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    const device = navigator.userAgent.substring(0, 80);
+    if (!emailjs?.send) return; // EmailJS bloqué par tracking prevention
+    await emailjs.send(EMAIL_CFG.serviceId, EMAIL_CFG.tplConfirmation, {
+      to_email:    EMAIL_CFG.adminEmail,
+      to_name:     'Admin RRD',
+      prenom:      '🔐 Alerte Connexion',
+      service:     'Dashboard Admin',
+      depart:      `${dateStr} à ${timeStr}`,
+      arrivee:     '—',
+      date_course: dateStr,
+      heure:       timeStr,
+      message:     `⚠️ Une nouvelle connexion a été détectée sur votre dashboard Riviera Royal Drive.\n\nDate : ${dateStr}\nHeure : ${timeStr}\nAppareil : ${device}\n\nSi ce n'est pas vous, changez votre mot de passe immédiatement.`,
+      admin_email: EMAIL_CFG.adminEmail,
+      reply_to:    EMAIL_CFG.adminEmail,
+    });
+    console.log('✓ Alerte connexion envoyée');
+  } catch(e) { /* Email alerte optionnel */ }
+}
+
+async function createSession() {
+  const token = genToken();
+  localStorage.setItem('rrd_session_token', token);
+  try {
+    // Écrire le token actif dans Supabase (upsert sur id=1)
+    await fetch(`${SB_URL}/rest/v1/admin_sessions?id=eq.1`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ token, updated_at: new Date().toISOString() })
+    });
+  } catch(e) { /* Session Supabase optionnelle */ }
+  // Envoyer alerte email de connexion
+  await sendLoginAlert();
+}
+
+async function checkSession() {
+  const myToken = localStorage.getItem('rrd_session_token');
+  if (!myToken) { forceLogout('Session expirée. Veuillez vous reconnecter.'); return; }
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/admin_sessions?id=eq.1&select=token`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if (!res.ok) return; // Pas de table encore → pas de blocage
+    const data = await res.json();
+    if (data && data.length > 0 && data[0].token !== myToken) {
+      forceLogout('⚠️ Une autre session a été ouverte. Vous avez été déconnecté.');
+    }
+  } catch(e) { /* Silencieux si pas de table */ }
+}
+
+function forceLogout(msg) {
+  localStorage.removeItem('rrd_session_token');
+  if (sessionInterval) clearInterval(sessionInterval);
+  showToast(msg || 'Session terminée', 'error');
+  // Alerte intrusion par email
+  try {
+    if (typeof emailjs !== 'undefined') {
+      const now = new Date();
+      emailjs.send(EMAIL_CFG.serviceId, EMAIL_CFG.tplConfirmation, {
+        to_email: EMAIL_CFG.adminEmail,
+        to_name: 'Admin RRD',
+        prenom: '🚨 ALERTE INTRUSION',
+        service: 'Sécurité Dashboard',
+        depart: now.toLocaleString('fr-FR'),
+        arrivee: '—',
+        date_course: now.toLocaleDateString('fr-FR'),
+        heure: now.toLocaleTimeString('fr-FR'),
+        message: '🚨 Une connexion non autorisée a été détectée et votre session a été fermée automatiquement.\n\nUn autre appareil s\'est connecté à votre dashboard. Changez votre mot de passe immédiatement si ce n\'était pas vous.',
+        admin_email: EMAIL_CFG.adminEmail,
+        reply_to: EMAIL_CFG.adminEmail,
+      });
+    }
+  } catch(e) {}
+  setTimeout(() => { window.location.reload(); }, 2500);
+}
+
+let sessionInterval = null;
+
 function logout() {
+  // Invalider la session unique
+  if (sessionInterval) clearInterval(sessionInterval);
+  localStorage.removeItem('rrd_session_token');
+  try {
+    fetch(`${SB_URL}/rest/v1/admin_sessions?id=eq.1`, {
+      method: 'PATCH',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: '', updated_at: new Date().toISOString() })
+    });
+  } catch(e) {}
   // Stopper les processus
   if (statusPollInterval) clearInterval(statusPollInterval);
   if (typeof gpsWatcher !== 'undefined' && gpsWatcher) navigator.geolocation.clearWatch(gpsWatcher);
@@ -1970,6 +2077,7 @@ async function migrateSupabaseColumns() {
 async function initApp() {
   await migrateSupabaseColumns();
   await fetchData();
+  await loadAllInvoicesFromSupabase(); // Charger factures Supabase au démarrage
   renderAll();
   initCharts();
   renderNotifications();
@@ -2490,20 +2598,52 @@ function renderPayments() {
 /* ══════════════════════════════════════════════════
    FACTURES
 ══════════════════════════════════════════════════ */
-function generateInvoices() {
+async function generateInvoices() {
   const existing = new Set(INVOICES.map(i => i.resaId));
-  const eligible = DATA.filter(r => r.statut === 'terminé' && !existing.has(r.id));
-  eligible.forEach((r, i) => {
-    INVOICES.push({
-      id: Date.now() + i, num: `RRD-${new Date().getFullYear()}-${String(INVOICES.length + i + 1).padStart(4, '0')}`,
-      resaId: r.id, client: `${r.prenom || ''} ${r.nom || ''}`, service: r.service || '—',
-      date: r.date_course || new Date().toISOString().slice(0, 10),
-      montant: TARIFS[r.service] || 85, statut: 'réglée'
-    });
-  });
+  // Générer pour toutes les courses assignées ou terminées
+  const eligible = DATA.filter(r =>
+    ['terminé','assigné','confirmé'].includes(r.statut) && !existing.has(r.id)
+  );
+  if (!eligible.length) { showToast('Toutes les factures sont déjà générées ✓', 'success'); return; }
+  const newInvoices = eligible.map((r, i) => ({
+    id: Date.now() + i,
+    num: `RRD-${new Date().getFullYear()}-${String(INVOICES.length + i + 1).padStart(4, '0')}`,
+    resaId: r.id, client: `${r.prenom || ''} ${r.nom || ''}`,
+    service: r.service || '—',
+    date: r.date_course || new Date().toISOString().slice(0, 10),
+    montant: TARIFS[r.service] || 85, statut: 'réglée',
+    chauffeur: r.chauffeur_nom || 'Admin',
+    generated_by: 'admin', generated_at: new Date().toISOString()
+  }));
+  INVOICES.push(...newInvoices);
   localStorage.setItem('rrd_invoices', JSON.stringify(INVOICES));
+  // Sauvegarder dans Supabase (persistance multi-appareils)
+  try {
+    await fetch(`${SB_URL}/rest/v1/invoices_rrd`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates' },
+      body: JSON.stringify(newInvoices)
+    });
+  } catch(e) {}
   renderFactures(); updateKPIs();
-  showToast(`${eligible.length} facture(s) générée(s) ✓`, 'success');
+  showToast(`${newInvoices.length} facture(s) générée(s) ✓`, 'success');
+}
+
+async function loadAllInvoicesFromSupabase() {
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/invoices_rrd?order=generated_at.desc`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if (!res.ok) return;
+    const supaInvoices = await res.json();
+    if (supaInvoices && supaInvoices.length) {
+      // Fusionner avec locales (éviter doublons)
+      const localIds = new Set(INVOICES.map(i => i.id));
+      supaInvoices.forEach(inv => { if (!localIds.has(inv.id)) INVOICES.push(inv); });
+      INVOICES.sort((a, b) => (b.generated_at || '').localeCompare(a.generated_at || ''));
+      localStorage.setItem('rrd_invoices', JSON.stringify(INVOICES));
+    }
+  } catch(e) {}
 }
 
 function renderFactures() {
@@ -2514,13 +2654,168 @@ function renderFactures() {
     <td class="td-muted" style="font-family:monospace;font-size:.62rem">${inv.num}</td>
     <td class="td-name">${inv.client}</td>
     <td class="td-muted">${inv.service}</td>
+    <td style="font-size:.65rem;color:var(--g)">${inv.chauffeur || 'Admin'}</td>
     <td style="font-size:.65rem">${inv.date ? new Date(inv.date).toLocaleDateString('fr-FR') : '—'}</td>
     <td class="inv-amount">${inv.montant} €</td>
     <td><span class="badge ${inv.statut === 'réglée' ? 'b-confirmed' : 'b-pending'}">${inv.statut}</span></td>
     <td class="td-actions">
-      <button class="act btn-sm" onclick="showToast('Téléchargement PDF bientôt disponible')"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span></button>
+      <button class="act btn-sm" title="Télécharger facture PDF" onclick="downloadInvoice(${inv.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span></button>
       <button class="act del btn-sm" onclick="deleteInvoice(${inv.id})"><span class="ic" style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:middle;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span></button>
     </td></tr>`).join('');
+}
+
+function downloadInvoice(id) {
+  const inv = INVOICES.find(i => i.id == id);
+  if (!inv) { showToast('Facture introuvable', 'error'); return; }
+  const resa = DATA.find(r => r.id == inv.resaId) || {};
+  const num = inv.num || 'RRD-0000';
+  const date = inv.date ? new Date(inv.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'}) : new Date().toLocaleDateString('fr-FR');
+  const montant = parseFloat(inv.montant || 0);
+  const tva = 0; // TVA 0% — auto-entrepreneur
+  const ttc = montant;
+  const client = inv.client || '—';
+  const service = inv.service || '—';
+  const trajet = [resa.depart, resa.arrivee].filter(Boolean).join(' → ') || service;
+  const dateCourse = resa.date_course ? new Date(resa.date_course).toLocaleDateString('fr-FR') : date;
+  const heure = resa.heure_course ? resa.heure_course.slice(0,5) : '—';
+  const chauffeur = inv.chauffeur || 'Riviera Royal Drive';
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Facture ${num}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; color: #1a1a1a; background: #fff; padding: 0; }
+  .page { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 14mm 16mm; position: relative; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10mm; border-bottom: 2px solid #C4874A; padding-bottom: 6mm; }
+  .logo-area h1 { font-size: 22px; color: #C4874A; font-weight: 700; letter-spacing: 1px; }
+  .logo-area .tagline { font-size: 10px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .logo-area .addr { font-size: 10px; color: #666; margin-top: 6px; line-height: 1.6; }
+  .invoice-label { text-align: right; }
+  .invoice-label h2 { font-size: 28px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px; }
+  .invoice-label .num { font-size: 13px; color: #C4874A; font-weight: 600; margin-top: 4px; }
+  .invoice-label .inv-date { font-size: 11px; color: #666; margin-top: 3px; }
+  .parties { display: flex; justify-content: space-between; margin: 8mm 0; gap: 20mm; }
+  .party { flex: 1; }
+  .party-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #C4874A; font-weight: 700; margin-bottom: 4px; border-bottom: 1px solid #f0e8dc; padding-bottom: 3px; }
+  .party-name { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px; }
+  .party-info { font-size: 11px; color: #555; line-height: 1.7; }
+  .detail-box { background: #fdf8f3; border: 1px solid #f0e0c8; border-left: 3px solid #C4874A; padding: 5mm 6mm; margin: 6mm 0; }
+  .detail-box h3 { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #C4874A; margin-bottom: 4mm; }
+  .detail-row { display: flex; justify-content: space-between; font-size: 11.5px; color: #333; margin-bottom: 3px; }
+  .detail-row .label { color: #888; }
+  table { width: 100%; border-collapse: collapse; margin: 6mm 0; }
+  thead tr { background: #1a1a1a; color: #fff; }
+  thead th { padding: 6px 10px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; font-weight: 600; }
+  tbody tr { border-bottom: 1px solid #f0e8dc; }
+  tbody td { padding: 8px 10px; font-size: 12px; color: #333; }
+  .td-right { text-align: right; }
+  .totals { margin-left: auto; width: 55mm; margin-top: 4mm; }
+  .total-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; padding: 3px 0; }
+  .total-ttc { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; color: #1a1a1a; border-top: 2px solid #C4874A; padding-top: 5px; margin-top: 3px; }
+  .total-ttc .amount { color: #C4874A; }
+  .mentions { margin-top: 8mm; padding-top: 5mm; border-top: 1px solid #eee; font-size: 10px; color: #999; line-height: 1.7; }
+  .footer { position: absolute; bottom: 10mm; left: 16mm; right: 16mm; text-align: center; font-size: 9px; color: #bbb; border-top: 1px solid #eee; padding-top: 4mm; letter-spacing: 1px; }
+  .badge-paid { display: inline-block; background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; padding: 2px 8px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 2px; float: right; }
+  @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } .page { margin: 0; padding: 10mm 14mm; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="logo-area">
+      <h1>Riviera Royal Drive</h1>
+      <div class="tagline">Chauffeur Privé · Côte d'Azur</div>
+      <div class="addr">
+        Cannes, Alpes-Maritimes (06)<br>
+        Tél : 07 80 97 79 39<br>
+        rivieraroyaldrive@gmail.com<br>
+        riviera-royal-drive.vercel.app
+      </div>
+    </div>
+    <div class="invoice-label">
+      <h2>FACTURE</h2>
+      <div class="num">${num}</div>
+      <div class="inv-date">Émise le ${date}</div>
+      ${inv.statut === 'réglée' ? '<span class="badge-paid">✓ Réglée</span>' : ''}
+    </div>
+  </div>
+
+  <div class="parties">
+    <div class="party">
+      <div class="party-label">Prestataire</div>
+      <div class="party-name">Riviera Royal Drive</div>
+      <div class="party-info">
+        Service de transport privé VTC<br>
+        Cannes — Côte d'Azur<br>
+        <em>Auto-entrepreneur — TVA non applicable<br>Art. 293B du CGI</em>
+      </div>
+    </div>
+    <div class="party">
+      <div class="party-label">Client</div>
+      <div class="party-name">${client}</div>
+      <div class="party-info">
+        ${resa.email || ''}<br>
+        ${resa.telephone || ''}
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-box">
+    <h3>Détail de la prestation</h3>
+    <div class="detail-row"><span class="label">Date de la course</span><span>${dateCourse} à ${heure}</span></div>
+    <div class="detail-row"><span class="label">Trajet</span><span>${trajet}</span></div>
+    <div class="detail-row"><span class="label">Service</span><span>${service}</span></div>
+    ${chauffeur !== 'Riviera Royal Drive' ? `<div class="detail-row"><span class="label">Chauffeur</span><span>${chauffeur}</span></div>` : ''}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Qté</th>
+        <th class="td-right">P.U. HT</th>
+        <th class="td-right">Montant HT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>${service} — ${trajet}</td>
+        <td>1</td>
+        <td class="td-right">${montant.toFixed(2)} €</td>
+        <td class="td-right">${montant.toFixed(2)} €</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="total-row"><span>Sous-total HT</span><span>${montant.toFixed(2)} €</span></div>
+    <div class="total-row"><span>TVA (0%)</span><span>0,00 €</span></div>
+    <div class="total-ttc"><span>TOTAL TTC</span><span class="amount">${ttc.toFixed(2)} €</span></div>
+  </div>
+
+  <div class="mentions">
+    <strong>Conditions de règlement :</strong> Paiement à réception de facture. Tout retard de paiement entraîne des pénalités au taux légal en vigueur.<br>
+    <strong>TVA non applicable, art. 293B du CGI.</strong> — Facture émise par un auto-entrepreneur dispensé de TVA.<br>
+    Numéro de facture unique — Riviera Royal Drive — ${new Date().getFullYear()}
+  </div>
+
+  <div class="footer">
+    RIVIERA ROYAL DRIVE · Chauffeur Privé Cannes · Côte d'Azur · 07 80 97 79 39 · rivieraroyaldrive@gmail.com
+  </div>
+</div>
+<scr\ipt>window.onload = () => { window.print(); }</scr\ipt>
+</body></html>`;
+
+  const win = window.open('', '_blank');
+  if (win) {
+    win.document.write(html);
+    win.document.close();
+  } else {
+    showToast('Autorisez les pop-ups pour télécharger la facture', 'error');
+  }
 }
 
 async function deleteInvoice(id) {
@@ -3746,6 +4041,39 @@ async function confirmerArrivee() {
   btn.classList.add('done');
   btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg> Arrivée confirmée`;
   setTimeout(() => btn.style.display = 'none', 3000);
+}
+
+function generateDriverInvoice(resaId) {
+  const resa = [...(JSON.parse(localStorage.getItem(`rrd_driver_histo_${currentDriver?.id}`) || '[]'))].find(r => r.id == resaId);
+  if (!resa) { showToast('Course introuvable', 'error'); return; }
+  const montant = TARIFS[resa.service] || 85;
+  const inv = {
+    id: Date.now(),
+    num: `RRD-${new Date().getFullYear()}-DRV-${String(resaId).slice(-4)}`,
+    resaId,
+    client: `${resa.prenom || ''} ${resa.nom || ''}`.trim(),
+    service: resa.service || 'Transfert',
+    date: resa.date_course || new Date().toISOString(),
+    montant,
+    statut: 'réglée',
+    chauffeur: `${currentDriver.prenom} ${currentDriver.nom}`,
+    generated_by: 'driver',
+    generated_at: new Date().toISOString()
+  };
+  // Sauvegarder localement
+  const driverInvoices = JSON.parse(localStorage.getItem('rrd_driver_invoices') || '[]');
+  driverInvoices.unshift(inv);
+  localStorage.setItem('rrd_driver_invoices', JSON.stringify(driverInvoices));
+  // Sauvegarder dans Supabase pour que l'admin voie
+  fetch(`${SB_URL}/rest/v1/invoices_rrd`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=ignore-duplicates' },
+    body: JSON.stringify(inv)
+  }).catch(e => {});
+  // Générer le PDF (réutilise downloadInvoice mais avec les données du chauffeur)
+  INVOICES.push(inv);
+  downloadInvoice(inv.id);
+  showToast('Facture générée ✓', 'success');
 }
 
 async function acceptCourse(id) {
