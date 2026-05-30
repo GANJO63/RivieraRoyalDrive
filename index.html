@@ -343,6 +343,7 @@ h1.ht em{font-style:italic;color:var(--g)}
     flex:1!important;
     min-height:0!important;
     flex-direction:row!important;
+    align-items:stretch!important;
     border-right:none!important;
     border-bottom:1px solid rgba(196,135,74,.15)!important;
     height:auto!important;
@@ -357,7 +358,8 @@ h1.ht em{font-style:italic;color:var(--g)}
     padding:.7rem .9rem!important;
     display:flex!important;
     flex-direction:column!important;
-    justify-content:center!important;
+    justify-content:flex-start!important;
+    align-items:flex-start!important;
   }
   .sc-num-big{font-size:1.6rem!important;margin-bottom:.1rem!important;display:block!important}
   .sc-title{font-size:.75rem!important;line-height:1.25!important;margin-bottom:.15rem!important}
@@ -368,12 +370,13 @@ h1.ht em{font-style:italic;color:var(--g)}
     padding:.7rem .9rem!important;
     display:flex!important;
     flex-direction:column!important;
-    justify-content:space-between!important;
+    justify-content:flex-start!important;
     overflow:hidden!important;
   }
   .sl li{font-size:.58rem!important;padding:.25rem 0!important;gap:.4rem!important}
   .sl li::before{width:4px!important;height:4px!important;flex-shrink:0!important}
-  .bp{font-size:.55rem!important;width:200px!important;justify-content:center!important;padding:.65rem 1.7rem!important;margin-top:.35rem!important;letter-spacing:.18em!important}
+  .sc-body .bp{font-size:.55rem!important;width:100%!important;justify-content:center!important;padding:.55rem!important;margin-top:auto!important;letter-spacing:.15em!important}
+  .hbtns .bp,.hbtns .bo{width:200px!important;font-size:.55rem!important}
 
   /* ── Tarifs mobile : 3 cartes compactes, tout visible ── */
   .t-cols{
@@ -686,54 +689,6 @@ h1.ht em{font-style:italic;color:var(--g)}
         </button>
 
       </div>
-
-      <!-- ── CONDITIONS GÉNÉRALES & MENTIONS ── -->
-      <div style="margin-top:2.5rem;border-top:1px solid rgba(196,135,74,.2);padding-top:2rem">
-
-        <!-- Accordéon CGV -->
-        <div style="margin-bottom:.6rem">
-          <button onclick="toggleAccordion(this)"
-            style="width:100%;background:none;border:1px solid rgba(196,135,74,.25);padding:.75rem 1rem;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit">
-            <span style="font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#C4874A">Conditions Générales de Vente</span>
-            <span class="cgv-arrow" style="color:#C4874A;font-size:.7rem;transition:transform .3s;display:inline-block">▼</span>
-          </button>
-          <div style="display:none;background:rgba(196,135,74,.04);border:1px solid rgba(196,135,74,.15);border-top:none;padding:1rem 1.2rem;font-size:.58rem;color:rgba(240,232,220,.7);line-height:1.9">
-            <strong style="color:#C4874A;display:block;margin-bottom:.5rem">Article 1 — Objet</strong>
-            Les présentes CGV régissent les relations entre Riviera Royal Drive et tout client ayant effectué une réservation de transport privé.
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Article 2 — Réservation</strong>
-            Toute réservation est confirmée par email ou WhatsApp. Le client s'engage à fournir des informations exactes (adresse, horaire, nombre de passagers).
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Article 3 — Tarifs</strong>
-            Les prix sont fixes et communiqués avant la course. Aucun supplément ne peut être appliqué sans accord préalable du client, sauf péages et parkings.
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Article 4 — Annulation</strong>
-            Annulation gratuite jusqu'à 2h avant la course. Annulation tardive ou no-show : facturation de 50% du montant prévu.
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Article 5 — Responsabilité</strong>
-            Riviera Royal Drive est assuré en responsabilité civile professionnelle. Notre responsabilité ne saurait être engagée en cas de force majeure ou d'événements indépendants de notre volonté (trafic, météo, grèves).
-          </div>
-        </div>
-
-        <!-- Accordéon Mentions légales -->
-        <div style="margin-bottom:.6rem">
-          <button onclick="toggleAccordion(this)"
-            style="width:100%;background:none;border:1px solid rgba(196,135,74,.25);padding:.75rem 1rem;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit">
-            <span style="font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#C4874A">Mentions Légales & Confidentialité</span>
-            <span class="cgv-arrow" style="color:#C4874A;font-size:.7rem;transition:transform .3s;display:inline-block">▼</span>
-          </button>
-          <div style="display:none;background:rgba(196,135,74,.04);border:1px solid rgba(196,135,74,.15);border-top:none;padding:1rem 1.2rem;font-size:.58rem;color:rgba(240,232,220,.7);line-height:1.9">
-            <strong style="color:#C4874A;display:block;margin-bottom:.5rem">Éditeur</strong>
-            Riviera Royal Drive — Service de transport privé VTC — Cannes, Côte d'Azur<br>
-            Téléphone : <a href="tel:+33780977939" style="color:#C4874A">07 80 97 79 39</a> · Email : rivieraroyaldrive@gmail.com
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Données personnelles (RGPD)</strong>
-            Les données collectées (nom, email, téléphone) sont utilisées exclusivement pour le traitement des réservations. Elles ne sont jamais revendues à des tiers. Conformément à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
-            <strong style="color:#C4874A;display:block;margin:.7rem 0 .3rem">Cookies</strong>
-            Ce site n'utilise pas de cookies publicitaires. Des données de session sont conservées localement pour améliorer votre expérience.
-          </div>
-        </div>
-
-        <p style="text-align:center;font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(196,135,74,.35);margin-top:1.2rem">
-          © 2025 Riviera Royal Drive · Cannes · Côte d'Azur
-        </p>
-      </div>
-
     </div>
   </div>
   <div class="slide">
@@ -816,17 +771,30 @@ h1.ht em{font-style:italic;color:var(--g)}
   <div class="slide">
     <div class="a-prose rv">
       <div class="sh" style="margin-bottom:1.2rem"><span class="stag" data-i18n="s3_tag">✦ Notre histoire</span><h2 class="stitle" data-i18n="s3_title">À <em>propos</em></h2><div class="sline"></div></div>
-      <h2>Riviera <em>Royal Drive</em></h2>
+      <h2>Votre <em>Chauffeur Privé VTC</em> sur la Côte d'Azur</h2>
       <div class="a-rule"></div>
-      <p data-i18n="s3_p1">Né sur la mythique Croisette de Cannes, <strong>Riviera Royal Drive</strong> incarne l'excellence du transport privé haut de gamme sur la Côte d'Azur.</p>
-      <p data-i18n="s3_p2">Pensé pour une clientèle exigeante, notre service allie élégance, discrétion et perfection dans les moindres détails. Chaque trajet est conçu comme une expérience exclusive où le confort, le prestige et la qualité de service deviennent une évidence.</p>
-      <p data-i18n="s3_p3">Afin d'offrir le meilleur à nos clients, nous avons sélectionné les plus grandes références de l'automobile de luxe : <strong>Mercedes-Benz, Range Rover, BMW, Maybach</strong> et véhicules d'exception, alliant raffinement, technologie et confort absolu.</p>
-      <p data-i18n="s3_p4">De Cannes à Monaco, Saint-Tropez, Nice ou les aéroports privés, nos chauffeurs professionnels vous accompagnent avec ponctualité, discrétion et excellence <strong>24h/24 et 7j/7</strong>.</p>
-      <p data-i18n="s3_p5">Que ce soit pour un transfert privé, une mise à disposition, un événement VIP ou une conciergerie de prestige, <strong>Riviera Royal Drive</strong> transforme chacun de vos déplacements en une expérience unique.</p>
-    </div>
-  </div>
 
-  </div><!-- /track -->
+      <p><strong>Riviera Royal Drive</strong> est votre service de <strong>chauffeur privé VTC à Cannes</strong>, disponible <strong>24h/24 et 7j/7</strong> sur toute la <strong>Côte d'Azur</strong>. Transferts aéroport, mise à disposition, Festival de Cannes, Grand Prix de Monaco — nous assurons chaque déplacement avec ponctualité, discrétion et élégance.</p>
+
+      <p>Spécialiste du <strong>transport VTC haut de gamme</strong> entre <strong>Cannes, Nice, Monaco, Antibes, Saint-Tropez</strong> et les aéroports de Nice-Côte d'Azur (NCE) et Marseille-Provence, notre flotte de véhicules premium — <strong>Mercedes Classe E &amp; S, BMW Série 5, Range Rover, Maybach</strong> — garantit un confort absolu quelle que soit la distance.</p>
+
+      <p>Nos <strong>chauffeurs VTC certifiés</strong>, formés aux standards du service de prestige, parlent français et anglais. Accueil avec pancarte nominative, suivi de vol en temps réel, aide aux bagages : chaque détail est pensé pour dépasser vos attentes.</p>
+
+      <p>Que vous recherchiez un <strong>transfert privé Cannes–Nice Aéroport</strong>, un <strong>chauffeur pour le Festival de Cannes</strong>, ou un service de mise à disposition à la journée pour vos rendez-vous d'affaires sur la Riviera, <strong>Riviera Royal Drive</strong> est la référence locale du <strong>transport VTC premium Côte d'Azur</strong>.</p>
+
+
+    <!-- ── LIENS LÉGAUX ── -->
+    <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(196,135,74,.12);text-align:center">
+      <a href="cgv.html" style="font-size:.45rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(196,135,74,.45);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#C4874A'" onmouseout="this.style.color='rgba(196,135,74,.45)'">CGV</a>
+      <span style="color:rgba(196,135,74,.2);margin:0 .6rem">·</span>
+      <a href="mentions-legales.html" style="font-size:.45rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(196,135,74,.45);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#C4874A'" onmouseout="this.style.color='rgba(196,135,74,.45)'">Mentions légales</a>
+      <span style="color:rgba(196,135,74,.2);margin:0 .6rem">·</span>
+      <a href="chauffeur-prive-cannes.html" style="font-size:.45rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(196,135,74,.45);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#C4874A'" onmouseout="this.style.color='rgba(196,135,74,.45)'">VTC Cannes · Transfert Nice · Monaco</a>
+      <span style="color:rgba(196,135,74,.2);margin:0 .6rem">·</span>
+      <span style="font-size:.45rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(196,135,74,.2)">© 2025 Riviera Royal Drive</span>
+    </div>
+    </div>
+  </div></div><!-- /track -->
 </div><!-- /slider -->
 
 <!-- FLOATING BTNS -->
@@ -1188,18 +1156,6 @@ document.addEventListener('click',function(e){
 });
 </script>
 
-
-<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,11,9,.97);border-top:1px solid rgba(196,135,74,.3);padding:.8rem 1rem;z-index:500;align-items:center;gap:.8rem;backdrop-filter:blur(12px)">
-  <div style="flex:1">
-    <div style="font-size:.7rem;font-weight:600;color:#F0E8DC">Installer Riviera Royal Drive</div>
-    <div style="font-size:.55rem;color:#A89880;margin-top:.1rem" data-i18n="pwa_sub">Accès rapide depuis votre écran d'accueil</div>
-  </div>
-  <button id="pwa-install-btn" onclick="pwrInstall()" style="background:#C4874A;color:#fff;border:none;padding:.5rem 1rem;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:inherit;white-space:nowrap">
-    <span data-i18n="pwa_btn">Installer</span>
-  </button>
-  <button onclick="var b=document.getElementById('pwa-banner');if(b)b.style.display='none'" style="background:none;border:none;color:#5A5248;cursor:pointer;font-size:.9rem;padding:.2rem">✕</button>
-</div>
-
 <script>
 // Service Worker
 if('serviceWorker' in navigator){
@@ -1280,14 +1236,6 @@ const TRANSLATIONS = {
     ph_dep: `Hôtel, adresse, aéroport...`, ph_arr: `Hôtel, adresse, aéroport...`,
     ph_msg: `Nombre de passagers, bagages, demandes spéciales...`,
     pwa_sub: `Accès rapide depuis votre écran d'accueil`, pwa_btn: `Installer`,
-    s2_1_li1: `Cannes ↔ Nice Aéroport`, s2_1_li2: `Accueil avec pancarte`,
-    s2_1_li3: `Attente incluse (30 min)`, s2_1_li4: `Bagages inclus`,
-    s2_2_li1: `Minimum 2 heures`, s2_2_li2: `Journée complète sur devis`,
-    s2_2_li3: `Kilométrage illimité`, s2_2_li4: `Arrêts multiples`,
-    s2_3_li1: `Festival de Cannes`, s2_3_li2: `Grand Prix Monaco`,
-    s2_3_li3: `Mariages & galas`, s2_3_li4: `Service multi-jours`,
-    remember_label: `Mémoriser mes informations pour la prochaine fois`,
-    clear_profile: `✕ Effacer mon profil`,
     alert_required: `Champs obligatoires : Prénom, Nom, Téléphone, Email.`,
     toast_sent: `Demande envoyée ! Merci`,
     pwa_alert: `Pour installer : appuyez sur Partage puis Sur l\u2019ecran accueil`
@@ -1358,8 +1306,8 @@ function setLang(lang) {
   // Boutons drapeaux hero slide
   const fr = document.getElementById('opt-fr');
   const en = document.getElementById('opt-en');
-  if(fr){ fr.style.color = lang==='fr' ? '#C4874A' : 'rgba(196,135,74,.35)'; fr.style.fontWeight = lang==='fr' ? '700' : '400'; }
-  if(en){ en.style.color = lang==='en' ? '#C4874A' : 'rgba(196,135,74,.35)'; en.style.fontWeight = lang==='en' ? '700' : '400'; }
+  if(fr) fr.style.opacity = lang === 'fr' ? '1' : '.35';
+  if(en) en.style.opacity = lang === 'en' ? '1' : '.35';
   // html lang attr
   document.documentElement.lang = lang;
 }
@@ -1468,5 +1416,653 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,11,9,.97);border-top:1px solid rgba(196,135,74,.3);padding:.8rem 1rem;z-index:500;align-items:center;gap:.8rem;backdrop-filter:blur(12px)">
+  <div style="flex:1">
+    <div style="font-size:.7rem;font-weight:600;color:#F0E8DC">Installer Riviera Royal Drive</div>
+    <div style="font-size:.55rem;color:#A89880;margin-top:.1rem" data-i18n="pwa_sub">Accès rapide depuis votre écran d'accueil</div>
+  </div>
+  <button id="pwa-install-btn" onclick="pwrInstall()" style="background:#C4874A;color:#fff;border:none;padding:.5rem 1rem;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:inherit;white-space:nowrap">
+    <span data-i18n="pwa_btn">Installer</span>
+  </button>
+  <button onclick="var b=document.getElementById('pwa-banner');if(b)b.style.display='none'" style="background:none;border:none;color:#5A5248;cursor:pointer;font-size:.9rem;padding:.2rem">✕</button>
+</div>
+
+
+
 </body>
-</html>
+</htmYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chauffeur Privé Cannes | VTC Premium Côte d'Azur 24h/24 — Riviera Royal Drive</title>
+<meta name="description" content="✓ Chauffeur privé à Cannes &amp; Côte d'Azur. Transfert aéroport Nice dès 80€. Mercedes, BMW, Range Rover. VTC Monaco, Saint-Tropez, Festival de Cannes. Réservez en 30 sec — 07 80 97 79 39.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --g:#C4874A;--gl:#D4A470;--gd:#8B5230;
+  --bk:#0D0B09;--bm:#161210;--bd:#1E1A15;
+  --gt:#F0E8DC;--gc:#A89880;--gr:#5A5248;
+}
+html,body{height:100%;overflow:hidden;font-family:'Montserrat','Segoe UI',sans-serif;background:var(--bk);color:var(--gt);font-size:13px}
+
+
+
+/* ── NAV ── */
+nav{position:fixed;left:0;right:0;z-index:200;background:rgba(13,11,9,.97);border-bottom:1px solid rgba(196,135,74,.2);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;backdrop-filter:blur(16px);box-shadow:0 2px 40px rgba(0,0,0,.6);gap:.5rem;overflow:hidden}
+.nav-left{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:.7rem;cursor:pointer;flex-shrink:0}
+.logo-icon{width:34px;height:34px;border:1px solid rgba(196,135,74,.4);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:.75rem;flex-shrink:0;background:rgba(196,135,74,.06)}
+.logo b{font-family:Georgia,serif;font-size:1.15rem;color:var(--gt);letter-spacing:.04em;font-weight:400;white-space:nowrap}
+.logo b em{font-style:normal;color:var(--g)}
+.logo small{font-size:.4rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gr);display:block;margin-top:2px}
+
+/* Separator */
+.nav-sep{width:1px;height:22px;background:rgba(196,135,74,.2);flex-shrink:0}
+
+/* Hamburger — right next to logo */
+.ham-btn{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:1px solid rgba(196,135,74,.25);padding:0 .55rem;cursor:pointer;width:38px;height:32px;flex-shrink:0;transition:border-color .3s,background .3s;position:relative}
+.ham-btn:hover,.ham-btn.open{border-color:var(--g);background:rgba(196,135,74,.08)}
+.ham-btn span{display:block;height:1.5px;background:var(--gl);transition:.3s;transform-origin:center}
+.ham-btn span:nth-child(1){width:16px}
+.ham-btn span:nth-child(2){width:10px;opacity:.6}
+.ham-btn span:nth-child(3){width:16px}
+.ham-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);width:16px;opacity:1}
+.ham-btn.open span:nth-child(2){opacity:0}
+.ham-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);width:16px}
+
+/* Phone CTA */
+.nav-right{display:flex;align-items:center}
+.ncta{background:linear-gradient(135deg,var(--g),var(--gd))!important;color:#fff!important;font-weight:600!important;padding:.38rem 1rem!important;font-size:.52rem!important;letter-spacing:.1em!important;border:none!important;white-space:nowrap;display:flex;align-items:center;gap:.4rem;cursor:pointer;font-family:inherit!important;text-transform:uppercase!important;transition:.3s!important;box-shadow:0 2px 12px rgba(196,135,74,.2)!important;flex-shrink:0;max-width:160px}
+.ncta:hover{opacity:.85!important}
+
+/* ── DROPDOWN MENU ── */
+.drop-overlay{display:none;position:fixed;inset:0;top:58px;z-index:190}
+.drop-overlay.show{display:block}
+
+.dropdown{position:fixed;top:58px;left:0;right:0;z-index:195;background:rgba(10,8,7,.97);border-bottom:1px solid rgba(196,135,74,.2);backdrop-filter:blur(20px);transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.dropdown.show{transform:translateY(0);opacity:1;pointer-events:all}
+.drop-inner{display:grid;grid-template-columns:repeat(5,1fr);max-width:900px;margin:0 auto;padding:.4rem 1rem}
+.drop-lang{display:none;align-items:center;justify-content:center;gap:1.2rem;padding:.8rem 1rem;border-top:1px solid rgba(196,135,74,.1);cursor:pointer;transition:background .2s}
+.drop-lang:hover{background:rgba(196,135,74,.06)}
+@media(max-width:768px){.drop-lang{display:flex}}
+.drop-item{display:flex;align-items:center;justify-content:center;padding:.9rem .5rem;cursor:pointer;transition:.25s;border-bottom:2px solid transparent;position:relative}
+.drop-item:hover{background:rgba(196,135,74,.06)}
+.drop-item.active-drop .drop-label{color:var(--g)}
+.drop-item.active-drop{border-bottom-color:var(--g)}
+.drop-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);text-align:center;transition:color .25s;white-space:nowrap}
+.drop-item:hover .drop-label{color:var(--gl)}
+
+/* Mobile dropdown: 2 columns */
+@media(max-width:600px){
+  .drop-inner{grid-template-columns:repeat(4,1fr);padding:.3rem .8rem}
+  .drop-item{padding:.7rem .3rem}
+  .drop-icon{width:30px;height:30px;font-size:.7rem}
+  .drop-label{font-size:.42rem}
+  .logo small{display:none}
+  .logo-icon{display:none}
+  .logo b{font-size:1rem}
+}
+
+
+
+/* ── SLIDER CORE ── */
+.slider{position:fixed;top:58px;left:0;right:0;bottom:0;overflow:hidden}
+.track{display:flex;height:100%;transition:transform .65s cubic-bezier(.77,0,.175,1);will-change:transform}
+.slide{min-width:100vw;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(196,135,74,.3) transparent}
+.slide::-webkit-scrollbar{width:3px}
+.slide::-webkit-scrollbar-thumb{background:rgba(196,135,74,.3);border-radius:2px}
+
+/* ── SLIDE ARROWS ── */
+.arrow{position:fixed;top:50%;transform:translateY(-50%);z-index:150;background:rgba(13,11,9,.7);border:1px solid rgba(196,135,74,.25);color:var(--gc);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s;backdrop-filter:blur(6px);font-size:.75rem}
+.arrow:hover{border-color:var(--g);color:var(--g);background:rgba(13,11,9,.9)}
+.arrow.left{left:.6rem}
+.arrow.right{right:.6rem}
+.arrow.disabled{opacity:.2;pointer-events:none}
+
+/* ── DOTS ── */
+
+
+/* ── PROGRESS LINE ── */
+
+
+/* ─────────────────────────────
+   SLIDE 1 · ACCUEIL / HERO
+───────────────────────────── */
+.s-hero{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.himg{position:absolute;inset:0;background:linear-gradient(135deg,#0D0B09 0%,#1A1410 40%,#0D0B09 100%)}
+to{transform:scale(1)}}
+.h-ov1{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.5) 0%,rgba(0,0,0,.2) 45%,rgba(0,0,0,.6) 100%)}
+.h-ov2{position:absolute;inset:0;background:linear-gradient(105deg,rgba(0,0,0,.2) 0%,rgba(196,135,74,.1) 50%,rgba(0,0,0,.15) 100%)}
+.hl-top{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(to right,transparent,rgba(196,135,74,.7),transparent);z-index:2}
+.hl-bot{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(to right,transparent,rgba(196,135,74,.7),transparent);z-index:2}
+.hc{position:relative;z-index:3;padding:0 2rem;animation:fi 1s ease-out both}
+@keyframes fi{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hbadge{display:inline-block;font-size:.49rem;letter-spacing:.42em;text-transform:uppercase;color:var(--g);border:1px solid rgba(196,135,74,.5);padding:.3rem 1rem;margin-bottom:1.2rem;background:rgba(13,11,9,.75);backdrop-filter:blur(8px)}
+/* Hero logo image */
+.hero-logo{
+  width: min(380px, 72vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.4rem;
+  filter: drop-shadow(0 4px 28px rgba(0,0,0,.55));
+  animation: fi 1s ease-out both;
+}
+
+h1.ht em{font-style:italic;color:var(--g)}
+.htag1{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:#E0D8CC;margin:.7rem 0 .2rem}
+.htag2{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gc);margin-bottom:.7rem}
+.hdispo{font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:var(--g);margin-bottom:1.6rem;display:inline-flex;align-items:center;gap:.5rem;background:rgba(13,11,9,.7);padding:.42rem .9rem}
+.hdispo::before,.hdispo::after{content:'';width:26px;height:1px;background:rgba(196,135,74,.4)}
+.hbtns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.bp{background:var(--g);color:#fff;padding:.65rem 1.7rem;font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border:1px solid var(--g);transition:.3s;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.bp:hover{background:var(--gd);border-color:var(--gd)}
+.bo{background:rgba(13,11,9,.7);color:#F0E8DC;padding:.65rem 1.7rem;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(196,135,74,.45);transition:.3s;display:inline-flex;align-items:center;gap:.4rem}
+.bo:hover{border-color:var(--g);color:var(--g)}
+
+
+
+/* ─────────────────────────────
+   SLIDE 2 · SERVICES
+───────────────────────────── */
+.s-pad{padding:2.5rem 2rem;padding-bottom:calc(2.5rem + env(safe-area-inset-bottom));min-height:100%}
+.sh{text-align:center;margin-bottom:2rem}
+.stag{font-size:.48rem;letter-spacing:.38em;text-transform:uppercase;color:var(--g);display:block;margin-bottom:.6rem}
+.stitle{font-family:Georgia,serif;font-size:1.9rem;font-weight:400;color:var(--gt);line-height:1.2}
+.stitle em{font-style:italic;color:var(--g)}
+.sline{width:28px;height:1px;background:var(--g);margin:.7rem auto;opacity:.7}
+.ssub{font-size:.65rem;color:var(--gc);line-height:1.85;max-width:420px;margin:0 auto}
+/* ── SERVICES full-height columns ── */
+.slide-hd{padding:1.8rem 2rem .8rem;flex-shrink:0}
+.s-cols{display:grid;grid-template-columns:repeat(3,1fr);height:calc(100% - 105px)}
+.sc{background:transparent;border-right:1px solid rgba(196,135,74,.12);display:flex;flex-direction:column;height:100%;transition:background .3s;overflow:hidden}
+.sc:last-child{border-right:none}
+.sc:hover{background:rgba(196,135,74,.04)}
+.sc:hover .sc-banner{background:linear-gradient(160deg,rgba(196,135,74,.2) 0%,rgba(196,135,74,.07) 70%,transparent 100%)}
+
+/* Banner top of each service column */
+.sc-banner{background:linear-gradient(160deg,rgba(196,135,74,.13) 0%,rgba(196,135,74,.04) 65%,transparent 100%);border-bottom:1px solid rgba(196,135,74,.18);padding:1.8rem 1.6rem 1.5rem;position:relative;overflow:hidden;transition:background .3s}
+.sc-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--g),transparent)}
+.sc-num-big{font-family:Georgia,serif;font-size:2rem;color:var(--g);opacity:.35;position:static;line-height:1;margin-bottom:.5rem;pointer-events:none;display:block}
+.sc-icon-wrap{width:42px;height:42px;border:1px solid rgba(196,135,74,.35);background:rgba(196,135,74,.08);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:1.1rem;margin-bottom:0.8rem}
+.sc-title{font-family:Georgia,serif;font-size:1.12rem;color:var(--gt);margin-bottom:.45rem;line-height:1.3}
+.sc-sub{font-size:.63rem;color:var(--gc);line-height:1.75}
+
+/* Body below banner */
+.sc-body{flex:1;padding:1.2rem 1.6rem;overflow-y:auto}
+.sl{list-style:none}
+.sl li{font-size:.65rem;color:var(--gt);padding:.5rem 0;border-bottom:1px solid rgba(196,135,74,.08);display:flex;align-items:center;gap:.6rem}
+.sl li::before{content:'';width:4px;height:4px;background:var(--g);border-radius:50%;flex-shrink:0;opacity:.8}
+
+/* ─────────────────────────────
+   SLIDE 3 · À PROPOS — TEXT ONLY
+───────────────────────────── */
+.a-prose{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  max-width:680px;
+  margin:0 auto;
+  padding:3rem 2rem 5rem 3rem;
+}
+.a-tag{font-size:.46rem;letter-spacing:.4em;text-transform:uppercase;color:var(--g);margin-bottom:1.2rem;display:block}
+.a-prose h2{font-family:Georgia,serif;font-size:2.3rem;font-weight:400;color:var(--gt);line-height:1.15;margin-bottom:1.4rem}
+.a-prose h2 em{font-style:italic;color:var(--g)}
+.a-rule{width:40px;height:1px;background:var(--g);opacity:.65;margin:1.4rem 0}
+.a-prose p{font-size:.68rem;color:var(--gc);line-height:2.1;margin-bottom:.9rem}
+.a-prose strong{color:var(--gt);font-weight:600}
+.a-values{font-family:Georgia,serif;font-size:1rem;color:var(--gt);font-style:italic;letter-spacing:.06em;margin:.2rem 0}
+.a-values em{color:var(--g);font-style:italic}
+.a-caption{font-size:.58rem;letter-spacing:.08em;color:var(--gr);margin-top:1.4rem;border-left:1.5px solid rgba(196,135,74,.35);padding-left:1rem;line-height:1.95;font-style:italic}
+
+/* ── TARIFS full-height columns ── */
+.t-cols{display:grid;grid-template-columns:repeat(3,1fr);height:100%}
+.tc{background:transparent;border-right:1px solid rgba(196,135,74,.12);display:flex;flex-direction:column;height:100%;transition:background .3s;overflow:hidden}
+.tc:last-child{border-right:none}
+.tc:hover{background:rgba(196,135,74,.04)}
+
+/* Tarif banner */
+.tc-banner{border-bottom:1px solid rgba(196,135,74,.18);padding:1.8rem 1.6rem 1.5rem;position:relative;overflow:hidden;text-align:center;background:linear-gradient(160deg,rgba(196,135,74,.1) 0%,rgba(196,135,74,.03) 70%,transparent 100%)}
+.tc-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,rgba(196,135,74,.5),transparent)}
+.tc.ft .tc-banner{background:linear-gradient(160deg,rgba(196,135,74,.22) 0%,rgba(196,135,74,.08) 70%,transparent 100%)}
+.tc.ft .tc-banner::before{background:linear-gradient(to right,transparent,var(--g),transparent)}
+.fb2{display:inline-block;font-size:.47rem;letter-spacing:.16em;text-transform:uppercase;background:var(--g);color:#fff;padding:.22rem .8rem;font-weight:700;margin-bottom:.8rem}
+.tic{font-size:1.4rem;color:var(--g);margin-bottom:0.6rem;display:block}
+.tn{font-family:Georgia,serif;font-size:1.15rem;color:var(--gt);margin-bottom:.25rem}
+.td{font-size:.58rem;color:var(--gc);margin-bottom:1.2rem}
+.tp{margin-bottom:0}
+.pf{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.3rem}
+.pa{font-family:Georgia,serif;font-size:2.6rem;color:var(--g);line-height:1;display:block}
+.pu{font-size:.62rem;color:var(--gc)}
+.pd{font-family:Georgia,serif;font-size:1.6rem;color:var(--g);font-style:italic}
+
+/* Tarif body */
+.tc-body{flex:1;padding:1.2rem 1.6rem;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto}
+.tl{list-style:none;margin-bottom:1.4rem;flex:1}
+.tl li{font-size:.65rem;color:var(--gt);padding:.5rem 0;border-bottom:1px solid rgba(196,135,74,.08);display:flex;align-items:center;gap:.5rem}
+.tl li i{color:var(--g);font-size:.62rem;width:12px}
+
+/* ─────────────────────────────
+───────────────────────────── */
+/* ─────────────────────────────
+   SLIDE 5 · TÉMOIGNAGES
+───────────────────────────── */
+.tmg-wrap{display:block;height:100%}
+.tmg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(196,135,74,.1)}
+.tmc{background:var(--bk);padding:1.2rem 1.4rem;border-bottom:2px solid transparent;transition:.3s}
+.tmc:hover{background:rgba(196,135,74,.06);border-bottom-color:var(--g)}
+.tmc:hover{background:rgba(196,135,74,.06);border-bottom-color:var(--g)}
+.qt{font-family:Georgia,serif;font-size:2rem;color:rgba(196,135,74,.18);line-height:1;margin-bottom:.3rem}
+.stars{color:var(--g);font-size:.55rem;margin-bottom:.5rem;letter-spacing:.1em}
+.tmt{font-size:.6rem;color:var(--gc);line-height:1.8;font-style:italic;margin-bottom:.9rem}
+.tma{display:flex;align-items:center;gap:.7rem}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:.85rem;color:#fff;font-weight:600;flex-shrink:0}
+.aname{font-size:.63rem;font-weight:600;color:var(--gt)}
+.arole{font-size:.53rem;color:var(--gc)}
+
+/* ─────────────────────────────
+   SLIDE 6 · CONTACT
+───────────────────────────── */
+.cw{display:block;max-width:560px}
+.ci-item{display:flex;align-items:center;gap:.85rem;padding:.85rem 0;border-bottom:1px solid rgba(196,135,74,.12)}
+.ci-icon{width:36px;height:36px;border:1px solid rgba(196,135,74,.3);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:.8rem;flex-shrink:0;background:rgba(196,135,74,.06)}
+.ci-label{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.2rem}
+.ci-val{font-size:.7rem;color:var(--gt);text-decoration:none;transition:color .3s}
+.ci-val:hover{color:var(--g)}
+.ci-gold{color:var(--g);font-weight:600}
+.wab{display:flex;align-items:center;gap:.55rem;background:#25D366;color:#fff;padding:.65rem 1.1rem;text-decoration:none;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-top:1.4rem;transition:.3s;width:fit-content}
+.wab:hover{background:#1db954}
+.cab{display:flex;align-items:center;gap:.55rem;background:var(--g);color:#fff;padding:.65rem 1.1rem;text-decoration:none;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-top:.6rem;transition:.3s;width:fit-content;border:1px solid var(--g)}
+.cab:hover{background:var(--gd)}
+.fg{margin-bottom:.85rem}
+.fg label{display:block;font-size:.49rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);margin-bottom:.32rem}
+.ac-wrap input,.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.04);border:none;border-bottom:1px solid rgba(196,135,74,.25);color:var(--gt);padding:.6rem 0;font-family:inherit;font-size:.68rem;outline:none;transition:border-color .3s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus{border-bottom-color:var(--g);background:rgba(196,135,74,.06)}
+.fg select option{background:#1E1A15;color:#F0E8DC}
+.fg textarea{border:1px solid rgba(196,135,74,.2);padding:.6rem .45rem;resize:none;min-height:68px;background:rgba(255,255,255,.04)}
+.fg textarea:focus{border-color:var(--g);background:rgba(196,135,74,.06)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.bp-dk{background:var(--g);color:#fff;padding:.82rem 1.5rem;font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border:none;transition:.3s;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;width:100%;justify-content:center;font-family:inherit}
+.bp-dk:hover{background:var(--gd)}
+
+
+.dp-leg-item{display:flex;align-items:center;gap:.3rem;font-size:.48rem;color:var(--gc)}
+.dp-leg-dot{width:6px;height:6px;border-radius:50%;background:var(--g)}
+
+/* ── FOOTER SLIDE ── */
+.footer-inner{border-top:1px solid rgba(196,135,74,.15);padding:1.5rem 2rem 1rem;margin-top:2rem}
+.fg2{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2rem;margin-bottom:1.2rem}
+.fl-brand b{font-family:Georgia,serif;font-size:1.1rem;color:var(--gt);font-weight:400}
+.fl-brand b em{font-style:normal;color:var(--g)}
+.fl-brand p{font-size:.62rem;color:var(--gc);line-height:1.8;margin-top:.5rem;max-width:185px}
+.fsoc{display:flex;gap:.5rem;margin-top:.8rem}
+.fsl{width:28px;height:28px;border:1px solid rgba(196,135,74,.2);display:flex;align-items:center;justify-content:center;color:var(--gc);font-size:.7rem;text-decoration:none;transition:.3s}
+.fsl:hover{border-color:var(--g);color:var(--g)}
+.fc h4{font-size:.49rem;letter-spacing:.26em;text-transform:uppercase;color:var(--g);margin-bottom:.7rem}
+.fc ul{list-style:none}
+.fc ul li a{font-size:.61rem;color:var(--gc);text-decoration:none;padding:.25rem 0;display:block;transition:color .3s}
+.fc ul li a:hover{color:var(--g)}
+.fbot{border-top:1px solid rgba(196,135,74,.12);padding-top:1rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.fbot p{font-size:.52rem;color:var(--gc)}
+.fbot span{color:var(--g)}
+
+/* ── FLOATING BTNS ── */
+.fab{position:fixed;bottom:1.8rem;right:1rem;display:flex;flex-direction:column;gap:.5rem;z-index:490}
+.fbb{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;text-decoration:none;transition:transform .3s;box-shadow:0 3px 14px rgba(0,0,0,.4)}
+.fbb:hover{transform:scale(1.1)}
+.fwa{background:#25D366;color:#fff}
+.fcl{background:var(--g);color:#fff}
+
+/* ── DOTS ── */
+.dots{position:fixed;bottom:.9rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:300;align-items:center}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(196,135,74,.25);cursor:pointer;transition:.35s;border:none;padding:0;flex-shrink:0}
+.dot.active{background:var(--g);width:20px;border-radius:3px}
+.dot:hover{background:rgba(196,135,74,.6)}
+
+/* ── PROGRESS LINE ── */
+.progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(to right,var(--gd),var(--g));transition:width .65s cubic-bezier(.77,0,.175,1);z-index:200;opacity:.5}
+
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* ── SLIDE COUNTER ── */
+
+
+
+
+
+
+
+
+
+@media(max-width:768px){
+
+  /* Nav mobile */
+  nav{height:52px}
+  .logo small{display:none}
+  .logo-icon{display:none}
+  .slider{top:52px}
+  .dropdown{top:52px}
+  .drop-overlay{top:52px}
+
+  /* Arrows & counter */
+  .arrow{display:none!important}
+
+  /* Hero */
+  #hero .hc{padding:0 1.2rem}
+  h1.ht{font-size:2rem}
+  .hbadge{font-size:.42rem;letter-spacing:.25em;padding:.25rem .6rem}
+  .htag1{font-size:.5rem}
+  .htag2{font-size:.46rem}
+  .hdispo{font-size:.44rem}
+  .hbtns{flex-direction:column;align-items:center;gap:.5rem}
+  .bp,.bo{width:200px;justify-content:center;font-size:.55rem}
+
+  /* ── Services mobile : 3 rangées pleine largeur ── */
+  .slide-hd{padding:.8rem 1.2rem .5rem}
+  .s-cols{
+    display:flex!important;
+    flex-direction:column!important;
+    height:calc(100% - 80px)!important;
+    overflow:hidden!important;
+  }
+  .sc{
+    flex:1!important;
+    min-height:0!important;
+    flex-direction:row!important;
+    align-items:stretch!important;
+    border-right:none!important;
+    border-bottom:1px solid rgba(196,135,74,.15)!important;
+    height:auto!important;
+    display:flex!important;
+  }
+  .sc:last-child{border-bottom:none!important}
+  .sc-banner{
+    width:44%!important;
+    flex-shrink:0!important;
+    border-bottom:none!important;
+    border-right:1px solid rgba(196,135,74,.12)!important;
+    padding:.7rem .9rem!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:flex-start!important;
+    align-items:flex-start!important;
+  }
+  .sc-num-big{font-size:1.6rem!important;margin-bottom:.1rem!important;display:block!important}
+  .sc-title{font-size:.75rem!important;line-height:1.25!important;margin-bottom:.15rem!important}
+  .sc-sub{font-size:.52rem!important;line-height:1.5!important}
+  .sc-badge{font-size:.42rem!important;padding:.18rem .5rem!important;margin-bottom:.2rem!important}
+  .sc-body{
+    flex:1!important;
+    padding:.7rem .9rem!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:flex-start!important;
+    overflow:hidden!important;
+  }
+  .sl li{font-size:.58rem!important;padding:.25rem 0!important;gap:.4rem!important}
+  .sl li::before{width:4px!important;height:4px!important;flex-shrink:0!important}
+  .sc-body .bp{font-size:.55rem!important;width:100%!important;justify-content:center!important;padding:.55rem!important;margin-top:auto!important;letter-spacing:.15em!important}
+  .hbtns .bp,.hbtns .bo{width:200px!important;font-size:.55rem!important}
+
+  /* ── Tarifs mobile : 3 cartes compactes, tout visible ── */
+  .t-cols{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    overflow-y:hidden;
+    scroll-snap-type:none;
+  }
+  .t-cols::-webkit-scrollbar{display:none}
+  .tc{
+    flex:1;
+    min-height:0;
+    flex-direction:row;
+    border-right:none;
+    border-bottom:1px solid rgba(196,135,74,.18);
+    flex-shrink:1;
+    scroll-snap-align:none;
+  }
+  .tc:last-child{border-bottom:none}
+  .tc-banner{
+    width:42%;
+    flex-shrink:0;
+    border-bottom:none;
+    border-right:1px solid rgba(196,135,74,.15);
+    padding:.7rem .9rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:left;
+  }
+  .tc-banner::before{display:none}
+  .fb2{font-size:.42rem;margin-bottom:.3rem;padding:.18rem .6rem}
+  .tic{font-size:1.1rem;margin-bottom:.3rem;display:block}
+  .tn{font-size:.88rem;margin-bottom:.15rem}
+  .td{font-size:.52rem;margin-bottom:.5rem}
+  .pf{font-size:.45rem;margin-bottom:.15rem}
+  .pa{font-size:1.8rem;line-height:1}
+  .pu{font-size:.56rem}
+  .pd{font-size:1.3rem}
+  .tc-body{
+    flex:1;
+    padding:.7rem .9rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+  }
+  .tl{margin-bottom:.6rem}
+  .tl li{font-size:.57rem;padding:.26rem 0;gap:.35rem}
+  .tl li i{font-size:.54rem}
+  .bp-dk{padding:.55rem .8rem;font-size:.52rem}
+  .bp[onclick]{font-size:.52rem!important;padding:.5rem .7rem!important}
+
+  /* About */
+  .a-prose{padding:2rem 1.6rem}
+  .a-prose h2{font-size:1.9rem}
+
+  /* Estimateur */
+  /* Temoignages mobile : grille 1 colonne */
+  .tmg{grid-template-columns:1fr}
+  .tmc{min-width:unset;max-width:unset;overflow-y:unset;padding:1rem 1.2rem}
+
+  /* Contact */
+  .cw{grid-template-columns:1fr}
+  .fr2{grid-template-columns:1fr}
+  .fg2{grid-template-columns:1fr}
+
+  /* Footer */
+  .footer-inner{padding:1.2rem 1.2rem .8rem}
+  .fbot{flex-direction:column;gap:.3rem}
+  .fbot p:last-child{display:none}
+
+  /* Floating buttons */
+  .fab{bottom:2rem}
+
+  /* Swipe hint on temoignages only */
+  .tmg::after{
+    content:'';
+    min-width:7.5vw;
+    flex-shrink:0;
+    display:block;
+  }
+}
+
+/* ── COMPACT HEIGHT SCREENS ── */
+@media(max-height:800px){
+  .sc-banner{padding:1.2rem 1.4rem 1rem}
+  .tc-banner{padding:1.2rem 1.4rem 1rem}
+  .sc-icon-wrap{width:36px;height:36px;font-size:.95rem;margin-bottom:.5rem}
+  .tic{font-size:1.2rem;margin-bottom:.4rem}
+  .sc-title{font-size:.98rem}
+  .tn{font-size:1rem}
+  .td{font-size:.52rem;margin-bottom:.8rem}
+  .pa{font-size:2.2rem}
+  .sc-body{padding:1rem 1.4rem}
+  .tc-body{padding:1rem 1.4rem}
+  .fb2{margin-bottom:.5rem}
+  .sc-num-big{font-size:3rem}
+}
+/* ── SWIPE HINT MOBILE ── */
+.swipe-hint{display:none;position:absolute;bottom:.6rem;left:50%;transform:translateX(-50%);font-size:.44rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(196,135,74,.4);white-space:nowrap;pointer-events:none;z-index:10}
+@media(max-width:600px){.swipe-hint{display:block}}
+
+.sc-price-block{padding:.5rem 0 .4rem;text-align:center}
+.sc-pf{font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gc);display:block;margin-bottom:.25rem}
+.sc-pa{font-family:Georgia,serif;font-size:2.4rem;color:var(--g);line-height:1;display:block}
+.sc-pu{font-size:.65rem;color:var(--gc);font-style:normal}
+.sc-pd{font-family:Georgia,serif;font-size:1.5rem;color:var(--g);font-style:italic;display:block}
+.sc-sep{width:100%;height:1px;background:rgba(196,135,74,.2);margin:.4rem 0}
+.sc-badge{display:inline-block;font-size:.44rem;letter-spacing:.13em;text-transform:uppercase;background:var(--g);color:#fff;padding:.2rem .6rem;font-weight:700;margin-bottom:.35rem}
+
+/* ── LANG SWITCHER ── */
+.lang-btn{display:flex;align-items:center;gap:3px;background:none;border:1px solid rgba(196,135,74,.25);cursor:pointer;height:34px;min-width:64px;padding:0 .45rem;margin-left:.4rem;transition:.3s;flex-shrink:0;justify-content:center}
+.lang-btn:hover{border-color:var(--g)}
+.lang-opt{font-size:1.2rem;font-family:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji","Twemoji Mozilla",sans-serif;padding:0 .1rem;transition:all .2s;line-height:1;display:flex;align-items:center;opacity:.5;filter:grayscale(0%)}
+.lang-opt.active{opacity:1 !important;transform:scale(1.15)}
+.lang-sep{width:1px;height:14px;background:rgba(196,135,74,.25);flex-shrink:0;margin:0 2px}
+</style>
+
+<!-- ══ SEO — TITLE & META OPTIMISÉS ══ -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://www.rivieraroyaldrive.fr/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chauffeur Privé Cannes | VTC Premium Côte d'Azur — Riviera Royal Drive">
+<meta property="og:description" content="Service de chauffeur privé premium à Cannes, Nice, Monaco et toute la Côte d'Azur. Disponible 24h/24. Transferts aéroport, Festival de Cannes, mariages VIP.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Riviera Royal Drive">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="geo.region" content="FR-06">
+<meta name="geo.placename" content="Cannes">
+<meta name="geo.position" content="43.5528;7.0174">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":["LimousinService","LocalBusiness"],"@id":"https://www.rivieraroyaldrive.fr/#business","name":"Riviera Royal Drive","description":"Service de chauffeur privé premium sur la Côte d'Azur. VTC de luxe à Cannes, Nice, Monaco, Saint-Tropez. Transferts aéroport Nice, Festival de Cannes, mariages et événements VIP.","url":"https://www.rivieraroyaldrive.fr","telephone":"+33780977939","priceRange":"€€€","currenciesAccepted":"EUR","paymentAccepted":"Cash, Credit Card, Bank Transfer","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"}],"address":{"@type":"PostalAddress","addressLocality":"Cannes","addressRegion":"Alpes-Maritimes","addressCountry":"FR","postalCode":"06400"},"geo":{"@type":"GeoCoordinates","latitude":43.5528,"longitude":7.0174},"areaServed":["Cannes","Nice","Monaco","Antibes","Saint-Tropez","Mandelieu-la-Napoule","Mougins","Côte d'Azur"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services VTC Premium Côte d'Azur","itemListElement":[{"@type":"Offer","name":"Transfert Aéroport Nice Côte d'Azur","price":"80","priceCurrency":"EUR"},{"@type":"Offer","name":"Transfert Cannes Monaco","price":"90","priceCurrency":"EUR"},{"@type":"Offer","name":"Transfert Cannes Saint-Tropez","price":"130","priceCurrency":"EUR"}]},"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"47","bestRating":"5"},"sameAs":["https://www.instagram.com/rivieraroyaldrive","https://www.facebook.com/rivieraroyaldrive"]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le tarif d'un VTC de Cannes à l'aéroport de Nice ?","acceptedAnswer":{"@type":"Answer","text":"Le transfert VTC Cannes → aéroport Nice (NCE) est à 80€ en berline premium. Prix fixe, attente retard vol incluse, bagages inclus, 24h/24."}},{"@type":"Question","name":"Combien coûte un VTC Cannes Monaco ?","acceptedAnswer":{"@type":"Answer","text":"Le trajet VTC Cannes → Monaco est à 90€ en berline luxe. Environ 45 minutes. Service 24h/24, 7j/7."}},{"@type":"Question","name":"Riviera Royal Drive est-il disponible 24h/24 ?","acceptedAnswer":{"@type":"Answer","text":"Oui, service de chauffeur privé disponible 24h/24 et 7j/7 sur toute la Côte d'Azur."}},{"@type":"Question","name":"Quels véhicules propose Riviera Royal Drive ?","acceptedAnswer":{"@type":"Answer","text":"Flotte premium : Mercedes-Benz Classe E et S, BMW Série 5 et 7, Range Rover, Maybach sur demande."}},{"@type":"Question","name":"Comment réserver un chauffeur privé à Cannes ?","acceptedAnswer":{"@type":"Answer","text":"Via le formulaire, WhatsApp au 07 80 97 79 39 ou par téléphone. Confirmation en moins de 15 minutes."}}]},{"@type":"WebSite","url":"https://www.rivieraroyaldrive.fr","name":"Riviera Royal Drive","inLanguage":"fr-FR"}]}
+</script>
+<!-- Google Places Autocomplete -->
+<!-- Remplace VOTRE_CLE_GOOGLE par ta clé sur console.cloud.google.com (gratuit jusqu'à 28 500 requêtes/mois) -->
+
+<style>
+.autocomplete-list{position:absolute;top:100%;left:0;right:0;background:#1A1714;border:1px solid rgba(196,135,74,.3);z-index:999;max-height:200px;overflow-y:auto;display:none}
+.autocomplete-list.show{display:block}
+.autocomplete-item{padding:.6rem .8rem;font-size:.72rem;color:#F0E8DC;cursor:pointer;border-bottom:1px solid rgba(196,135,74,.08);line-height:1.4}
+.autocomplete-item:hover,.autocomplete-item.active{background:rgba(196,135,74,.1);color:#D4A470}
+.autocomplete-item span{display:block;font-size:.6rem;color:#A89880;margin-top:.15rem}
+.ac-wrap{position:relative;width:100%;display:block}
+</style>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RRD">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="theme-color" content="#C4874A">
+</head>
+<body>
+
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-left">
+    <div class="logo" onclick="goTo(0)">
+      
+      <div><b>Riviera <em>Royal</em> Drive</b><small data-i18n="logo_sub">Chauffeur Privé Premium · Cannes</small></div>
+    </div>
+    <div class="nav-sep"></div>
+    <button class="ham-btn" id="hamBtn" onclick="toggleDrop()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-right" style="display:flex;align-items:center">
+    <button class="ncta" onclick="goTo(1)">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.69 13.6 19.79 19.79 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="ncta-num">07 809 779 39</span>
+    </button>
+  </div>
+</nav>
+
+<!-- DROPDOWN OVERLAY (closes on outside click) -->
+<div class="drop-overlay" id="dropOverlay" onclick="closeDrop()"></div>
+
+<!-- DROPDOWN MENU -->
+<div class="dropdown" id="dropdown">
+  <div class="drop-inner">
+    <div class="drop-item active-drop" onclick="dropGoTo(0)"><span class="drop-label" data-i18n="nav_home">Accueil</span></div>
+    <div class="drop-item" onclick="dropGoTo(2)"><span class="drop-label" data-i18n="nav_services">Services</span></div>
+    <div class="drop-item" onclick="dropGoTo(4)"><span class="drop-label" data-i18n="nav_about">À propos</span></div>
+    <div class="drop-item" onclick="dropGoTo(3)"><span class="drop-label" data-i18n="nav_reviews">Avis</span></div>
+    <div class="drop-item" onclick="dropGoTo(1)"><span class="drop-label" data-i18n="nav_book">Réserver</span></div>
+  </div>
+</div>
+
+
+<button class="arrow left" id="arrowL" onclick="prev()"><i class="fas fa-chevron-left"></i></button>
+<button class="arrow right" id="arrowR" onclick="next()"><i class="fas fa-chevron-right"></i></button>
+
+<!-- DOTS -->
+<!-- PROGRESS BAR -->
+<!-- SLIDE COUNTER -->
+<!-- ══════════════════════════════
+     SLIDER
+══════════════════════════════ -->
+
+
+<!-- FLOATING BTNS -->
+<div class="fab">
+  <!-- PWA Install -->
+  <button id="pwa-btn" onclick="pwrInstall()" aria-label="Installer l'app"
+    style="display:none;background:#1A1714;color:#fff;border:1px solid rgba(196,135,74,.4);cursor:pointer;width:48px;height:48px;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(0,0,0,.4);transition:transform .3s;flex-shrink:0"
+    title="Installer l'app" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4874A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+  </button>
+  <button onclick="goTo(1)" aria-label="Réserver"
+    style="background:var(--g);color:#fff;border:none;cursor:pointer;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(196,135,74,.4);transition:transform .3s;flex-shrink:0"
+    title="Réserver" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+  </button>
+  <a href="https://wa.me/33780977939" class="fbb fwa" target="_blank" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<!-- DOTS -->
+<div class="dots" id="dots"></div>
+<!-- PROGRESS -->
+<div class="progress" id="progress"></div>
+
+
+
+
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,11,9,.97);border-top:1px solid rgba(196,135,74,.3);padding:.8rem 1rem;z-index:500;align-items:center;gap:.8rem;backdrop-filter:blur(12px)">
+  <div style="flex:1">
+    <div style="font-size:.7rem;font-weight:600;color:#F0E8DC">Installer Riviera Royal Drive</div>
+    <div style="font-size:.55rem;color:#A89880;margin-top:.1rem" data-i18n="pwa_sub">Accès rapide depuis votre écran d'accueil</div>
+  </div>
+  <button id="pwa-install-btn" onclick="pwrInstall()" style="background:#C4874A;color:#fff;border:none;padding:.5rem 1rem;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:inherit;white-space:nowrap">
+    <span data-i18n="pwa_btn">Installer</span>
+  </button>
+  <button onclick="var b=document.getElementById('pwa-banner');if(b)b.style.display='none'" style="background:none;border:none;color:#5A5248;cursor:pointer;font-size:.9rem;padding:.2rem">✕</button>
+</div>
+
+
+
+</body>
+</htm
